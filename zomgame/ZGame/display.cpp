@@ -4,15 +4,15 @@
 using namespace std;
 
 Display::Display() {
-	playWin = newwin(35,55,0,0); //height, width, starty, startx
-	msgWin = newwin(15,80,35,0);
-	menuWin = newwin(35,25,0,55);
+	playWin = subwin(stdscr,35,55,0,0); //height, width, starty, startx
+	msgWin = subwin(stdscr,15,80,35,0);
+	menuWin = subwin(stdscr,35,25,0,55);
 }
 
 void Display::displayMessages(Game& game){
 	deque<Message> msgs = game.getMessages();
 	unsigned int max = 13;
-	unsigned int offset = 1;
+	int offset = 0;
 	for (unsigned int i=0; i < max && i<msgs.size();i++){
 		Message msg = msgs.at(i);
 		if (msg.getMsg()->length() > 74){
@@ -26,6 +26,7 @@ void Display::displayMessages(Game& game){
 					j = 0;
 				}
 			}
+			offset = 0;
 			string secondhalf = msgs.at(i).getMsg()->substr(cutoff+1);
 			msg.getMsg()->resize(cutoff);
 			mvwprintw(msgWin, i+offset, 2, "> %s", msg.getCharMsg());
