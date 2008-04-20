@@ -4,7 +4,7 @@
 #define DISPLAY
 
 #include "game.h" 
-#include <curses.h>
+#include "curses.h"
 
 class Display {
 	private:
