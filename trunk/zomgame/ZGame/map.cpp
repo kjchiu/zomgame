@@ -16,6 +16,10 @@ MapBlock* Map::getBlockAt(int x, int y){
 	return map[x + (y * MAPWIDTH)];
 }
 
+MapBlock* Map::getBlockAt(Coord *coord) {
+	return map[coord->getX() + (coord->getY() * MAPWIDTH)];
+}
+
 char Map::getCharAt(int x, int y) {
 	return map[x + (y * MAPWIDTH)]->getChar();
 }

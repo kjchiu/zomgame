@@ -7,6 +7,8 @@
 #include <vector>
 
 #include "entity.h"
+#include "terrain.h"
+#include "terrains_list.h"
 
 using namespace std;
 
@@ -21,7 +23,7 @@ struct mapData {
 
 class MapBlock {
 	private:
-		char terrain;
+		Terrain* terrain;
 		vector<int> itemList;
 		vector<Entity*> entityList;
 		//itemarray
@@ -30,10 +32,11 @@ class MapBlock {
 		MapBlock();
 		void addEntity(Entity* entity);
 		char getChar();
+		short getColor();
 		bool isPassable();
-		void removeEntity(Entity* entity);
+		void removeEntity(Entity* entity = NULL);
 		char returnchar;
-		void setTerrain(char ter);
+		void setTerrain(Terrain* ter);
 };
 
 #endif

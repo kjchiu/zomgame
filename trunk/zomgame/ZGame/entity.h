@@ -8,23 +8,26 @@
 using namespace std;
 
 class Entity {
-	private:
+	protected:
 		int thisID;
 		string name;
 		string desc;
 		char displayChar;
+		short color;
 
 	public:
 		static int id;
 
 		Entity();
-		string getDescription();
-		char getDisplayChar();
-		int getID();
-		string getName();
-		void setName(string newName);
-		void setDescription(string newDesc);
-		void setDisplayChar(char newDispChar);
+		virtual string getDescription();
+		virtual char getDisplayChar();
+		virtual int getID();
+		virtual short getColor();
+		virtual string getName();
+		virtual void setName(string newName);
+		virtual void setDescription(string newDesc);
+		virtual void setDisplayChar(char newDispChar);
+		virtual void setColor(short newColor);
 };
 
 //

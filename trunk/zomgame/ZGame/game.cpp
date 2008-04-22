@@ -17,6 +17,7 @@ void Game::init(int tWidth, int tHeight){
 	player = new Player();
 	player->setName("Durr");
 	player->setLoc(new Coord(10,10));
+	map->getBlockAt(player->getLoc())->addEntity(player);
 	
 	//set up the offsets
 	directionOffsets[0] = new Coord(0,-1);
@@ -30,12 +31,14 @@ void Game::init(int tWidth, int tHeight){
 
 	Entity* ent1 = new Entity();
 	ent1->setDisplayChar('1');
+	ent1->setColor(3);
 	map->getBlockAt(1,1)->addEntity(ent1);
 	Entity* ent2 = new Entity();
 	ent2->setDisplayChar('2');
 	map->getBlockAt(2,2)->addEntity(ent2);
 	Entity* ent3 = new Entity();
 	ent3->setDisplayChar('3');
+	ent3->setColor(3);
 	map->getBlockAt(3,3)->addEntity(ent3);
 }
 
@@ -51,7 +54,10 @@ deque<Message> Game::getMessages(){
 void Game::movePlayer(direction dir){
 	Coord moveLoc = (*directionOffsets[dir]) + (*player->getLoc());
 	if (isPassable(&moveLoc)){
+
+		map->getBlockAt(player->getLoc())->removeEntity(player);
 		player->setLoc(&moveLoc);
+		map->getBlockAt(player->getLoc())->addEntity(player);
 	}
 }
 

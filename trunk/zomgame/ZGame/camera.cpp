@@ -25,17 +25,17 @@ void Camera::drawViewableMap(WINDOW* playWin){
 			int mapY = pY - height/2 + j; //y position on the map 
 			if (mapX < 0 || mapX > map->MAPWIDTH - 1 || mapY < 0 || mapY > map->MAPHEIGHT - 1){
 				MapBlock* mb = new MapBlock();
-				mb->setTerrain('-');
+				mb->setTerrain(new Deadlands());
 				viewArea[i + (j * width)] =  *mb;
 			} else {
 				viewArea[i + (j * width)] = *map->getBlockAt(mapX, mapY); 
 			}
 			
-			if (mapX == pX && mapY == pY){
-				MapBlock* mb = new MapBlock();
-				mb->setTerrain('@');
-				viewArea[i + (j * width)] =  *mb;
-			}
+			//if (mapX == pX && mapY == pY){
+				//MapBlock* mb = new MapBlock();
+				//mb->setTerrain('@');
+				//viewArea[i + (j * width)] =  *mb;
+			//}
 		}
 	}
 	//now display it in the play window (playWin)
@@ -43,8 +43,13 @@ void Camera::drawViewableMap(WINDOW* playWin){
 		for (int x=0; x<height; x++){
 			int index = y + (x * width);	
 			//get color from viewArea[index]
+			//color_set(viewArea[index].getColor(), NULL);
+			//wcolor_set(playWin, COLOR_PAIR(0), NULL);
 			//enable the color
-			mvwprintw(playWin, x+1,y+1, "%c", viewArea[index].getChar());
+			attron(COLOR_PAIR(1));
+
+			mvwaddch(playWin, x+1, y+1, viewArea[index].getChar() | COLOR_PAIR(viewArea[index].getColor()));
+			//mvwprintw(playWin, x+1,y+1, "%c", viewArea[index].getChar());
 		}
 	}
 	

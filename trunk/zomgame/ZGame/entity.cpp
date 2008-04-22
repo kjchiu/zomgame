@@ -4,6 +4,7 @@ int Entity::id = 0;
 
 Entity::Entity(){
 	thisID = id++;	
+	color = 2;
 }
 
 string Entity::getDescription(){
@@ -12,6 +13,10 @@ string Entity::getDescription(){
 
 char Entity::getDisplayChar(){
 	return displayChar;
+}
+
+short Entity::getColor() {
+	return color;
 }
 
 int Entity::getID(){
@@ -28,6 +33,10 @@ void Entity::setDescription(string newDesc){
 
 void Entity::setDisplayChar(char newDispChar){
 	displayChar = newDispChar;
+}
+
+void Entity::setColor(short newColor) {
+	color = newColor;
 }
 
 void Entity::setName(string newName){
