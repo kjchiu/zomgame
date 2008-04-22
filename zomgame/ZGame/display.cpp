@@ -7,6 +7,7 @@ extern Player* player;
 extern Map* map;
 
 Display::Display() {
+	resize_term(50,80);
 	playWin = newwin(35,55,0,0); //height, width, starty, startx
 	msgWin = newwin(15,80,35,0);
 	menuWin = newwin(35,25,0,55);
