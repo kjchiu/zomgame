@@ -8,7 +8,7 @@
 
 #include "entity.h"
 #include "terrain.h"
-#include "terrains\terrains_list.h"
+#include "TerrainTypes\terrain_types.h"
 
 using namespace std;
 
