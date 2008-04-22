@@ -10,10 +10,18 @@ Coord::Coord(int nX, int nY){
 	y = nY;
 }
 
-int Coord::getX(){
+Coord Coord::add(Coord &toAdd){
+	return Coord(getX()+toAdd.getX(), getY()+toAdd.getY());
+}
+
+int Coord::getX() const{
 	return x;
 }
 
-int Coord::getY(){
+int Coord::getY() const{
 	return y;
+}
+
+Coord Coord::operator+(const Coord& otherCoord) const {
+	return Coord(getX()+otherCoord.getX(), getY()+otherCoord.getY());
 }

@@ -4,7 +4,8 @@
 #define DISPLAY
 
 #include "game.h" 
-#include "curses.h"
+#include "camera.h"
+#include <curses.h>
 
 class Display {
 	private:
@@ -15,7 +16,9 @@ class Display {
 	public:
 		Display();
 		void displayMessages(Game& game);
+		void displayWorld(Game& game);
 		void draw(Game& game);	
+		MapBlock* getViewableArea(Game& game);
 };
 
 #endif

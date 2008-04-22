@@ -14,7 +14,7 @@ char* Player::getName() {
 }
 
 void Player::setLoc(Coord* nLocation){
-	location = nLocation;
+	*location = *nLocation;
 }
 
 void Player::setName(char *nName){
