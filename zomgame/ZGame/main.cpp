@@ -3,14 +3,15 @@
 #include "game.h"
 #include "display.h"
 
+Player* player;
+Map* map;
+
 int main() {
 	initscr();
 	noecho();
 	cbreak();
 	//nodelay(stdscr, TRUE);
 	int row,col;
-	
-	resize_term(50, 80);			/* force term to correct size */
 	getmaxyx(stdscr,row,col);		/* get the number of rows and columns */
 	Display* display = new Display();
 	bool keepPlaying = true;
@@ -22,6 +23,7 @@ int main() {
 		//tick, draw, until something results in quitting
 		counter++;
 		display->draw(*game);
+		refresh();
 		input = getch();
 		keepPlaying = game->processKey(input);
 	}
