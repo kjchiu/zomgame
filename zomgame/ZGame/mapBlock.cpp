@@ -1,7 +1,8 @@
 #include "mapBlock.h"
 
 MapBlock::MapBlock(){
-	terrain = '.';
+	//terrain = new Grass();
+	terrain = new Wheat();
 }
 
 void MapBlock::addEntity(Entity *entity){
@@ -13,7 +14,15 @@ char MapBlock::getChar() {
 	if (!entityList.empty()){
 		return entityList.back()->getDisplayChar();
 	}
-	return terrain;
+	return terrain->getChar();
+}
+
+short MapBlock::getColor() {
+	//return 
+	if (!entityList.empty()) {
+		return entityList.back()->getColor();
+	}
+	return terrain->getColor();
 }
 
 bool MapBlock::isPassable(){
@@ -25,9 +34,10 @@ bool MapBlock::isPassable(){
 }
 
 void MapBlock::removeEntity(Entity *entity){
-	//remove the entity given from the entity list
+	entityList.pop_back();
+
 }
 
-void MapBlock::setTerrain(char ter){
+void MapBlock::setTerrain(Terrain* ter){
 	terrain = ter;
 }

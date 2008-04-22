@@ -11,7 +11,15 @@ Display::Display() {
 	playWin = newwin(35,55,0,0); //height, width, starty, startx
 	msgWin = newwin(15,80,35,0);
 	menuWin = newwin(35,25,0,55);
+
+	start_color();
+	init_pair(0, COLOR_WHITE, COLOR_BLACK);
+	init_pair(1, COLOR_GREEN, COLOR_BLACK);
+	init_pair(2, COLOR_RED, COLOR_GREEN);
+	init_pair(3, COLOR_CYAN, COLOR_MAGENTA);
+	init_pair(4, COLOR_YELLOW, COLOR_BLACK);
 }
+
 
 void Display::displayMessages(Game& game){
 	deque<Message> msgs = game.getMessages();
