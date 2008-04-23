@@ -16,9 +16,9 @@ void Player::setLoc(Coord* nLocation){
 }
 
 
-void Player::draw(Map *map){
-	map->setCharAt('@', location->getX(), location->getY());
-}
+//void Player::draw(Map *map){
+//	map->setCharAt('@', location->getX(), location->getY());
+//}
 
 
 

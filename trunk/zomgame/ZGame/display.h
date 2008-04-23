@@ -16,7 +16,7 @@ class Display {
 	public:
 		Display();
 		void displayMessages(Game& game);
-		void displayWorld(Game& game);
+		void displayWorld();
 		void draw(Game& game);	
 		MapBlock* getViewableArea(Game& game);
 };

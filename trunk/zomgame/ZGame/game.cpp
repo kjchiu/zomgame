@@ -40,13 +40,24 @@ void Game::init(int tWidth, int tHeight){
 	ent3->setDisplayChar('3');
 	ent3->setColor(3);
 	map->getBlockAt(3,3)->addEntity(ent3);
+	
+	addMessage(new Message("Message 1"));
+	addMessage(new Message("Message 2"));
+	addMessage(new Message("123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 "));
+	addMessage(new Message("123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 "));
+
+
+
+
+
+
 }
 
 void Game::addMessage(Message *msg){
 	messages.push_front(*msg);
 }
 
-/* returns an array of messages. This couldn't possibly go wrong, right? */
+/* returns an array of messages */
 deque<Message> Game::getMessages(){
 	return messages;
 }
@@ -62,18 +73,16 @@ void Game::movePlayer(direction dir){
 }
 
 bool Game::processKey(char key){
-	if (key=='c') { // Was if the 'c' key?
-		for (int i=0; i<WIDTH*HEIGHT; ++i) {  // Yes, so clear the buffer to spaces:
-	//		(map->getMap())[i].getChar();//Char.UnicodeChar = ' ';
-		}
-	} else if (key=='w') {
-		movePlayer(NORTH);//player->setLoc(new Coord(player->getLoc()->getX(), player->getLoc()->getY()-1));
+	if (key=='c') { 
+	} else if (key=='w') {//moveEntity(Map* map, direction dir)
+		movePlayer(NORTH);
 	} else if (key=='a') {
 		movePlayer(WEST);
 	}  else if (key=='s') {
 		movePlayer(SOUTH);
 	} else if (key=='d') {
 		movePlayer(EAST);
+		addMessage(new Message("Hur"));
 	} else if (key=='q') {
 		//do some stuff, but for now
 		return false;
