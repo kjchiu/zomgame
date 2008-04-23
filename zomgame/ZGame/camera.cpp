@@ -30,12 +30,6 @@ void Camera::drawViewableMap(WINDOW* playWin){
 			} else {
 				viewArea[i + (j * width)] = *map->getBlockAt(mapX, mapY); 
 			}
-			
-			//if (mapX == pX && mapY == pY){
-				//MapBlock* mb = new MapBlock();
-				//mb->setTerrain('@');
-				//viewArea[i + (j * width)] =  *mb;
-			//}
 		}
 	}
 	//now display it in the play window (playWin)
@@ -59,8 +53,7 @@ MapBlock* Camera::getViewableArea(){
 	const int height = 33; //need to store these in variables
 	const int width = 53; //need to store these in variables
 	MapBlock viewArea[height*width]; //this will be the area the player sees.
-	//viewMap[VIEWWIDTH/2 + (VIEWHEIGHT/2 * MAPWIDTH)].Char.UnicodeChar = '@';
-	//viewmap(x,y) = map(playerX-halfway+x, playerY-halfway+y)
+	
 	int pX = player->getLoc()->getX();
 	int pY = player->getLoc()->getY();
 	for (int i=0; i<width; i++){
