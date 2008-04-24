@@ -23,6 +23,10 @@ int Entity::getID(){
 	return thisID;
 }
 
+Coord* Entity::getLoc(){
+	return location;
+}
+
 string Entity::getName(){
 	return name;
 }
@@ -37,6 +41,10 @@ void Entity::setDisplayChar(char newDispChar){
 
 void Entity::setColor(short newColor) {
 	color = newColor;
+}
+
+void Entity::setLoc(Coord *nLoc){
+	location = nLoc;
 }
 
 void Entity::setName(string newName){

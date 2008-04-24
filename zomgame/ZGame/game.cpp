@@ -45,12 +45,6 @@ void Game::init(int tWidth, int tHeight){
 	addMessage(new Message("Message 2"));
 	addMessage(new Message("123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 "));
 	addMessage(new Message("123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 "));
-
-
-
-
-
-
 }
 
 void Game::addMessage(Message *msg){
@@ -62,26 +56,31 @@ deque<Message> Game::getMessages(){
 	return messages;
 }
 
-void Game::movePlayer(direction dir){
-	Coord moveLoc = (*directionOffsets[dir]) + (*player->getLoc());
+void Game::moveEntity(Entity* ent, direction dir){
+	Coord moveLoc = (*directionOffsets[dir]) + (*ent->getLoc());
 	if (isPassable(&moveLoc)){
-
-		map->getBlockAt(player->getLoc())->removeEntity(player);
-		player->setLoc(&moveLoc);
-		map->getBlockAt(player->getLoc())->addEntity(player);
+		map->getBlockAt(player->getLoc())->removeEntity(ent);
+		ent->setLoc(&moveLoc);
+		map->getBlockAt(player->getLoc())->addEntity(ent);
+	} else { //why is it not passable?
+		MapBlock* checkBlock = map->getBlockAt(moveLoc.getX(), moveLoc.getY());
+		if (checkBlock->hasEntities()){
+			addMessage(new Message("There is something here, kill!"));
+			//resolve an attack (friendly NPCs?)
+		}
 	}
 }
 
 bool Game::processKey(char key){
 	if (key=='c') { 
-	} else if (key=='w') {//moveEntity(Map* map, direction dir)
-		movePlayer(NORTH);
+	} else if (key=='w') {
+		moveEntity(player, NORTH);
 	} else if (key=='a') {
-		movePlayer(WEST);
+		moveEntity(player, WEST);
 	}  else if (key=='s') {
-		movePlayer(SOUTH);
+		moveEntity(player, SOUTH);
 	} else if (key=='d') {
-		movePlayer(EAST);
+		moveEntity(player, EAST);
 		addMessage(new Message("Hur"));
 	} else if (key=='q') {
 		//do some stuff, but for now
@@ -105,9 +104,6 @@ void Game::runGame(){
 }
 
 bool Game::isPassable(Coord* nextLoc){
-	if (nextLoc->getX()<-300){
-		int boo = 0;
-	}
 	MapBlock* checkBlock = map->getBlockAt(nextLoc->getX(), nextLoc->getY());
 	if (nextLoc->getX() >= 0 && nextLoc->getY() >= 0 && nextLoc->getX() < map->MAPWIDTH && nextLoc->getY() < map->MAPHEIGHT
 		&& checkBlock->isPassable()){

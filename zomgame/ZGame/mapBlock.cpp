@@ -1,7 +1,6 @@
 #include "mapBlock.h"
 
 MapBlock::MapBlock(){
-	//terrain = new Grass();
 	terrain = new Wheat();
 }
 
@@ -23,6 +22,10 @@ short MapBlock::getColor() {
 		return entityList.back()->getColor();
 	}
 	return terrain->getColor();
+}
+
+bool MapBlock::hasEntities(){
+	return !entityList.empty();
 }
 
 bool MapBlock::isPassable(){

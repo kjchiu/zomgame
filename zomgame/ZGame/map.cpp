@@ -28,10 +28,6 @@ MapBlock* Map::getMap() {
 	return *map;
 }
 
-void Map::setCharAt(char setChar, int x, int y){
-//	 map[x + (y * MAPWIDTH)].Char.UnicodeChar = setChar;
-}
-
 void Map::setBlockAt(MapBlock* mBlock, int x, int y){
 	 map[x + (y * MAPWIDTH)] = mBlock;	
 }
