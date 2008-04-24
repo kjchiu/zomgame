@@ -33,6 +33,7 @@ class MapBlock {
 		void addEntity(Entity* entity);
 		char getChar();
 		short getColor();
+		bool hasEntities();
 		bool isPassable();
 		void removeEntity(Entity* entity = NULL);
 		char returnchar;

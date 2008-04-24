@@ -7,7 +7,6 @@
 #include "mapBlock.h"
 #include "coord.h"
 
-
 class Map{
 	public:	
 		static const int MAPWIDTH = 100, MAPHEIGHT = 100;
@@ -23,8 +22,6 @@ class Map{
 		MapBlock* getBlockAt(Coord* coord);
 		char getCharAt(int x, int y);
 		MapBlock* getMap();
-		//CHAR_INFO* getViewableMap(int pX, int pY);
-		void setCharAt(char setChar, int x, int y);
 		void setBlockAt(MapBlock *mBlock, int x, int y);
 		
 

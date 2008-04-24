@@ -26,7 +26,7 @@ class Game {
 		void drawMenu();
 		deque<Message> getMessages();
 		char* getView();
-		void movePlayer(direction dir);
+		void moveEntity(Entity* ent, direction dir);
 		bool processKey(char key);
 		void runGame();
 		void setCharAt(char setChar, int x, int y);
