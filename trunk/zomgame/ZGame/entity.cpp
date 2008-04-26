@@ -7,6 +7,10 @@ Entity::Entity(){
 	color = 2;
 }
 
+Entity::Entity(string name){
+	setName(name);
+}
+
 string Entity::getDescription(){
 	return desc;
 }

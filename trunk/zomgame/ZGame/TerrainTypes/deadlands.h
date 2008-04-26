@@ -5,7 +5,7 @@ public:
 	Deadlands() {}
 	virtual ~Deadlands() {}
 	virtual char getChar() { return '-'; }
-	virtual short getColor() { return 0; } // 
-	virtual string getName() { return "dead.. DEAD!"; }
+	virtual short getColor() { return 0; }
+	virtual string getName() { return "Deadlands"; }
 };
 #endif

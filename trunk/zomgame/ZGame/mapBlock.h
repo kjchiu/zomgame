@@ -8,6 +8,7 @@
 
 #include "entity.h"
 #include "terrain.h"
+#include "prop.h"
 #include "TerrainTypes\terrain_types.h"
 
 using namespace std;
@@ -16,7 +17,7 @@ struct mapData {
 	union data {
 			//Object o,
 			//Prop p,
-			//Entity e,
+			//Entity* e;
 	};
 	int height;
 };
@@ -26,17 +27,22 @@ class MapBlock {
 		Terrain* terrain;
 		vector<int> itemList;
 		vector<Entity*> entityList;
-		//itemarray
+		vector<Prop*> propList;
+		
+		//getEntity/Prop/TerrainAt(int height)
 
 	public:
 		MapBlock();
 		void addEntity(Entity* entity);
-		char getChar();
+		void addProp(Prop* prop);
+		int getChar();
 		short getColor();
+		Entity* getTopEntity();
 		bool hasEntities();
 		bool isPassable();
-		void removeEntity(Entity* entity = NULL);
-		char returnchar;
+		void removeEntity(Entity* entity);
+		void removeProp(Prop* prop);
+		int returnchar;
 		void setTerrain(Terrain* ter);
 };
 

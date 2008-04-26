@@ -15,6 +15,7 @@ class Display {
 
 	public:
 		Display();
+		void clearLine(WINDOW* win, int start, int end, int row);
 		void displayMessages(Game& game);
 		void displayWorld();
 		void draw(Game& game);	

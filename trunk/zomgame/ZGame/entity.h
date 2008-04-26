@@ -21,6 +21,7 @@ class Entity {
 		static int id;
 
 		Entity();
+		Entity(string name);
 		virtual string getDescription();
 		virtual char getDisplayChar();
 		virtual int getID();

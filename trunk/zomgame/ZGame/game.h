@@ -1,11 +1,12 @@
-#ifndef GAME
-#define GAME
+#ifndef _GAME_H
+#define _GAME_H
 
 #include <deque>
 
 #include "player.h"
 #include "message.h"
 #include "entity.h"
+#include "referee.h"
 
 using namespace std;
 
@@ -15,6 +16,7 @@ class Game {
 		char* view;
 		enum direction {NORTH, NORTHEAST, EAST, SOUTHEAST, SOUTH, SOUTHWEST, WEST, NORTHWEST};
 		Coord* directionOffsets[8];
+		Referee* ref;
 
 	public:		
 		Game();

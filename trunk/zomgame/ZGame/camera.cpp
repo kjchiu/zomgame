@@ -62,7 +62,7 @@ MapBlock* Camera::getViewableArea(){
 			int mapY = pY - height/2 + j; //y position on the map 
 			if (mapX < 0 || mapX > width - 1 || mapY < 0 || mapY > height - 1){
 				MapBlock* mb = new MapBlock();
-				mb->returnchar = '-';
+				mb->returnchar = '-';	//set the mapblock as "out of bounds"
 				viewArea[i + (j * width)] =  *mb;
 			} else {
 				viewArea[i + (j * width)] = *map->getBlockAt(mapX, mapY); 
