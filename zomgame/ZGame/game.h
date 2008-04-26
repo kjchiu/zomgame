@@ -3,9 +3,10 @@
 
 #include <deque>
 
+#include "renderable.h"
+#include "entity.h"
 #include "player.h"
 #include "message.h"
-#include "entity.h"
 #include "referee.h"
 
 using namespace std;
