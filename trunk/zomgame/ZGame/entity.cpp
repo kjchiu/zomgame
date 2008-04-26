@@ -7,20 +7,10 @@ Entity::Entity(){
 	color = 2;
 }
 
-Entity::Entity(string name){
-	setName(name);
-}
-
-string Entity::getDescription(){
-	return desc;
-}
-
-char Entity::getDisplayChar(){
-	return displayChar;
-}
-
-short Entity::getColor() {
-	return color;
+Entity::Entity(string newName){
+	setName(newName);
+	thisID = id++;	
+	color = 2;
 }
 
 int Entity::getID(){
@@ -31,26 +21,6 @@ Coord* Entity::getLoc(){
 	return location;
 }
 
-string Entity::getName(){
-	return name;
-}
-
-void Entity::setDescription(string newDesc){
-	desc = newDesc;
-}
-
-void Entity::setDisplayChar(char newDispChar){
-	displayChar = newDispChar;
-}
-
-void Entity::setColor(short newColor) {
-	color = newColor;
-}
-
-void Entity::setLoc(Coord *nLoc){
-	location = nLoc;
-}
-
-void Entity::setName(string newName){
-	name = newName;
+void Entity::setLoc(Coord* newLoc){
+	location = newLoc;
 }

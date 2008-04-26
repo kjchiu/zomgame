@@ -1,5 +1,4 @@
 /* Represents the player */
-#include "coord.h"
 #include "map.h"
 #include "entity.h"
 
