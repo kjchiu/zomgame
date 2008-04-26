@@ -12,17 +12,17 @@ class Renderable {
 	protected:
 		short color;
 		string desc;
-		char displayChar;
+		int displayChar;
 		string name;
 		
 	public:
 		virtual short getColor() {return color;}
 		virtual string getDescription() {return desc;}
-		virtual char getDisplayChar() {return displayChar;}
+		virtual int getDisplayChar() {return displayChar;}
 		virtual string getName() {return name;}
 		virtual void setName(string newName) {name = newName;}
 		virtual void setDescription(string newDesc) {desc = newDesc;}
-		virtual void setDisplayChar(char newDispChar) {displayChar = newDispChar;}
+		virtual void setDisplayChar(int newDispChar) {displayChar = newDispChar;}
 		virtual void setColor(short newColor) {color = newColor;}
 
 };

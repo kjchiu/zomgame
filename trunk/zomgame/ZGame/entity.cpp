@@ -3,13 +3,19 @@
 int Entity::id = 0;
 
 Entity::Entity(){
-	thisID = id++;	
-	color = 2;
+	string name = "Entity #";
+	name += id+1;
+	setName(name);
+	init();
 }
 
 Entity::Entity(string newName){
 	setName(newName);
-	thisID = id++;	
+	init();
+}
+
+void Entity::init(){
+	thisID = ++id;
 	color = 2;
 }
 

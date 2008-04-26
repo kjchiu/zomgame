@@ -21,9 +21,9 @@ int MapBlock::getChar() {
 	if (!entityList.empty()){
 		return entityList.back()->getDisplayChar();
 	} else if (!propList.empty()){
-		return propList.back()->getChar();
+		return propList.back()->getDisplayChar();
 	}
-	return terrain->getChar();
+	return terrain->getDisplayChar();
 }
 
 /* Return the color for this tile of the map */

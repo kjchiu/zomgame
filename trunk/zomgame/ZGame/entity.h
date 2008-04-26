@@ -16,6 +16,7 @@ class Entity : public Renderable {
 	public:
 		Entity();
 		Entity(string name);
+		void init();
 		virtual int getID();
 		virtual Coord* getLoc();
 		virtual void setLoc(Coord* nLocation);
