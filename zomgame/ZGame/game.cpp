@@ -39,12 +39,12 @@ void Game::init(int tWidth, int tHeight){
 	map->getBlockAt(1,1)->addEntity(ent1);
 	Prop* wall1 = new Prop();
 	wall1->setName("Wall");
-	wall1->setChar(ACS_CKBOARD);
+	wall1->setDisplayChar(ACS_CKBOARD);
 	wall1->setPassable(false);
 	map->getBlockAt(5,5)->addProp(wall1);
 	wall1 = new Prop();
 	wall1->setName("Wall");
-	wall1->setChar(ACS_CKBOARD);
+	wall1->setDisplayChar(ACS_CKBOARD);
 	wall1->setPassable(false);
 	map->getBlockAt(5,6)->addProp(wall1);
 }

@@ -5,25 +5,19 @@
 
 #include <string>
 
+#include "renderable.h"
+
 using namespace std;
 
-class Prop {
+class Prop : public Renderable {
 
 	private:
 		bool passable; //passed in, dependent on the prop
-		string name;
-		string description;
-		int dispChar;
 
 	public:
 		Prop();
+		Prop(bool canPass);
 		bool isPassable();
-		int getChar();
-		string getDesc();
-		string getName();
-		void setChar(int nChar);
-		void setDesc(string nDesc);
-		void setName(string nName);
 		void setPassable(bool canPass);
 };
 

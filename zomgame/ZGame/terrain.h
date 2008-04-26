@@ -2,12 +2,11 @@
 
 #include <string>
 
+#include "renderable.h"
+
 using namespace std;
 
-class Terrain {
+class Terrain : public Renderable {
 	public:
 		virtual ~Terrain() {}
-		virtual char getChar() = 0;
-		virtual short getColor() = 0;
-		virtual string getName() = 0;
 };
