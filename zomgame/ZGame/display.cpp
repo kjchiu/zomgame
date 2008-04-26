@@ -20,6 +20,11 @@ Display::Display() {
 	init_pair(4, COLOR_YELLOW, COLOR_BLACK);
 }
 
+void Display::clearLine(WINDOW* win, int start, int end, int row){
+	for (int k=start; k<end; k++) {
+		mvwprintw(win, row, k, " ");
+	}
+}
 
 void Display::displayMessages(Game& game){
 	deque<Message> msgs = game.getMessages();
@@ -38,18 +43,15 @@ void Display::displayMessages(Game& game){
 			}
 			string secondhalf = text.substr(cutoff+1);
 			text.resize(cutoff);
+			clearLine(msgWin, 1, windowLength-2, (i+offset));
 			mvwprintw(msgWin, i+offset++, 2, "> %s", text.c_str());
-			if (i+offset<max-1){
-				for (unsigned int k=1; k<windowLength-2; k++) {
-					mvwprintw(msgWin, i+offset, k, " ");
-				}	
+			//if (i+offset < max+2){ //TODO: Why is this not working?
+				clearLine(msgWin, 1, windowLength-2, (i+offset));	
 				mvwprintw(msgWin, i+offset, 2, "  %s", secondhalf.c_str());
-			}
-			max--;
+				max--;
+			//}
 		} else {
-			for (unsigned int k=1; k<windowLength-2; k++) {
-				mvwprintw(msgWin, i+offset, k, " ");
-			}
+			clearLine(msgWin, 1, windowLength-2, (i+offset));
 			mvwprintw(msgWin, i+offset, 2, "> %s", text.c_str());	
 		}
 	}

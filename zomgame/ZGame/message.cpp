@@ -3,7 +3,7 @@
 Message::Message(){
 	setMsg(" ");
 }
-Message::Message(char* message){
+Message::Message(const char* message){
 	setMsg(message);
 }
 Message::Message(string* message){
@@ -22,7 +22,7 @@ string* Message::getMsg(){
 	return message;
 }
 
-void Message::setMsg(char* msg){
+void Message::setMsg(const char* msg){
 	message = new string(msg);
 }
 

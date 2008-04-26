@@ -1,4 +1,7 @@
+
+#include <curses.h>
 #include "game.h"
+#include "referee.h"
 
 extern Player* player;
 extern Map* map;
@@ -18,7 +21,8 @@ void Game::init(int tWidth, int tHeight){
 	player->setName("Durr");
 	player->setLoc(new Coord(10,10));
 	map->getBlockAt(player->getLoc())->addEntity(player);
-	
+	ref = new Referee();
+
 	//set up the offsets
 	directionOffsets[0] = new Coord(0,-1);
 	directionOffsets[1] = new Coord(1,-1);
@@ -29,22 +33,20 @@ void Game::init(int tWidth, int tHeight){
 	directionOffsets[6] = new Coord(-1,0);
 	directionOffsets[7] = new Coord(-1,-1);
 
-	Entity* ent1 = new Entity();
-	ent1->setDisplayChar('1');
+	Entity* ent1 = new Entity("Zombie 1");
+	ent1->setDisplayChar('Z');
 	ent1->setColor(3);
 	map->getBlockAt(1,1)->addEntity(ent1);
-	Entity* ent2 = new Entity();
-	ent2->setDisplayChar('2');
-	map->getBlockAt(2,2)->addEntity(ent2);
-	Entity* ent3 = new Entity();
-	ent3->setDisplayChar('3');
-	ent3->setColor(3);
-	map->getBlockAt(3,3)->addEntity(ent3);
-	
-	addMessage(new Message("Message 1"));
-	addMessage(new Message("Message 2"));
-	addMessage(new Message("123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 "));
-	addMessage(new Message("123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 "));
+	Prop* wall1 = new Prop();
+	wall1->setName("Wall");
+	wall1->setChar(ACS_CKBOARD);
+	wall1->setPassable(false);
+	map->getBlockAt(5,5)->addProp(wall1);
+	wall1 = new Prop();
+	wall1->setName("Wall");
+	wall1->setChar(ACS_CKBOARD);
+	wall1->setPassable(false);
+	map->getBlockAt(5,6)->addProp(wall1);
 }
 
 void Game::addMessage(Message *msg){
@@ -64,15 +66,16 @@ void Game::moveEntity(Entity* ent, direction dir){
 		map->getBlockAt(player->getLoc())->addEntity(ent);
 	} else { //why is it not passable?
 		MapBlock* checkBlock = map->getBlockAt(moveLoc.getX(), moveLoc.getY());
-		if (checkBlock->hasEntities()){
-			addMessage(new Message("There is something here, kill!"));
-			//resolve an attack (friendly NPCs?)
+		if (checkBlock->hasEntities()){  //resolve an attack (what about friendly NPCs?)	
+			addMessage(ref->resolveAttack(ent, checkBlock->getTopEntity()));
 		}
 	}
 }
 
 bool Game::processKey(char key){
 	if (key=='c') { 
+	} else if (key=='m'){
+		addMessage(new Message("Test Message"));
 	} else if (key=='w') {
 		moveEntity(player, NORTH);
 	} else if (key=='a') {
@@ -81,7 +84,6 @@ bool Game::processKey(char key){
 		moveEntity(player, SOUTH);
 	} else if (key=='d') {
 		moveEntity(player, EAST);
-		addMessage(new Message("Hur"));
 	} else if (key=='q') {
 		//do some stuff, but for now
 		return false;
