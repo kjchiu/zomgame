@@ -31,12 +31,16 @@ class Game {
 		void init(int tWidth, int tHeight);
 		
 		Map* getMap() { return this->map;}
+
 		void addMessage(Message* msg);
-		void draw();
-		void drawMenu();
 		deque<Message> getMessages();
+
 		char* getView();
 		Player* getPlayer();
+		void draw();
+		void drawMenu();
+
+
 		void moveEntity(Entity* ent, direction dir);
 		bool processKey(char key);
 		void setCharAt(char setChar, int x, int y);
@@ -47,6 +51,5 @@ class Game {
 		static const int WIDTH = 80, HEIGHT = 50;
 		//CHAR_INFO world[100*100]
 };
-
 
 #endif

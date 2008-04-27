@@ -1,10 +1,15 @@
 #include "map.h"
+#include "zombie.h"
+#include <ctime> //for debugging. used to generate shit random maps
 
 Map::Map(){
 	height = MAPHEIGHT;
 	width = MAPWIDTH;
-	for (int i=0; i<height*width; ++i) {
+	srand(time(0));
+	for (int i=0; i<height*width; ++i) {		
         map[i] = new MapBlock(); //fill the map with blank areas
+		if (rand() % 10 > 8)
+			map[i]->addEntity(new Zombie());
 	}
 }
 
@@ -22,7 +27,7 @@ MapBlock* Map::getBlockAt(Coord *coord) {
 	return map[coord->getX() + (coord->getY() * getWidth())];
 }
 
-char Map::getCharAt(int x, int y) {
+chtype Map::getCharAt(int x, int y) {
 	return map[x + (y * getWidth())]->getChar();
 }
 

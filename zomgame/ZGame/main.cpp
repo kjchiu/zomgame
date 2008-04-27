@@ -3,6 +3,8 @@
 #include "game.h"
 #include "display.h"
 //bool keepPlaying = true;
+
+//extern Game *game;
 int main() {
 	initscr();
 	noecho();
@@ -13,7 +15,8 @@ int main() {
 	
 	int input;
 	int counter = 0;
-	Game *game = new Game(); //make a new game
+	Game *game;
+	game = new Game(); //make a new game
 	game->run();
 	refresh();
 
