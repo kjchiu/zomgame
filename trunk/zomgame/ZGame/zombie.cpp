@@ -2,11 +2,16 @@
 #include <ctime>
 
 Zombie::Zombie() {
-	if (rand() % 3 > 1)
+	if (rand() % 3 > 1) {
 		color = 5;
-	else 
+		displayChar = 0x151;
+		setName("Uber Zombie");
+	} else  {
 		color = 1;
-	displayChar = 'Z';
+		displayChar = 'Z';
+		setName("Zombie");
+	}
+
 }
 
 void Zombie::tick() {

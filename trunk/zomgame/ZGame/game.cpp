@@ -19,7 +19,7 @@ void Game::init(int tWidth, int tHeight){
 	player->setLoc(new Coord(10,10));
 	map->getBlockAt(player->getLoc())->addEntity(player);
 	ref = new Referee();
-	display = new Display();
+	display = new Display(this);
 	display->setTarget(player);
 	
 	//set up the offsets
@@ -74,7 +74,12 @@ void Game::moveEntity(Entity* ent, direction dir){
 	} else { //why is it not passable?
 		MapBlock* checkBlock = map->getBlockAt(moveLoc.getX(), moveLoc.getY());
 		if (checkBlock->hasEntities()){  //resolve an attack (what about friendly NPCs?)	
-			addMessage(ref->resolveAttack(ent, checkBlock->getTopEntity()));
+			Message msg;
+			if (ref->resolveAttack(ent, checkBlock->getTopEntity(), &msg)) {
+				checkBlock->removeEntity(checkBlock->getTopEntity());
+				addMessage(&msg);
+			}
+
 		}
 	}
 }
@@ -106,8 +111,7 @@ void Game::tick(){
 }
 
 void Game::draw(){
-	display->draw(getMap());
-	display->draw(messages);
+	display->draw();
 }
 
 void Game::run(){

@@ -11,7 +11,7 @@ class Referee {
 
 	public:
 		Referee();
-		Message* resolveAttack(Entity* attacker, Entity* defender);
+		bool resolveAttack(Entity* attacker, Entity* defender, Message* message);
 };
 
 #endif

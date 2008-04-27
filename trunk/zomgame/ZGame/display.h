@@ -27,12 +27,14 @@ class Display {
 		WINDOW* statWin;
 		bool invToggle;
 		Entity* target;
+		Game* game;
 		
 	public:
-		Display();
+		Display(Game* game);
 		virtual void init();
 		void clearLine(WINDOW* win, int start, int end, int row);
 		void displayMessages(Game& game);
+		void draw();
 		void draw(Map* map);	
 		void draw(deque<Message> msgs);
 		//MapBlock** getViewableArea(Game& game);

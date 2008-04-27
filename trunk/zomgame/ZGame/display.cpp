@@ -4,8 +4,9 @@
 using namespace std;
 
 
-Display::Display() {
+Display::Display(Game* game) {
 	init();
+	this->game = game;
 }
 
 void Display::init() {
@@ -70,6 +71,14 @@ void Display::displayMessages(Game& game){
 		}
 	}
 	wrefresh(msgWin);
+}
+
+void Display::draw() {
+	this->draw(game->getMap());
+	this->draw(game->getMessages());
+	wrefresh(stdscr);
+	refresh();
+	
 }
 
 void Display::draw(Map* map) {
