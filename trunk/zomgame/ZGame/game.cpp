@@ -3,9 +3,6 @@
 #include "game.h"
 #include "referee.h"
 
-extern Player* player;
-extern Map* map;
-
 Game::Game(){
 	init(100,100);
 }
@@ -22,7 +19,9 @@ void Game::init(int tWidth, int tHeight){
 	player->setLoc(new Coord(10,10));
 	map->getBlockAt(player->getLoc())->addEntity(player);
 	ref = new Referee();
-
+	display = new Display();
+	display->setTarget(player);
+	
 	//set up the offsets
 	directionOffsets[0] = new Coord(0,-1);
 	directionOffsets[1] = new Coord(1,-1);
@@ -36,7 +35,7 @@ void Game::init(int tWidth, int tHeight){
 	Entity* ent1 = new Entity("Zombie 1");
 	ent1->setDisplayChar('Z');
 	ent1->setColor(3);
-	map->getBlockAt(1,1)->addEntity(ent1);
+	/*map->getBlockAt(1,1)->addEntity(ent1);
 	Prop* wall1 = new Prop();
 	wall1->setName("Wall");
 	wall1->setDisplayChar(ACS_CKBOARD);
@@ -46,7 +45,7 @@ void Game::init(int tWidth, int tHeight){
 	wall1->setName("Wall");
 	wall1->setDisplayChar(ACS_CKBOARD);
 	wall1->setPassable(false);
-	map->getBlockAt(5,6)->addProp(wall1);
+	map->getBlockAt(5,6)->addProp(wall1);*/
 }
 
 void Game::addMessage(Message *msg){
@@ -58,8 +57,16 @@ deque<Message> Game::getMessages(){
 	return messages;
 }
 
+Player* Game::getPlayer(){
+	return player;
+}
+
 void Game::moveEntity(Entity* ent, direction dir){
 	Coord moveLoc = (*directionOffsets[dir]) + (*ent->getLoc());
+	if (moveLoc.getX() < 0 || moveLoc.getY() < 0 || 
+		moveLoc.getX() >= map->MAPWIDTH && moveLoc.getY() >= map->MAPHEIGHT){
+		return; //can't move here, outside of map
+	}
 	if (isPassable(&moveLoc)){
 		map->getBlockAt(player->getLoc())->removeEntity(ent);
 		ent->setLoc(&moveLoc);
@@ -87,28 +94,37 @@ bool Game::processKey(char key){
 	} else if (key=='q') {
 		//do some stuff, but for now
 		return false;
+	} else if (key=='i') {
+		addMessage(new Message("Inventory toggled"));
 	}
 
 	return true;
 }
 
 void Game::tick(){
-
+	
 }
 
 void Game::draw(){
-	map->clear();
-	//player->draw(map);
+	display->draw(getMap());
 }
 
-void Game::runGame(){
-
+void Game::run(){
+	char input;
+	bool keepPlaying = true;
+	while (keepPlaying){
+		//tick, draw, until something results in quitting
+		this->tick();
+		this->draw();
+		refresh();
+		input = getch();
+		keepPlaying = this->processKey(input);
+	}
 }
 
 bool Game::isPassable(Coord* nextLoc){
 	MapBlock* checkBlock = map->getBlockAt(nextLoc->getX(), nextLoc->getY());
-	if (nextLoc->getX() >= 0 && nextLoc->getY() >= 0 && nextLoc->getX() < map->MAPWIDTH && nextLoc->getY() < map->MAPHEIGHT
-		&& checkBlock->isPassable()){
+	if (checkBlock->isPassable()){
 		return true;
 	}
 	return false;

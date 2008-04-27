@@ -1,6 +1,8 @@
 #include "mapBlock.h"
 
 MapBlock::MapBlock(){
+	entityList = vector<Entity*>();
+	propList = vector<Prop*>();
 	terrain = new Wheat();
 }
 
@@ -16,7 +18,7 @@ void MapBlock::addProp(Prop* prop){
 }
 
 /* Gets the char that represents this tile of the map */
-int MapBlock::getChar() {
+chtype MapBlock::getChar() {
 	//order of appearance -> entity, item, prop, terrain
 	if (!entityList.empty()){
 		return entityList.back()->getDisplayChar();
@@ -28,7 +30,6 @@ int MapBlock::getChar() {
 
 /* Return the color for this tile of the map */
 short MapBlock::getColor() {
-	//return 
 	if (!entityList.empty()) {
 		return entityList.back()->getColor();
 	}

@@ -2,10 +2,7 @@
 #define _DEADLANDS_H
 class Deadlands : public Terrain {
 public:
-	Deadlands() {}
+	Deadlands() {setDisplayChar('-'); setColor(1);}
 	virtual ~Deadlands() {}
-	virtual char getChar() { return '-'; }
-	virtual short getColor() { return 0; }
-	virtual string getName() { return "Deadlands"; }
 };
 #endif

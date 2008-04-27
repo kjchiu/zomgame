@@ -2,10 +2,7 @@
 
 #include "game.h"
 #include "display.h"
-
-Player* player;
-Map* map;
-
+//bool keepPlaying = true;
 int main() {
 	initscr();
 	noecho();
@@ -13,20 +10,13 @@ int main() {
 	//nodelay(stdscr, TRUE);
 	int row,col;
 	getmaxyx(stdscr,row,col);		/* get the number of rows and columns */
-	Display* display = new Display();
-	bool keepPlaying = true;
+	
 	int input;
 	int counter = 0;
-	Game* game = new Game(); //make a new game
+	Game *game = new Game(); //make a new game
+	game->run();
 	refresh();
-	while (keepPlaying){
-		//tick, draw, until something results in quitting
-		counter++;
-		display->draw(*game);
-		refresh();
-		input = getch();
-		keepPlaying = game->processKey(input);
-	}
+
 	endwin();
 	// Exit
     return 0;

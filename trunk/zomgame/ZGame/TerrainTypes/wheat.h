@@ -2,11 +2,7 @@
 #define _WHEAT_H
 class Wheat : public Terrain {
 public:
-	Wheat() {}
+	Wheat() {setDisplayChar(';'); setColor(4);}
 	virtual ~Wheat() {}
-	virtual char getChar() { return ';'; }
-	virtual short getColor() { return 4; } // 
-	virtual string getName() { return "wheat"; }
-
 };
 #endif
