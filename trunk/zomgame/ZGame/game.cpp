@@ -48,8 +48,13 @@ void Game::init(int tWidth, int tHeight){
 	map->getBlockAt(5,6)->addProp(wall1);*/
 }
 
+/**
+ *	Force the redraw otherwise message isnt drawn 
+ *	until the next tick.
+ */
 void Game::addMessage(Message *msg){
 	messages.push_front(*msg);
+	display->draw(getMessages());
 }
 
 /* returns an array of messages */
