@@ -15,5 +15,5 @@ Zombie::Zombie() {
 }
 
 void Zombie::tick() {
-	
+	//eat_brains()
 }

@@ -3,6 +3,7 @@
 MapBlock::MapBlock(){
 	entityList = vector<Entity*>();
 	propList = vector<Prop*>();
+	itemList = vector<Item*>();
 	terrain = new Wheat();
 }
 
@@ -10,6 +11,10 @@ MapBlock::MapBlock(){
 void MapBlock::addEntity(Entity *entity){
 	//note, check for multiple entities on the same height. Something's wrong if that happens
 	entityList.push_back(entity);
+}
+
+void MapBlock::addItem(Item* item){
+	itemList.push_back(item);
 }
 
 /* Adds a prop to the mapBlock */
@@ -22,6 +27,8 @@ chtype MapBlock::getChar() {
 	//order of appearance -> entity, item, prop, terrain
 	if (!entityList.empty()){
 		return entityList.back()->getDisplayChar();
+	} else if (!itemList.empty()){
+		return itemList.back()->getDisplayChar();
 	} else if (!propList.empty()){
 		return propList.back()->getDisplayChar();
 	}
@@ -32,6 +39,10 @@ chtype MapBlock::getChar() {
 short MapBlock::getColor() {
 	if (!entityList.empty()) {
 		return entityList.back()->getColor();
+	} else if (!itemList.empty()){
+		return itemList.back()->getColor();
+	} else if (!propList.empty()){
+		return propList.back()->getColor();
 	}
 	return terrain->getColor();
 }
@@ -51,7 +62,7 @@ bool MapBlock::isPassable(){
 	if (!entityList.empty()) {
 		return false;	
 	}
-	for (int i=0; i<propList.size(); i++){
+	for (unsigned int i=0; i<propList.size(); i++){
 		if (!propList.at(i)->isPassable()){
 			return false;
 		}
@@ -59,16 +70,43 @@ bool MapBlock::isPassable(){
 	return true;
 }
 
-
-// @TODO THIS HAS TO ACTUALLY DELETE THE PROPER ENTITY =[
+// @TODO WHEN HEIGHT IS IMPLEMENTED, ONLY CHECK AT THE HEIGHT
 /* Remove an entity from the list. Might take height later, if necessary */
 void MapBlock::removeEntity(Entity *entity){
-	entityList.pop_back(); //change this
+	for (unsigned int i=0; i<entityList.size(); i++){
+		if (entityList.at(i)->getID() == entity->getID()){
+			if (i==0){
+				entityList.pop_back();
+			} else {
+				entityList.erase(entityList.begin()+i-1, entityList.begin()+i); 
+			}
+		}
+	}
+}
+
+void MapBlock::removeItem(Item* item){
+	for (unsigned int i=0; i<entityList.size(); i++){
+		if (itemList.at(i)->getID() == item->getID()){
+			if (i==0){
+				itemList.pop_back();
+			} else {
+				itemList.erase(itemList.begin()+i-1, itemList.begin()+i); 
+			}
+		}
+	}
 }
 
 /* Remove an prop from the list. Might take height later, if necessary */
 void MapBlock::removeProp(Prop *prop){
-	propList.pop_back(); //I can't believe there is no remove function for vectors. wtf.
+	for (unsigned int i=0; i<entityList.size(); i++){
+		if (propList.at(i)->getID() == prop->getID()){
+			if (i==0){
+				propList.pop_back();
+			} else {
+				propList.erase(propList.begin()+i-1, propList.begin()+i); 
+			}
+		}
+	}
 }
 
 /* Set the terrain. For initializing or terrain modification (wall destruction, for example) */

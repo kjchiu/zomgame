@@ -1,7 +1,6 @@
 #include <curses.h>
 
 #include "game.h"
-#include "display.h"
 //bool keepPlaying = true;
 
 //extern Game *game;
@@ -9,6 +8,7 @@ int main() {
 	initscr();
 	noecho();
 	cbreak();
+	leaveok(stdscr, false);
 	//nodelay(stdscr, TRUE);
 	int row,col;
 	getmaxyx(stdscr,row,col);		/* get the number of rows and columns */

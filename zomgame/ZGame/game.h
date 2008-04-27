@@ -3,8 +3,8 @@
 
 #include <deque>
 
-#include "display.h"
 #include "renderable.h"
+#include "display.h"
 #include "entity.h"
 #include "player.h"
 #include "message.h"

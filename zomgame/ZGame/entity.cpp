@@ -1,11 +1,6 @@
 #include "entity.h"
 
-int Entity::id = 0;
-
 Entity::Entity(){
-	string name = "Entity #";
-	name += id+1;
-	setName(name);
 	init();
 }
 
@@ -15,12 +10,7 @@ Entity::Entity(string newName){
 }
 
 void Entity::init(){
-	thisID = ++id;
 	color = 2;
-}
-
-int Entity::getID(){
-	return thisID;
 }
 
 Coord* Entity::getLoc(){
