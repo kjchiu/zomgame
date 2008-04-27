@@ -107,6 +107,7 @@ void Game::tick(){
 
 void Game::draw(){
 	display->draw(getMap());
+	display->draw(messages);
 }
 
 void Game::run(){

@@ -19,7 +19,7 @@ void Camera::setViewableArea(int height, int width) {
 
 
 
-chtype* Camera::wtfViewableArea(Map* map, Entity *target) {
+chtype* Camera::getViewableArea(Map* map, Entity *target) {
 	const int height = 33; //need to store these in variables
 	const int width = 53; //need to store these in variables
 	Deadlands dead;	
@@ -39,7 +39,7 @@ chtype* Camera::wtfViewableArea(Map* map, Entity *target) {
 	}
 	return viewArea;
 }
-
+/*
 MapBlock* Camera::getViewableArea(WINDOW* playWin, Map* map, Entity *target){
 	const int height = 33; //need to store these in variables
 	const int width = 53; //need to store these in variables
@@ -74,4 +74,4 @@ MapBlock* Camera::getViewableArea(WINDOW* playWin, Map* map, Entity *target){
 		}
 	}
 	return viewArea;
-}
+}*/

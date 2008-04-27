@@ -12,7 +12,8 @@ protected:
 public:
 	Camera();
 	void setViewableArea(int height, int width);
-	chtype* Camera::wtfViewableArea(Map* map, Entity *target);
-	MapBlock* getViewableArea(WINDOW* playWin, Map* map, Entity* target);
+	//return chtype buffer of viewable area.
+	chtype* Camera::getViewableArea(Map* map, Entity *target);
+	//MapBlock* getViewableArea(WINDOW* playWin, Map* map, Entity* target);
 	
 };

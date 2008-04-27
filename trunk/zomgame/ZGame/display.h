@@ -6,6 +6,7 @@
 #include "game.h" 
 #include "camera.h"
 #include <curses.h>
+#include "message.h"
 
 #ifndef _GAME_H_
 class Game;
@@ -33,6 +34,7 @@ class Display {
 		void clearLine(WINDOW* win, int start, int end, int row);
 		void displayMessages(Game& game);
 		void draw(Map* map);	
+		void draw(deque<Message> msgs);
 		//MapBlock** getViewableArea(Game& game);
 		void setTarget(Entity* entity);
 		void toggleInventory();
