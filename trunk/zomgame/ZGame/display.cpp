@@ -14,7 +14,7 @@ void Display::init() {
 	playWin = newwin(35,55,0,0); //height, width, starty, startx
 	msgWin = newwin(15,80,35,0);
 	menuWin = newwin(35,25,0,55);
-	invWin = newwin(12,80,35,0);
+	invWin = newwin(11,80,35,0);
 	/*box(playWin, 0, 0);
 	box(msgWin,0,0);
 	box(menuWin,0,0);
@@ -93,39 +93,28 @@ void Display::draw(Map* map) {
 	for (int x=0; x<width; x++){
 		for (int y=0; y<height; y++){
 			int index = x + (y * width);	
-			//viewArea[index].addEntity(new Entity());
-//			attron(COLOR_PAIR(viewArea[index].getColor()));
-
 			mvwaddch(playWin, y+1, x+1, view[index]);
 		}
 	}
 	//now display it in the play window (playWin)
-	
 	wrefresh(playWin);
 	
 	//check for inventory and skill, status, etc flags
 	if (invToggle){
 		//draw a small msg window, large invWindow
-		//box(invWin, 0,0);
-		wprintw(invWin, "Wtf");
+		box(invWin, 0,0);
+		mvwprintw(invWin, 0, 4, "POSSESSIONS");
+	
 		wrefresh(invWin);
-		
-		wresize(msgWin, 3, 80);
-		wmove(msgWin, 0,0);
-		wrefresh(msgWin);
+
 	}
 	
-	// drawMessages(deque<Messages> msgs)
 	//MESSAGES
 	box(msgWin, 0,0);
-	//displayMessages(this);
-	wrefresh(msgWin); 
-
+	wrefresh(msgWin);
 	//MENU
-	//box(menuWin, 0,0);
-	//wrefresh(menuWin);
-	//wrefresh(stdscr);
-	
+	box(menuWin, 0,0);
+	wrefresh(menuWin);
 }
 
 
@@ -166,6 +155,13 @@ void Display::setTarget(Entity* entity){
 
 void Display::toggleInventory(){
 	invToggle = !invToggle;
+	if (invToggle){
+		wresize(msgWin, 4, 80);
+		mvwin(msgWin, 46,0);
+	} else {
+		wresize(msgWin, 15, 80);
+		mvwin(msgWin, 35,0);
+	}
 }
 
 	

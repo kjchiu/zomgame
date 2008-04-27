@@ -2,8 +2,6 @@
 #include "player.h"
 #include "map.h"
 
-
-
 Camera::Camera(){
 	height = 33;
 	width = 53;
@@ -30,7 +28,7 @@ chtype* Camera::getViewableArea(Map* map, Entity *target) {
 		for (int j=0; j<height; j++){
 			int mapX = pX - width/2 + i;  //x position on the map
 			int mapY = pY - height/2 + j; //y position on the map 
-			if (mapX < 0 || mapX > width - 1 || mapY < 0 || mapY > height - 1){
+			if (mapX < 0 || mapX > map->getWidth() - 1 || mapY < 0 || mapY > map->getHeight() - 1){
 				viewArea[i + (j * width)] = dead.getDisplayChar();
 			} else {
 				viewArea[i + (j * width)] = (map->getBlockAt(mapX, mapY))->getChar() | COLOR_PAIR(map->getBlockAt(mapX, mapY)->getColor()); 

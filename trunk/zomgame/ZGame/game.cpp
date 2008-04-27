@@ -69,7 +69,8 @@ Player* Game::getPlayer(){
 void Game::moveEntity(Entity* ent, direction dir){
 	Coord moveLoc = (*directionOffsets[dir]) + (*ent->getLoc());
 	if (moveLoc.getX() < 0 || moveLoc.getY() < 0 || 
-		moveLoc.getX() >= map->MAPWIDTH && moveLoc.getY() >= map->MAPHEIGHT){
+		moveLoc.getX() >= map->getWidth() || moveLoc.getY() >= map->getHeight()){
+		this->addMessage(new Message("You cannot move beyond here"));
 		return; //can't move here, outside of map
 	}
 	if (isPassable(&moveLoc)){
@@ -80,7 +81,7 @@ void Game::moveEntity(Entity* ent, direction dir){
 		MapBlock* checkBlock = map->getBlockAt(moveLoc.getX(), moveLoc.getY());
 		if (checkBlock->hasEntities()){  //resolve an attack (what about friendly NPCs?)	
 			Message msg;
-			if (ref->resolveAttack(ent, checkBlock->getTopEntity(), &msg)) {
+			if (ref->resolveAttack(ent, checkBlock->getTopEntity(), &msg)) { //true means the battle was won
 				checkBlock->removeEntity(checkBlock->getTopEntity());
 				addMessage(&msg);
 			}
@@ -106,6 +107,7 @@ bool Game::processKey(char key){
 		return false;
 	} else if (key=='i') {
 		addMessage(new Message("Inventory toggled"));
+		display->toggleInventory();
 	}
 
 	return true;
@@ -128,7 +130,7 @@ void Game::run(){
 		this->draw();
 		refresh();
 		input = getch();
-		keepPlaying = this->processKey(input);
+		keepPlaying = this->processKey(input);	
 	}
 }
 

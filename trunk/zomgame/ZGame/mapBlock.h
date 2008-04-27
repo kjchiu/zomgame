@@ -8,6 +8,7 @@
 #include "entity.h"
 #include "terrain.h"
 #include "prop.h"
+#include "item.h"
 #include "TerrainTypes\terrain_types.h"
 #include "curses.h"
 
@@ -25,13 +26,14 @@ struct mapData {
 class MapBlock {
 	private:
 		Terrain* terrain;
-		vector<int> itemList;
+		vector<Item* > itemList;
 		vector<Entity*> entityList;
 		vector<Prop*> propList;
 		
 	public:
 		MapBlock();
 		void addEntity(Entity* entity);
+		void addItem(Item* item);
 		void addProp(Prop* prop);
 		chtype getChar();
 		short getColor();
@@ -39,6 +41,7 @@ class MapBlock {
 		bool hasEntities();
 		bool isPassable();
 		void removeEntity(Entity* entity);
+		void removeItem(Item* item);
 		void removeProp(Prop* prop);
 		void setTerrain(Terrain* ter);
 };
