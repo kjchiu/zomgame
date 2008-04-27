@@ -3,15 +3,24 @@
 
 using namespace std;
 
-extern Player* player;
-extern Map* map;
 
 Display::Display() {
+	init();
+}
+
+void Display::init() {
 	resize_term(50,80);
 	playWin = newwin(35,55,0,0); //height, width, starty, startx
 	msgWin = newwin(15,80,35,0);
 	menuWin = newwin(35,25,0,55);
+	invWin = newwin(12,80,35,0);
+//	skillWin;
+//	statWin;
 
+	invToggle = false;
+
+	camera = new Camera();
+	camera->setViewableArea(33, 53); //height - 2, width - 2;
 	start_color();
 	init_pair(0, COLOR_WHITE, COLOR_BLACK);
 	init_pair(1, COLOR_GREEN, COLOR_BLACK);
@@ -19,7 +28,6 @@ Display::Display() {
 	init_pair(3, COLOR_CYAN, COLOR_MAGENTA);
 	init_pair(4, COLOR_YELLOW, COLOR_BLACK);
 }
-
 void Display::clearLine(WINDOW* win, int start, int end, int row){
 	for (int k=start; k<end; k++) {
 		mvwprintw(win, row, k, " ");
@@ -57,23 +65,58 @@ void Display::displayMessages(Game& game){
 	}
 }
 
-void Display::displayWorld(){
-	Camera camera;
-	camera.drawViewableMap(playWin);
-}
-
-void Display::draw(Game& game) {
+void Display::draw(Map* map) {
 	//VISIBLE WORLD
 	box(playWin, 0,0);
-	displayWorld(); //get the display area from 'game', fill in playWin with it
+	// wtf magic numbers, width - 2, height - 2 to account for borders
+	int height = 33;
+	int width = 53;
+	camera->getViewableArea(playWin, map, target);
+	chtype* view = camera->wtfViewableArea(map, target);
+	for (int x=0; x<width; x++){
+		for (int y=0; y<height; y++){
+			int index = x + (y * width);	
+			//viewArea[index].addEntity(new Entity());
+//			attron(COLOR_PAIR(viewArea[index].getColor()));
+
+			mvwaddch(playWin, y+1, x+1, view[index]);
+		}
+	}
+	//now display it in the play window (playWin)
+	
 	wrefresh(playWin);
 	
+	//check for inventory and skill, status, etc flags
+	if (invToggle){
+		//draw a small msg window, large invWindow
+		box(invWin, 0,0);
+		wprintw(invWin, "Wtf");
+		wrefresh(invWin);
+		
+		wresize(msgWin, 3, 80);
+		wmove(msgWin, 0,0);
+		wrefresh(msgWin);
+	}
+	
+	// drawMessages(deque<Messages> msgs)
 	//MESSAGES
 	box(msgWin, 0,0);
-	displayMessages(game);
+	//displayMessages(this);
 	wrefresh(msgWin); 
-	
+
 	//MENU
 	box(menuWin, 0,0);
 	wrefresh(menuWin);
+	wrefresh(stdscr);
+	refresh();
 }
+
+void Display::setTarget(Entity* entity){
+	target = entity;
+}
+
+void Display::toggleInventory(){
+	invToggle = !invToggle;
+}
+
+	

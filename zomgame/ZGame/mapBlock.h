@@ -3,13 +3,13 @@
 #ifndef MAPBLOCK
 #define MAPBLOCK
 
-#include <cstdlib>
 #include <vector>
 
 #include "entity.h"
 #include "terrain.h"
 #include "prop.h"
 #include "TerrainTypes\terrain_types.h"
+#include "curses.h"
 
 using namespace std;
 
@@ -29,20 +29,17 @@ class MapBlock {
 		vector<Entity*> entityList;
 		vector<Prop*> propList;
 		
-		//getEntity/Prop/TerrainAt(int height)
-
 	public:
 		MapBlock();
 		void addEntity(Entity* entity);
 		void addProp(Prop* prop);
-		int getChar();
+		chtype getChar();
 		short getColor();
 		Entity* getTopEntity();
 		bool hasEntities();
 		bool isPassable();
 		void removeEntity(Entity* entity);
 		void removeProp(Prop* prop);
-		int returnchar;
 		void setTerrain(Terrain* ter);
 };
 

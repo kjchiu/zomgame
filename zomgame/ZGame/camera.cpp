@@ -2,71 +2,75 @@
 #include "player.h"
 #include "map.h"
 
-extern Player* player;
-extern Map* map;
+
 
 Camera::Camera(){
-
+	height = 33;
+	width = 53;
+	viewArea = new chtype[width * height];
 }
 
-void Camera::drawViewableMap(WINDOW* playWin){
-	int row;
-	int col;
-	getmaxyx(playWin,row,col);
+void Camera::setViewableArea(int height, int width) {
+	this->width = width;
+	this->height = height;
+	delete viewArea;
+	viewArea= new chtype[width * height];
+}
+
+
+
+chtype* Camera::wtfViewableArea(Map* map, Entity *target) {
 	const int height = 33; //need to store these in variables
 	const int width = 53; //need to store these in variables
-	MapBlock viewArea[height*width]; //this will be the area the player sees.
+	Deadlands dead;	
+	int pX = target->getLoc()->getX();
+	int pY = target->getLoc()->getY();
 
-	int pX = player->getLoc()->getX();
-	int pY = player->getLoc()->getY();
 	for (int i=0; i<width; i++){
 		for (int j=0; j<height; j++){
 			int mapX = pX - width/2 + i;  //x position on the map
 			int mapY = pY - height/2 + j; //y position on the map 
-			if (mapX < 0 || mapX > map->MAPWIDTH - 1 || mapY < 0 || mapY > map->MAPHEIGHT - 1){
-				MapBlock* mb = new MapBlock();
-				mb->setTerrain(new Deadlands());
-				viewArea[i + (j * width)] =  *mb;
+			if (mapX < 0 || mapX > width - 1 || mapY < 0 || mapY > height - 1){
+				viewArea[i + (j * width)] = dead.getDisplayChar();
 			} else {
-				viewArea[i + (j * width)] = *map->getBlockAt(mapX, mapY); 
+				viewArea[i + (j * width)] = (map->getBlockAt(mapX, mapY))->getChar() | COLOR_PAIR(map->getBlockAt(mapX, mapY)->getColor()); 
 			}
 		}
 	}
-	//now display it in the play window (playWin)
-	for (int y=0; y<width; y++){
-		for (int x=0; x<height; x++){
-			int index = y + (x * width);	
-			//get color from viewArea[index]
-			//color_set(viewArea[index].getColor(), NULL);
-			//wcolor_set(playWin, COLOR_PAIR(0), NULL);
-			//enable the color
-			attron(COLOR_PAIR(1));
-
-			mvwaddch(playWin, x+1, y+1, viewArea[index].getChar() | COLOR_PAIR(viewArea[index].getColor()));
-			//mvwprintw(playWin, x+1,y+1, "%c", viewArea[index].getChar());
-		}
-	}
-	
+	return viewArea;
 }
 
-MapBlock* Camera::getViewableArea(){
+MapBlock* Camera::getViewableArea(WINDOW* playWin, Map* map, Entity *target){
 	const int height = 33; //need to store these in variables
 	const int width = 53; //need to store these in variables
-	MapBlock viewArea[height*width]; //this will be the area the player sees.
+	MapBlock* viewArea = new MapBlock[height*width]; //this will be the area the player sees.
 	
-	int pX = player->getLoc()->getX();
-	int pY = player->getLoc()->getY();
+	for (int i =0; i<height*width; i++){
+		MapBlock* m = new MapBlock();
+		viewArea[i] = *m;
+	}
+	int pX = target->getLoc()->getX();
+	int pY = target->getLoc()->getY();
 	for (int i=0; i<width; i++){
 		for (int j=0; j<height; j++){
 			int mapX = pX - width/2 + i;  //x position on the map
 			int mapY = pY - height/2 + j; //y position on the map 
 			if (mapX < 0 || mapX > width - 1 || mapY < 0 || mapY > height - 1){
 				MapBlock* mb = new MapBlock();
-				mb->returnchar = '-';	//set the mapblock as "out of bounds"
+				mb->setTerrain(new Deadlands());	//set the mapblock as "out of bounds"
 				viewArea[i + (j * width)] =  *mb;
 			} else {
-				viewArea[i + (j * width)] = *map->getBlockAt(mapX, mapY); 
-			}	
+				viewArea[i + (j * width)] = *(map->getBlockAt(mapX, mapY)); 
+			}
+		}
+	}
+	for (int x=0; x<width; x++){
+		for (int y=0; y<height; y++){
+			int index = x + (y * width);	
+			//viewArea[index].addEntity(new Entity());
+//			attron(COLOR_PAIR(viewArea[index].getColor()));
+
+			mvwaddch(playWin, y+1, x+1, viewArea[index].getChar() |COLOR_PAIR(viewArea[index].getColor()));
 		}
 	}
 	return viewArea;

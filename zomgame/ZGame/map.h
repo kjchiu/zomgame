@@ -10,6 +10,7 @@
 class Map{
 	public:	
 		static const int MAPWIDTH = 100, MAPHEIGHT = 100;
+		int height, width;
 
 	private:
 		MapBlock* map[MAPWIDTH*MAPHEIGHT];	//this is essentially the entire 'world'
@@ -22,6 +23,8 @@ class Map{
 		MapBlock* getBlockAt(Coord* coord);
 		char getCharAt(int x, int y);
 		MapBlock* getMap();
+		int getHeight();
+		int getWidth();
 		void setBlockAt(MapBlock *mBlock, int x, int y);
 		
 
