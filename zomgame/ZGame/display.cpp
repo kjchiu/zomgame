@@ -73,7 +73,9 @@ void Display::displayMessages(Game& game){
 	wrefresh(msgWin);
 }
 
+// pulls down necessary data from game to draw
 void Display::draw() {
+	refresh();
 	this->draw(game->getMap());
 	this->draw(game->getMessages());
 	wrefresh(stdscr);

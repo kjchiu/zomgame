@@ -59,6 +59,8 @@ bool MapBlock::isPassable(){
 	return true;
 }
 
+
+// @TODO THIS HAS TO ACTUALLY DELETE THE PROPER ENTITY =[
 /* Remove an entity from the list. Might take height later, if necessary */
 void MapBlock::removeEntity(Entity *entity){
 	entityList.pop_back(); //change this
