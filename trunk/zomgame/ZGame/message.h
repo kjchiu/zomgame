@@ -16,6 +16,7 @@ class Message {
 		Message(const char* message);
 		Message(string* message);
 		~Message();
+		Message* formatMsg(int length);
 		string* getMsg();
 		const char* getCharMsg();
 		void setMsg(const char* msg);

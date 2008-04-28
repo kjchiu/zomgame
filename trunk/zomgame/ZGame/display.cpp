@@ -57,7 +57,9 @@ void Display::displayMessages(Game& game){
 				}
 			}
 			string secondhalf = text.substr(cutoff+1);
+			
 			text.resize(cutoff);
+			
 			clearLine(msgWin, 1, windowLength-2, (i+offset));
 			mvwprintw(msgWin, i+offset++, 2, "> %s", text.c_str());
 			//if (i+offset < max+2){ //TODO: Why is this not working?
@@ -120,33 +122,15 @@ void Display::draw(Map* map) {
 
 void Display::draw(deque<Message> msgs) {
 	box(msgWin, 0,0);
-	//deque<Message> msgs = game.getMessages();
+//	deque<Message> msgs = game.getMessages();
 	unsigned int max, offset = 1, windowLength; 
 	getmaxyx(msgWin,max,windowLength);
 	for (unsigned int i=0; i<max-2 && i<msgs.size();i++){
 		string text = *(msgs.at(i)).getMsg(); //remove the pointer to avoid modifying the original message
 		unsigned int cutoff = windowLength; //preserving the value of windowLength
-
-		if (text.length() > cutoff - 6){ //chop the message in two, put on lower, and lower 'max'
-			for (int j=cutoff-6; j>=0; j--){ //look for the nearest space, cut the string there
-				if (text.at(j) == ' '){
-					cutoff = j;
-					j = 0;
-				}
-			}
-			string secondhalf = text.substr(cutoff+1);
-			text.resize(cutoff);
-			clearLine(msgWin, 1, windowLength-2, (i+offset));
-			mvwprintw(msgWin, i+offset++, 2, "> %s", text.c_str());
-			//if (i+offset < max+2){ //TODO: Why is this not working?
-				clearLine(msgWin, 1, windowLength-2, (i+offset));	
-				mvwprintw(msgWin, i+offset, 2, "  %s", secondhalf.c_str());
-				max--;
-			//}
-		} else {
-			clearLine(msgWin, 1, windowLength-2, (i+offset));
-			mvwprintw(msgWin, i+offset, 2, "> %s", text.c_str());	
-		}
+	
+		clearLine(msgWin, 1, windowLength-2, (i+offset));
+		mvwprintw(msgWin, i+offset, 1, "> %s", text.c_str());	
 	}
 }
 void Display::setTarget(Entity* entity){
