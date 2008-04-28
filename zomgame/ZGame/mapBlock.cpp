@@ -47,6 +47,10 @@ short MapBlock::getColor() {
 	return terrain->getColor();
 }
 
+vector<Item*> MapBlock::getItems() {
+	return itemList;
+}
+
 /* Simply get the entity that's on the top of the vector/stack. */
 Entity* MapBlock::getTopEntity(){
 	return entityList.back();	

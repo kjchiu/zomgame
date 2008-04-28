@@ -35,6 +35,8 @@ void Game::init(int tWidth, int tHeight){
 	Entity* ent1 = new Entity("Zombie 1");
 	ent1->setDisplayChar('Z');
 	ent1->setColor(3);
+
+	map->getBlockAt(6,6)->addItem(new Item());
 	/*map->getBlockAt(1,1)->addEntity(ent1);
 	Prop* wall1 = new Prop();
 	wall1->setName("Wall");
@@ -53,7 +55,7 @@ void Game::init(int tWidth, int tHeight){
  *	until the next tick.
  */
 void Game::addMessage(Message *msg){
-	messages.push_front(*msg);
+	messages.push_front(*msg->formatMsg(75));
 	display->draw(getMessages());
 }
 
@@ -91,9 +93,16 @@ void Game::moveEntity(Entity* ent, direction dir){
 }
 
 bool Game::processKey(char key){
-	if (key=='c') { 
+	if (key=='~') {
+
+	} else if (key=='g'){
+		if (!map->getBlockAt(player->getLoc())->getItems().empty()){
+			addMessage(new Message("Picking up an item"));
+		}
 	} else if (key=='m'){
-		addMessage(new Message("Test Message"));
+		Message* test = new Message("123456789 123456789 123456789 123456789 ");
+		test->formatMsg(75); 
+		addMessage(test);
 	} else if (key=='w') {
 		moveEntity(player, NORTH);
 	} else if (key=='a') {

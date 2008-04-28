@@ -13,6 +13,10 @@ void Entity::init(){
 	color = 2;
 }
 
+Inventory* Entity::getInventory(){
+	return inventory;
+}
+
 Coord* Entity::getLoc(){
 	return location;
 }

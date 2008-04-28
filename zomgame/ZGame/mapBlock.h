@@ -37,6 +37,7 @@ class MapBlock {
 		void addProp(Prop* prop);
 		chtype getChar();
 		short getColor();
+		vector<Item*> getItems();
 		Entity* getTopEntity();
 		bool hasEntities();
 		bool isPassable();
