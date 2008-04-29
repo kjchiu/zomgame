@@ -11,9 +11,32 @@ Zombie::Zombie() {
 		displayChar = 'Z';
 		setName("Zombie");
 	}
-
+	curAction = NOTHING;
 }
 
-void Zombie::tick() {
-	//eat_brains()
+int Zombie::getCurrentAction(){
+	return curAction;
+}
+
+Coord* Zombie::getTarget(){
+	return target;
+}
+
+void Zombie::setCurrentAction(currentAction nAction){
+	curAction = nAction;
+}
+
+void Zombie::setTarget(Coord* nTarget){
+	target = nTarget;
+}
+
+void Zombie::tick(Game* game) { //eat_brains()
+	if (curAction == NOTHING){
+//		game->addMessage(new Message("Zombie is lazy"));
+		return;//?
+	} else if (curAction == WANDERING) {
+		string* msg = new string("Zombie is wandering");
+		game->addMessage(new Message(msg));
+		game->moveEntity(this, Game::NORTH);
+	}
 }

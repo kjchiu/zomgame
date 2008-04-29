@@ -1,11 +1,12 @@
 /* This is the class that displays the game's information */
 
-#ifndef DISPLAY
-#define DISPLAY
+#ifndef _DISPLAY_H_
+#define _DISPLAY_H_
 
 #include "game.h" 
 #include "camera.h"
 #include <curses.h>
+#include "inventory.h"
 #include "message.h"
 
 #ifndef _GAME_H_
@@ -35,6 +36,7 @@ class Display {
 		void clearLine(WINDOW* win, int start, int end, int row);
 		void displayMessages(Game& game);
 		void draw();
+		void draw(Inventory* inventory);
 		void draw(Map* map);	
 		void draw(deque<Message> msgs);
 		//MapBlock** getViewableArea(Game& game);

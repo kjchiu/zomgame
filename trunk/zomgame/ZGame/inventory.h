@@ -19,6 +19,8 @@ class Inventory {
 	public:
 		Inventory();
 		bool addItem(Item* item);
+		Item* getItemAt(int index);
+		int getSize();
 		int getTotalBulk();	
 		int getTotalWeight();
 		bool removeItem(Item* item);

@@ -5,6 +5,8 @@ Item::Item(){
 	setColor(1);
 	setDescription("This is a generic item");
 	setDisplayChar('/');
+	setBulk(1);
+	setWeight(1);
 }
 
 int Item::getBulk(){

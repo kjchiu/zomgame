@@ -3,6 +3,7 @@
 Inventory::Inventory(){
 	totalWeight = 0;
 	totalBulk = 0;
+	items = vector<Item*>();
 }
 
 bool Inventory::addItem(Item* item){
@@ -12,6 +13,14 @@ bool Inventory::addItem(Item* item){
 	totalBulk += item->getBulk();
 
 	return true;
+}
+
+Item* Inventory::getItemAt(int index){
+	return items.at(index);
+}
+
+int Inventory::getSize(){
+	return items.size();
 }
 
 int Inventory::getTotalBulk(){

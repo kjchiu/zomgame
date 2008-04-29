@@ -10,6 +10,7 @@ using namespace std;
 class Message {
 	private:
 		string* message;
+		int numLines;
 
 	public:
 		Message();
@@ -18,6 +19,7 @@ class Message {
 		~Message();
 		Message* formatMsg(int length);
 		string* getMsg();
+		int getNumLines();
 		const char* getCharMsg();
 		void setMsg(const char* msg);
 		void setMsg(string* msg);

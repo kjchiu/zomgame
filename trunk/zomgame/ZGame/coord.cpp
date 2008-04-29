@@ -25,3 +25,12 @@ int Coord::getY() const{
 Coord Coord::operator+(const Coord& otherCoord) const {
 	return Coord(getX()+otherCoord.getX(), getY()+otherCoord.getY());
 }
+
+string* Coord::toString(){
+	string* retMsg = new string("(");
+	(*retMsg) += getX();
+	(*retMsg) += ", ";
+	(*retMsg) += getY();
+	(*retMsg) += ")";
+	return retMsg;
+}
