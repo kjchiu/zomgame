@@ -47,6 +47,10 @@ short MapBlock::getColor() {
 	return terrain->getColor();
 }
 
+Item* MapBlock::getItemAt(int index){
+	return itemList.back();
+}
+
 vector<Item*> MapBlock::getItems() {
 	return itemList;
 }

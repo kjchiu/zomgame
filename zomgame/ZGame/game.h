@@ -9,6 +9,7 @@
 #include "player.h"
 #include "message.h"
 #include "referee.h"
+#include "zombie.h"
 
 class Game;
 class Display;
@@ -19,13 +20,15 @@ class Game {
 	private:
 		deque<Message> messages;
 		Display* display;
-		enum direction {NORTH, NORTHEAST, EAST, SOUTHEAST, SOUTH, SOUTHWEST, WEST, NORTHWEST};
 		Coord* directionOffsets[8];
 		Referee* ref;
 		Map* map;
 		Player* player;
+		vector<Zombie*> zombies;
 
 	public:		
+		enum direction {NORTH, NORTHEAST, EAST, SOUTHEAST, SOUTH, SOUTHWEST, WEST, NORTHWEST};
+
 		Game();
 		Game(int tWidth, int tHeight);
 		void init(int tWidth, int tHeight);
@@ -40,16 +43,16 @@ class Game {
 		void draw();
 		void drawMenu();
 
-
 		void moveEntity(Entity* ent, direction dir);
+		void pickUpItem();
 		bool processKey(char key);
 		void setCharAt(char setChar, int x, int y);
 		bool isPassable(Coord* nextLoc);
 		void tick();
 		void run();
 
-		static const int WIDTH = 80, HEIGHT = 50;
-		//CHAR_INFO world[100*100]
+		//static const int WIDTH = 80, HEIGHT = 50;
+		
 };
 
 #endif

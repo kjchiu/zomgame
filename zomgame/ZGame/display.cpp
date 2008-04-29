@@ -80,6 +80,7 @@ void Display::draw() {
 	refresh();
 	this->draw(game->getMap());
 	this->draw(game->getMessages());
+	this->draw(game->getPlayer()->getInventory());
 	wrefresh(stdscr);
 	refresh();
 	
@@ -110,10 +111,6 @@ void Display::draw(Map* map) {
 		wrefresh(invWin);
 
 	}
-	
-	//MESSAGES
-	box(msgWin, 0,0);
-	wrefresh(msgWin);
 	//MENU
 	box(menuWin, 0,0);
 	wrefresh(menuWin);
@@ -121,18 +118,29 @@ void Display::draw(Map* map) {
 
 
 void Display::draw(deque<Message> msgs) {
-	box(msgWin, 0,0);
-//	deque<Message> msgs = game.getMessages();
-	unsigned int max, offset = 1, windowLength; 
-	getmaxyx(msgWin,max,windowLength);
-	for (unsigned int i=0; i<max-2 && i<msgs.size();i++){
+	unsigned int height, width, offset = 1; 
+	getmaxyx(msgWin,height,width);
+	for (unsigned int i=0; i<height-2 && i<msgs.size();i++){
 		string text = *(msgs.at(i)).getMsg(); //remove the pointer to avoid modifying the original message
-		unsigned int cutoff = windowLength; //preserving the value of windowLength
+		unsigned int cutoff = width; //preserving the value of windowLength
 	
-		clearLine(msgWin, 1, windowLength-2, (i+offset));
-		mvwprintw(msgWin, i+offset, 1, "> %s", text.c_str());	
+		clearLine(msgWin, 1, width-2, (i+offset));
+		mvwprintw(msgWin, i+offset, 1, "> %s", text.c_str());
+		offset += msgs.at(i).getNumLines();
+	}
+
+	//then draw the box and refresh the window
+	box(msgWin, 0,0);
+	wrefresh(msgWin);
+}
+
+void Display::draw(Inventory* inventory){
+	for (int i=0; i<inventory->getSize(); i++){
+			Item* item = inventory->getItemAt(i);
+			mvwprintw(invWin,i+1,3, item->getName().c_str()); 
 	}
 }
+
 void Display::setTarget(Entity* entity){
 	target = entity;
 }

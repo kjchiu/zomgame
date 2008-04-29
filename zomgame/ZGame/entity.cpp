@@ -11,6 +11,7 @@ Entity::Entity(string newName){
 
 void Entity::init(){
 	color = 2;
+	inventory = new Inventory();
 }
 
 Inventory* Entity::getInventory(){

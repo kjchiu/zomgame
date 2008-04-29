@@ -3,6 +3,10 @@
 #ifndef _COORD_H
 #define _COORD_H
 
+#include <string>
+
+using namespace std;
+
 class Coord {
 	public:
 		Coord();
@@ -11,8 +15,8 @@ class Coord {
 		int getX() const;
 		int getY() const;
 		Coord operator+(const Coord&) const;
-		
-		
+		string* toString();
+
 	private:
 		int x;
 		int y;

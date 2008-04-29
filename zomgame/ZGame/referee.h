@@ -5,13 +5,15 @@
 
 #include "message.h"
 #include "entity.h"
+#include "item.h"
 
 class Referee {
 	private:
 
 	public:
 		Referee();
-		bool resolveAttack(Entity* attacker, Entity* defender, Message* message);
+		bool pickUpItem(Entity* picker, Item* item, Message* msg);
+		bool resolveAttack(Entity* attacker, Entity* defender, Message* msg);
 };
 
 #endif
