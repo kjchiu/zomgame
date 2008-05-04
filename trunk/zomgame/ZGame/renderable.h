@@ -12,7 +12,7 @@ class Renderable {
 	protected:
 		short color;
 		string desc;
-		long displayChar;
+		unsigned long displayChar;
 		string name;
 		static int id;
 		int thisID;
@@ -26,7 +26,7 @@ class Renderable {
 		virtual string getName() {return name;}
 		virtual void setName(string newName) {name = newName;}
 		virtual void setDescription(string newDesc) {desc = newDesc;}
-		virtual void setDisplayChar(long newDispChar) {displayChar = newDispChar;}
+		virtual void setDisplayChar(unsigned long newDispChar) {displayChar = newDispChar;}
 		virtual void setColor(short newColor) {color = newColor;}
 
 };

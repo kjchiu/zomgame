@@ -8,7 +8,7 @@ Zombie::Zombie() {
 		setName("Uber Zombie");
 	} else  {
 		color = 1;
-		displayChar = 'Z';
+		displayChar = 222;
 		setName("Zombie");
 	}
 	curAction = NOTHING;
