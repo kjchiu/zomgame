@@ -29,11 +29,15 @@ void Display::init() {
 	camera = new Camera();
 	camera->setViewableArea(33, 53); //height - 2, width - 2;
 	start_color();
+
+	// TODO: we really need to move colour palette stuff somewhere else
+#define DEFAULT_COLOR 0
 	init_pair(0, COLOR_WHITE, COLOR_BLACK);
 	init_pair(1, COLOR_GREEN, COLOR_BLACK);
 	init_pair(2, COLOR_RED, COLOR_BLACK);
 	init_pair(3, COLOR_CYAN, COLOR_BLACK);
-	init_pair(4, COLOR_YELLOW, COLOR_BLACK);
+#define YELLOW_BLACK 4
+	init_pair(4, COLOR_YELLOW, COLOR_BLACK);  
 	init_pair(5, COLOR_MAGENTA, COLOR_BLACK);
 }
 void Display::clearLine(WINDOW* win, int start, int end, int row){
@@ -159,19 +163,23 @@ void Display::draw(Inventory* inventory){
 			string itemName = " ";
 			Item* item = inventory->getItemAt(i);
 			if (i == inventorySelection){
+				//set current working color to be yellow on black
+				wattron(invWin, COLOR_PAIR(YELLOW_BLACK));
 				itemName = "-";
-			}
-			itemName += item->getName().c_str();
-			if (i == inventorySelection){
+				itemName += item->getName().c_str();
 				itemName += "-";
+			} else {
+				itemName += item->getName().c_str();
 			}
 			if (nextCol){ 
-				mvwprintw(invWin,yLoc,xLoc+width/2, "%s  ", itemName.c_str());
+				mvwprintw(invWin,yLoc,xLoc+width/2, "%s  " , itemName.c_str());
 				yLoc++;
 			} else {
 				mvwprintw(invWin,yLoc,xLoc, "%s  ", itemName.c_str());
 			}
 			nextCol = !nextCol;
+			// revert back to previous color
+			wattroff(invWin, COLOR_PAIR(YELLOW_BLACK));
 		}
 	}
 }
