@@ -1,7 +1,6 @@
 /* Represents a terrain type */
 
 #include <string>
-
 #include "renderable.h"
 
 using namespace std;

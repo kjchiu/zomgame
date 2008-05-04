@@ -5,6 +5,7 @@
 
 //extern Game *game;
 int main() {
+	srand(time(0));
 	initscr();
 	noecho();
 	cbreak();

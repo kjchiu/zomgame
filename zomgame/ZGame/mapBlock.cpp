@@ -4,7 +4,7 @@ MapBlock::MapBlock(){
 	entityList = vector<Entity*>();
 	propList = vector<Prop*>();
 	itemList = vector<Item*>();
-	terrain = new Wheat();
+	terrain = new Grass();
 }
 
 /* Adds an entity to the entities on the mapBlock, takes an int as well for height */
