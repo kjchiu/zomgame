@@ -40,7 +40,7 @@ void Display::init() {
 	init_pair(4, COLOR_YELLOW, COLOR_BLACK);  
 	init_pair(5, COLOR_MAGENTA, COLOR_BLACK);
 }
-void Display::clearLine(WINDOW* win, int start, int end, int row){
+/*void Display::clearLine(WINDOW* win, int start, int end, int row){
 	for (int k=start; k<end; k++) {
 		mvwprintw(win, row, k, " ");
 	}
@@ -79,7 +79,7 @@ void Display::displayMessages(Game& game){
 		}
 	}
 	wrefresh(msgWin);
-}
+}*/
 
 // pulls down necessary data from game to draw
 void Display::draw() {
@@ -115,7 +115,6 @@ void Display::draw(Map* map) {
 		//draw a small msg window, large invWindow
 		box(invWin, 0,0);
 		mvwprintw(invWin, 0, 4, "POSSESSIONS");
-	
 		wrefresh(invWin);
 	}
 	//MENU
@@ -125,19 +124,21 @@ void Display::draw(Map* map) {
 
 
 void Display::draw(deque<Message> msgs) {
+	wclear(msgWin);
 	unsigned int height, width, offset = 1; 
 	getmaxyx(msgWin,height,width);
 	for (unsigned int i=0; i<height-2 && i<msgs.size();i++){
 		string text = *(msgs.at(i)).getMsg(); //remove the pointer to avoid modifying the original message
 		unsigned int cutoff = width; //preserving the value of windowLength
 	
-		clearLine(msgWin, 1, width-2, (i+offset));
+	//	clearLine(msgWin, 1, width-2, (i+offset));
 		mvwprintw(msgWin, i+offset, 1, "> %s", text.c_str());
 		offset += msgs.at(i).getNumLines();
 	}
 
 	//then draw the box and refresh the window
 	box(msgWin, 0,0);
+	mvwprintw(msgWin, 0, 3, "MESSAGE LOG");
 	wrefresh(msgWin);
 }
 
@@ -146,17 +147,31 @@ void Display::draw(Inventory* inventory){
 	int height, width;
 	getmaxyx(invWin, height, width);
 	if (inventorySelection < 0){ inventorySelection += inventory->getSize(); }
-	inventorySelection %= inventory->getSize();
-	if (showItemDetail){ //if the user wants to see the details of an item
+	if (inventory->getSize() == 0){ inventorySelection = 0; }
+		else { inventorySelection %= inventory->getSize(); }
+	if (showItemDetail && inventory->getSize() > 0){ //if the user wants to see the details of an item
 		Item* item = inventory->getItemAt(inventorySelection);
 		mvwprintw(invWin, 2, 3, item->getName().c_str());
 		mvwprintw(invWin, 4, 5, item->getDescription().c_str());
 		mvwprintw(invWin, height-2, 4, "Weight: %d lbs", item->getWeight());
 		mvwprintw(invWin, height-2, width-20, "Bulk: %d", item->getBulk()); 
+		mvwprintw(invWin, height-2, 40, "Type: %s", item->getType().c_str());
+		if (item->getType().compare("Weapon") == 0) { //display weapon stats if its a weapon
+			Weapon* weapon = (Weapon*)item;
+			mvwprintw(invWin, 2, width-30, "Weapon Class: %s", weapon->getWClass().c_str());
+			mvwprintw(invWin, 3, width-30, "Durability: %d/%d", weapon->getCurDur(), weapon->getMaxDur());
+			mvwprintw(invWin, 4, width-30, "Base Damage: %d", weapon->getDamage());
+
+		}
 	} else {
-		for (int i=1; i<height-1; i++){	//draw the center column
+		for (int i=1; i<height-2; i++){	//draw the center column
 			mvwprintw(invWin, i, width/2, "|");
 		}
+		for (int i=1; i<width; i++){
+			mvwprintw(invWin, height-3, i, "-");
+		}
+		mvwprintw(invWin, height-2, 3, "<d> - Drop Item | <Enter> - Examine Item"); //Add commands here
+
 		int xLoc = 3, yLoc = 1;
 		bool nextCol = false;
 		for (int i=0; i<inventory->getSize(); i++){
@@ -178,9 +193,22 @@ void Display::draw(Inventory* inventory){
 				mvwprintw(invWin,yLoc,xLoc, "%s  ", itemName.c_str());
 			}
 			nextCol = !nextCol;
+
 			// revert back to previous color
 			wattroff(invWin, COLOR_PAIR(YELLOW_BLACK));
 		}
+	}
+			
+}
+
+void Display::dropItem() {
+	Coord* playerLoc = game->getPlayer()->getLoc();
+	Inventory* playerInv = game->getPlayer()->getInventory();
+	MapBlock* mapB = game->getMap()->getBlockAt(playerLoc->getX(), playerLoc->getY());
+	if (playerInv->getSize() > 0){
+		mapB->addItem(playerInv->getItemAt(inventorySelection));
+		playerInv->removeItemAt(inventorySelection);
+		showItemDetail = false;
 	}
 }
 
@@ -191,6 +219,8 @@ bool Display::invIsToggled(){
 void Display::processKey(int input){
 	mvwprintw(menuWin, 4,4, "%d   ", input);
 	if (input == 'i'){
+		inventorySelection = 0;
+		showItemDetail = false;
 		this->toggleInventory();
 	} else if (input == 2) { //down
 		if (!showItemDetail) {inventorySelection += 2;}
@@ -200,6 +230,8 @@ void Display::processKey(int input){
 		if (!showItemDetail) {inventorySelection -= 1;}
 	} else if (input == 5) { //right
 		if (!showItemDetail) {inventorySelection += 1;}
+	} else if (input == 'd'){ //drop the item
+		dropItem();
 	} else if (input == 10) { //enter key
 		showItemDetail = !showItemDetail;
 	}

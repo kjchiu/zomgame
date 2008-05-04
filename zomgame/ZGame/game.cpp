@@ -73,6 +73,13 @@ void Game::init(int tWidth, int tHeight){
 	player->getInventory()->addItem(item8);
 	player->getInventory()->addItem(item9);
 	player->getInventory()->addItem(item10);
+
+	Weapon* weapon1 = new Weapon();
+	map->getBlockAt(7,5)->addItem(weapon1);
+	Weapon* weapon2 = new Weapon();
+	weapon2->setName("Weapon2");
+	map->getBlockAt(7,5)->addItem(weapon2);
+	
 	/*Prop* wall1 = new Prop();
 	wall1->setName("Wall");
 	wall1->setDisplayChar(ACS_CKBOARD);

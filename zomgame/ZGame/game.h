@@ -10,6 +10,7 @@
 #include "message.h"
 #include "referee.h"
 #include "zombie.h"
+#include "weapon.h"
 
 class Game;
 class Display;

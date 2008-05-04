@@ -35,12 +35,11 @@ class Display {
 	public:
 		Display(Game* game);
 		virtual void init();
-		void clearLine(WINDOW* win, int start, int end, int row);
-		void displayMessages(Game& game);
 		void draw();
 		void draw(Inventory* inventory);
 		void draw(Map* map);	
 		void draw(deque<Message> msgs);
+		void dropItem();
 		bool invIsToggled();
 		void processKey(int input);
 		void setTarget(Entity* entity);

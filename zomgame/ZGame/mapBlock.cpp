@@ -83,36 +83,36 @@ bool MapBlock::isPassable(){
 void MapBlock::removeEntity(Entity *entity){
 	for (unsigned int i=0; i<entityList.size(); i++){
 		if (entityList.at(i)->getID() == entity->getID()){
-			if (i==0){
+			if (i==entityList.size()-1){
 				entityList.pop_back();
 			} else {
-				entityList.erase(entityList.begin()+i-1, entityList.begin()+i); 
-			}
+				entityList.erase(entityList.begin()+i, entityList.begin()+i+1); 
+			} 
 		}
 	}
 }
 
 void MapBlock::removeItem(Item* item){
-	for (unsigned int i=0; i<entityList.size(); i++){
+	for (unsigned int i=0; i<itemList.size(); i++){
 		if (itemList.at(i)->getID() == item->getID()){
-			if (i==0){
+			if (i==itemList.size()-1){
 				itemList.pop_back();
 			} else {
-				itemList.erase(itemList.begin()+i-1, itemList.begin()+i); 
-			}
+				itemList.erase(itemList.begin()+i, itemList.begin()+i+1); 
+			} 
 		}
 	}
 }
 
 /* Remove an prop from the list. Might take height later, if necessary */
 void MapBlock::removeProp(Prop *prop){
-	for (unsigned int i=0; i<entityList.size(); i++){
+	for (unsigned int i=0; i<propList.size(); i++){
 		if (propList.at(i)->getID() == prop->getID()){
-			if (i==0){
+			if (i==propList.size()-1){
 				propList.pop_back();
 			} else {
-				propList.erase(propList.begin()+i-1, propList.begin()+i); 
-			}
+				propList.erase(propList.begin()+i, propList.begin()+i+1); 
+			} 
 		}
 	}
 }

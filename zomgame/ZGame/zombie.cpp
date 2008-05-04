@@ -1,14 +1,14 @@
 #include "zombie.h"
 #include <ctime>
-
+//friend code 2105-9270-2682 
 Zombie::Zombie() {
 	if (rand() % 3 > 1) {
 		color = 5;
 		displayChar = 0x151;
 		setName("Uber Zombie");
 	} else  {
-		color = 1;
-		displayChar = 222;
+		color = 5;
+		displayChar = 'Z';
 		setName("Zombie");
 	}
 	curAction = NOTHING;
