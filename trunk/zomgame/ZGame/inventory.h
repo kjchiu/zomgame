@@ -24,6 +24,7 @@ class Inventory {
 		int getTotalBulk();	
 		int getTotalWeight();
 		bool removeItem(Item* item);
+		bool removeItemAt(int index);
 };
 
 #endif

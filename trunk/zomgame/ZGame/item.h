@@ -10,12 +10,15 @@ class Item : public Renderable {
 	private:
 		int bulk; //might use this
 		int weight;
+		string type; //determines what type of item this is
 		
 	public:
 		Item();
 		int getBulk();
-		int getWeight();
+		string getType();
+		int getWeight();	
 		void setBulk(int nBulk);
+		void setType(string nType);
 		void setWeight(int nWeight);
 };
 

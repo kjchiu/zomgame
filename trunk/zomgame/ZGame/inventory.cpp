@@ -34,12 +34,24 @@ int Inventory::getTotalWeight(){
 bool Inventory::removeItem(Item* item){
 	for (unsigned int i=0; i<items.size(); i++){
 		if (items.at(i)->getID() == item->getID()){
-			if (i==0){
+			if (i==items.size()-1){
 				items.pop_back();
 			} else {
-				items.erase(items.begin()+i-1, items.begin()+i); 
-			}
+				items.erase(items.begin()+i, items.begin()+i+1); 
+			} 
 		}
 	}
 	return true;
+}
+
+bool Inventory::removeItemAt(int index){
+	if (index < items.size() && index >= 0){
+		if (index==items.size()-1){
+			items.pop_back();
+		} else {
+			items.erase(items.begin()+index, items.begin()+index+1); 
+		} 
+		return true;
+	}
+	return false;
 }
