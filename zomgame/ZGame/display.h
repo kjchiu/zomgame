@@ -29,7 +29,9 @@ class Display {
 		bool invToggle;
 		Entity* target;
 		Game* game;
-		
+		int inventorySelection;
+		bool showItemDetail;
+
 	public:
 		Display(Game* game);
 		virtual void init();
@@ -39,7 +41,8 @@ class Display {
 		void draw(Inventory* inventory);
 		void draw(Map* map);	
 		void draw(deque<Message> msgs);
-		//MapBlock** getViewableArea(Game& game);
+		bool invIsToggled();
+		void processKey(int input);
 		void setTarget(Entity* entity);
 		void toggleInventory();
 };

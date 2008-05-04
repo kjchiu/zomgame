@@ -42,7 +42,37 @@ void Game::init(int tWidth, int tHeight){
 	zombones->setLoc(new Coord(2,6));
 	map->getBlockAt(zombones->getLoc())->addEntity(zombones);
 	zombies.push_back(zombones);
+	Item* item1 = new Item();
+	item1->setName("Item1");
+	Item* item2 = new Item();
+	item2->setName("Item2");
+	Item* item3 = new Item();
+	item3->setName("Item3");
+	Item* item4 = new Item();
+	item4->setName("Item4");
+	Item* item5 = new Item();
+	item5->setName("Item5");
+	Item* item6 = new Item();
+	item6->setName("Item6");
+	Item* item7 = new Item();
+	item7->setName("Item7");
+	Item* item8 = new Item();
+	item8->setName("Item8");
+	Item* item9 = new Item();
+	item9->setName("Item9");
+	Item* item10 = new Item();
+	item10->setName("Item10");
 	
+	player->getInventory()->addItem(item1);
+	player->getInventory()->addItem(item2);
+	player->getInventory()->addItem(item3);
+	player->getInventory()->addItem(item4);
+	player->getInventory()->addItem(item5);
+	player->getInventory()->addItem(item6);
+	player->getInventory()->addItem(item7);
+	player->getInventory()->addItem(item8);
+	player->getInventory()->addItem(item9);
+	player->getInventory()->addItem(item10);
 	/*Prop* wall1 = new Prop();
 	wall1->setName("Wall");
 	wall1->setDisplayChar(ACS_CKBOARD);
@@ -130,7 +160,7 @@ bool Game::processKey(char key){
 		addMessage(new Message("Inventory toggled"));
 		display->toggleInventory();
 	}
-
+	display->draw();
 	return true;
 }
 
@@ -154,7 +184,13 @@ void Game::run(){
 		this->draw();
 		refresh();
 		input = getch();
-		keepPlaying = this->processKey(input);	
+		if (display->invIsToggled()) { //process the key in the inventory screen
+			display->processKey(input);
+		} else if (false) { //status is toggled, etc
+
+		} else {
+			keepPlaying = this->processKey(input);	//if no windows are open, process in the game	
+		}
 	}
 }
 
