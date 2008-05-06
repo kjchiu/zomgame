@@ -20,6 +20,7 @@ class Inventory {
 		Inventory();
 		bool addItem(Item* item);
 		Item* getItemAt(int index);
+		vector<Item*> getItems();
 		int getSize();
 		int getTotalBulk();	
 		int getTotalWeight();

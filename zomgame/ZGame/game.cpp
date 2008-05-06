@@ -134,9 +134,20 @@ void Game::moveEntity(Entity* ent, direction dir){
 	}
 }
 
-void Game::pickUpItem(){
+void Game::dropItem(int index){
+	Coord* playerLoc = getPlayer()->getLoc();
+	Inventory* playerInv = getPlayer()->getInventory();
+	MapBlock* mapB = getMap()->getBlockAt(playerLoc->getX(), playerLoc->getY());
+	if (playerInv->getSize() > 0){
+		mapB->addItem(playerInv->getItemAt(index));
+		playerInv->removeItemAt(index);
+		//showItemDetail = false;
+	}
+}
+
+void Game::pickUpItem(int index){
 	Message* msg = new Message();
-	Item* item = map->getBlockAt(player->getLoc())->getItemAt(0);
+	Item* item = map->getBlockAt(player->getLoc())->getItemAt(index);
 	ref->pickUpItem(player,item, msg);
 	map->getBlockAt(player->getLoc())->removeItem(item);
 	addMessage(msg);
@@ -147,7 +158,7 @@ bool Game::processKey(char key){
 
 	} else if (key=='g'){
 		if (!map->getBlockAt(player->getLoc())->getItems().empty()){
-			pickUpItem();
+			display->toggleInventory();
 		}
 	} else if (key=='m'){
 		Message* test = new Message("Testing\n123");

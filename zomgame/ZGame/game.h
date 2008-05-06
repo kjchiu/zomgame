@@ -45,7 +45,8 @@ class Game {
 		void drawMenu();
 
 		void moveEntity(Entity* ent, direction dir);
-		void pickUpItem();
+		void dropItem(int index);
+		void pickUpItem(int index);
 		bool processKey(char key);
 		void setCharAt(char setChar, int x, int y);
 		bool isPassable(Coord* nextLoc);

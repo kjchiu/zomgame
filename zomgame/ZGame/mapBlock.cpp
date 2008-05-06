@@ -48,7 +48,7 @@ short MapBlock::getColor() {
 }
 
 Item* MapBlock::getItemAt(int index){
-	return itemList.back();
+	return itemList.at(index);
 }
 
 vector<Item*> MapBlock::getItems() {
