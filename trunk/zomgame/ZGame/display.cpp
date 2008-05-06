@@ -40,8 +40,8 @@ void Display::init() {
 #define YELLOW_BLACK 4
 	init_pair(4, COLOR_YELLOW, COLOR_BLACK);  
 	init_pair(5, COLOR_MAGENTA, COLOR_BLACK);
-#define TARGET_COLOR 6
-	init_pair(6, COLOR_RED, COLOR_RED);
+#define TARGET_COLOR COLOR_RED
+#define TARGET_PAIR 6
 }
 
 /* Puts the selections within correct boundaries */
@@ -98,11 +98,19 @@ void Display::draw(Map* map) {
 	for (int x=0; x<width; x++){
 		for (int y=0; y<height; y++){
 			int index = x + (y * width);	
+			// if on targeted block
 			if (x == transTarget.getX() && y == transTarget.getY()) {
-				wattron(playWin, TARGET_COLOR);
-			}	
-			mvwaddch(playWin, y+1, x+1, view[index]);
-			wattroff(playWin, TARGET_COLOR);
+				short fg, bg;
+				// grab foreground colour of block
+				pair_content(map->getBlockAt(target)->getColor(), &fg, &bg);
+				// generate new pair using block fg + red bg
+				init_pair(TARGET_PAIR, fg, TARGET_COLOR);
+				wattron(playWin, COLOR_PAIR(TARGET_PAIR));
+				mvwaddch(playWin, y+1, x+1, (char)view[index]);
+				wattroff(playWin, COLOR_PAIR(TARGET_PAIR));
+			} else {			
+				mvwaddch(playWin, y+1, x+1, view[index]);
+			}			
 		}
 	}
 	//now display it in the play window (playWin)
