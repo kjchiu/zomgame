@@ -11,10 +11,12 @@ class Coord {
 	public:
 		Coord();
 		Coord(int nX, int nY);
+		Coord(const Coord* coord);
 		Coord add(Coord& toAdd);
 		int getX() const;
 		int getY() const;
 		Coord operator+(const Coord&) const;
+		void setCoord(const Coord* coord);
 		string* toString();
 
 	private:
