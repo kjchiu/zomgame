@@ -17,10 +17,12 @@ void Game::init(int tWidth, int tHeight){
 	player = new Player();
 	player->setName("Durr");
 	player->setLoc(new Coord(10,10));
+	target = new Coord(player->getLoc());
 	map->getBlockAt(player->getLoc())->addEntity(player);
 	ref = new Referee();
 	display = new Display(this);
-	display->setTarget(player);
+	display->setCenter(player);
+	display->setTarget(target);
 	
 	//set up the offsets
 	directionOffsets[0] = new Coord(0,-1);
@@ -110,7 +112,11 @@ Player* Game::getPlayer(){
 	return player;
 }
 
-void Game::moveEntity(Entity* ent, direction dir){
+Coord* Game::getTarget() {
+	return target;
+}
+
+void Game::moveEntity(Entity* ent, Direction dir){
 	Coord moveLoc = (*directionOffsets[dir]) + (*ent->getLoc());
 	if (moveLoc.getX() < 0 || moveLoc.getY() < 0 || 
 		moveLoc.getX() >= map->getWidth() || moveLoc.getY() >= map->getHeight()){
@@ -132,6 +138,22 @@ void Game::moveEntity(Entity* ent, direction dir){
 
 		}
 	}
+	// move was valid
+	// reset target
+	this->target->setCoord(ent->getLoc());
+}
+
+void Game::moveTarget(Direction dir) {
+	Coord moveLoc = (*directionOffsets[dir]) + (*getTarget());
+	if (moveLoc.getX() < 0 || moveLoc.getY() < 0 || 
+		moveLoc.getX() >= map->getWidth() || moveLoc.getY() >= map->getHeight()){
+		//this->addMessage(new Message("You cannot move beyond here"));
+		return; //can't move here, outside of map
+	}
+	target->setCoord(&moveLoc);
+	char* msg = new char[255];
+	sprintf(msg, "Target: (%d,%d)", target->getX(), target->getY());
+	addMessage(new Message(msg));
 }
 
 void Game::dropItem(int index){
@@ -155,7 +177,7 @@ void Game::pickUpItem(int index){
 
 bool Game::processKey(char key){
 	if (key=='~') {
-
+		
 	} else if (key=='g'){
 		if (!map->getBlockAt(player->getLoc())->getItems().empty()){
 			if (map->getBlockAt(player->getLoc())->getItems().size() > 1)
@@ -183,6 +205,14 @@ bool Game::processKey(char key){
 	} else if (key=='i') {
 		addMessage(new Message("Inventory toggled"));
 		display->toggleInventory();
+	} else if (key == 'o') {
+		moveTarget(NORTH);
+	} else if (key == 'k') {
+		moveTarget(WEST);
+	} else if (key == 'l') {
+		moveTarget(SOUTH);
+	} else if (key == ';') {
+		moveTarget(EAST);
 	}
 	display->draw();
 	return true;

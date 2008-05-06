@@ -25,10 +25,11 @@ class Game {
 		Referee* ref;
 		Map* map;
 		Player* player;
+		Coord* target;
 		vector<Zombie*> zombies;
 
 	public:		
-		enum direction {NORTH, NORTHEAST, EAST, SOUTHEAST, SOUTH, SOUTHWEST, WEST, NORTHWEST};
+		enum Direction {NORTH, NORTHEAST, EAST, SOUTHEAST, SOUTH, SOUTHWEST, WEST, NORTHWEST};
 
 		Game();
 		Game(int tWidth, int tHeight);
@@ -41,10 +42,12 @@ class Game {
 
 		char* getView();
 		Player* getPlayer();
+		Coord* getTarget();
 		void draw();
 		void drawMenu();
 
-		void moveEntity(Entity* ent, direction dir);
+		void moveEntity(Entity* ent, Direction dir);
+		void moveTarget(Direction dir);
 		void dropItem(int index);
 		void pickUpItem(int index);
 		bool processKey(char key);

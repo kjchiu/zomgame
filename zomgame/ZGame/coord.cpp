@@ -10,6 +10,11 @@ Coord::Coord(int nX, int nY){
 	y = nY;
 }
 
+Coord::Coord(const Coord* coord) {
+	this->x = coord->getX();
+	this->y = coord->getY();
+}
+
 Coord Coord::add(Coord &toAdd){
 	return Coord(getX()+toAdd.getX(), getY()+toAdd.getY());
 }
@@ -24,6 +29,11 @@ int Coord::getY() const{
 
 Coord Coord::operator+(const Coord& otherCoord) const {
 	return Coord(getX()+otherCoord.getX(), getY()+otherCoord.getY());
+}
+
+void Coord::setCoord(const Coord* coord) {
+	this->x = coord->getX();
+	this->y = coord->getY();
 }
 
 string* Coord::toString(){

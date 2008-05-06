@@ -27,7 +27,8 @@ class Display {
 		WINDOW* skillWin;
 		WINDOW* statWin;
 		bool invToggle, invSelectControl; //invSelectControl = true if the player is manipulatin the left side of the inv
-		Entity* target;
+		Entity* center;
+		Coord* target;
 		Game* game;
 		int inventorySelection, minIndex, maxIndex;
 		int groundSelection, minGIndex, maxGIndex;
@@ -36,6 +37,11 @@ class Display {
 	public:
 		Display(Game* game);
 		virtual void init();
+
+		Entity* getCenter();
+		void setCenter(Entity* entity);
+		void setTarget(Coord* target);
+
 		void cleanSelections();
 		void draw();
 		void draw(Inventory* inventory);
@@ -44,9 +50,11 @@ class Display {
 		void drawInventoryList(vector<Item*> items, int yLoc, int selection, bool highlight);
 		void dropItem();
 		bool invIsToggled();
-		void processKey(int input);
-		void setTarget(Entity* entity);
+		bool processKey(int input);		
 		void toggleInventory();
+
+
+
 };
 
 #endif

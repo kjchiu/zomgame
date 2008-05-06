@@ -40,6 +40,8 @@ void Display::init() {
 #define YELLOW_BLACK 4
 	init_pair(4, COLOR_YELLOW, COLOR_BLACK);  
 	init_pair(5, COLOR_MAGENTA, COLOR_BLACK);
+#define TARGET_COLOR 6
+	init_pair(6, COLOR_RED, COLOR_RED);
 }
 
 /* Puts the selections within correct boundaries */
@@ -91,11 +93,16 @@ void Display::draw(Map* map) {
 	getmaxyx(playWin,height,width);
 	height -= 2;
 	width -= 2;
-	chtype* view = camera->getViewableArea(map, target);
+	chtype* view = camera->getViewableArea(map, getCenter());
+	Coord transTarget = camera->getLocalCoordinates(target, getCenter());
 	for (int x=0; x<width; x++){
 		for (int y=0; y<height; y++){
 			int index = x + (y * width);	
+			if (x == transTarget.getX() && y == transTarget.getY()) {
+				wattron(playWin, TARGET_COLOR);
+			}	
 			mvwaddch(playWin, y+1, x+1, view[index]);
+			wattroff(playWin, TARGET_COLOR);
 		}
 	}
 	//now display it in the play window (playWin)
@@ -206,7 +213,7 @@ bool Display::invIsToggled(){
 	return invToggle;
 }
 
-void Display::processKey(int input){
+bool Display::processKey(int input){
 	mvwprintw(menuWin, 4,4, "%d, %d   ", inventorySelection, groundSelection);
 	if (input == 'i'){
 		inventorySelection = 0;
@@ -234,12 +241,23 @@ void Display::processKey(int input){
 		if (!invSelectControl){game->pickUpItem(groundSelection);} //pick up the item
 	} else if (input == 10) { //enter key
 		showItemDetail = !showItemDetail;
+	} else {
+		return false;
 	}
 	draw();
+	return true;
 }
 
-void Display::setTarget(Entity* entity){
-	target = entity;
+Entity* Display::getCenter() {
+	return center;
+}
+
+void Display::setCenter(Entity* newCenter){
+	center = newCenter;
+}
+
+void Display::setTarget(Coord* newTarget) {
+	target = newTarget;
 }
 
 void Display::toggleInventory(){
