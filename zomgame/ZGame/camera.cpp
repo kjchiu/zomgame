@@ -42,6 +42,6 @@ Coord Camera::getLocalCoordinates(Coord* coord, Entity* center) {
 	// top left = (0,0)
 	// local center (width / 2, height / 2)
 	int localX = coord->getX() - center->getLoc()->getX() + width / 2;
-	int localY = height / 2 - (coord->getY() - center->getLoc()->getY());
+	int localY = (coord->getY() - center->getLoc()->getY()) + height / 2;
 	return Coord(localX	, localY);	
 }
