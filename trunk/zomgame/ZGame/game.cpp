@@ -158,7 +158,13 @@ bool Game::processKey(char key){
 
 	} else if (key=='g'){
 		if (!map->getBlockAt(player->getLoc())->getItems().empty()){
-			display->toggleInventory();
+			if (map->getBlockAt(player->getLoc())->getItems().size() > 1)
+				display->toggleInventory();
+			else {
+				// this could possibly break it, lets hope 
+				// std::vector removes deadspace in the list.
+				this->pickUpItem(0);
+			}
 		}
 	} else if (key=='m'){
 		Message* test = new Message("Testing\n123");
