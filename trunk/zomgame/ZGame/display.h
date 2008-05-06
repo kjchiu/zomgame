@@ -26,19 +26,22 @@ class Display {
 		WINDOW* invWin;
 		WINDOW* skillWin;
 		WINDOW* statWin;
-		bool invToggle;
+		bool invToggle, invSelectControl; //invSelectControl = true if the player is manipulatin the left side of the inv
 		Entity* target;
 		Game* game;
-		int inventorySelection;
+		int inventorySelection, minIndex, maxIndex;
+		int groundSelection, minGIndex, maxGIndex;
 		bool showItemDetail;
 
 	public:
 		Display(Game* game);
 		virtual void init();
+		void cleanSelections();
 		void draw();
 		void draw(Inventory* inventory);
 		void draw(Map* map);	
 		void draw(deque<Message> msgs);
+		void drawInventoryList(vector<Item*> items, int yLoc, int selection, bool highlight);
 		void dropItem();
 		bool invIsToggled();
 		void processKey(int input);

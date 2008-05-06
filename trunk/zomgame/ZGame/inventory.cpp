@@ -19,6 +19,10 @@ Item* Inventory::getItemAt(int index){
 	return items.at(index);
 }
 
+vector<Item*> Inventory::getItems(){
+	return items;
+}	
+
 int Inventory::getSize(){
 	return items.size();
 }

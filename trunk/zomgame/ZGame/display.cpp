@@ -23,8 +23,9 @@ void Display::init() {
 //	statWin;
 
 	invToggle = false;
-	inventorySelection = 0;
+	inventorySelection = -1;
 	showItemDetail = false;
+	groundSelection = -1;
 
 	camera = new Camera();
 	camera->setViewableArea(33, 53); //height - 2, width - 2;
@@ -40,46 +41,34 @@ void Display::init() {
 	init_pair(4, COLOR_YELLOW, COLOR_BLACK);  
 	init_pair(5, COLOR_MAGENTA, COLOR_BLACK);
 }
-/*void Display::clearLine(WINDOW* win, int start, int end, int row){
-	for (int k=start; k<end; k++) {
-		mvwprintw(win, row, k, " ");
+
+/* Puts the selections within correct boundaries */
+void Display::cleanSelections(){
+	int invSize = game->getPlayer()->getInventory()->getSize();
+	if (inventorySelection < 0){ inventorySelection += invSize; }
+	if (invSize == 0){ inventorySelection = 0; }
+		else { inventorySelection %= invSize; }
+	if (inventorySelection > maxIndex){
+		minIndex += inventorySelection - maxIndex;
+		maxIndex += inventorySelection - maxIndex;
+	} else if (inventorySelection < minIndex){
+		maxIndex -= minIndex - inventorySelection;
+		minIndex -= minIndex - inventorySelection;
+	}
+	
+	//same for the groundSelection
+	int groundSize = game->getMap()->getBlockAt(game->getPlayer()->getLoc())->getItems().size();
+	if (groundSelection < 0){ groundSelection += groundSize; }
+	if (groundSize == 0){ groundSelection = 0; }
+		else { groundSelection %= groundSize; }
+	if (groundSelection > maxGIndex){
+		minGIndex += groundSelection - maxGIndex;
+		maxGIndex += groundSelection - maxGIndex;
+	} else if (inventorySelection < minGIndex){
+		maxGIndex -= minGIndex - groundSelection;
+		minGIndex -= minGIndex - groundSelection;
 	}
 }
-
-void Display::displayMessages(Game& game){
-	box(msgWin, 0,0);
-	deque<Message> msgs = game.getMessages();
-	unsigned int max, offset = 1, windowLength; 
-	getmaxyx(msgWin,max,windowLength);
-	for (unsigned int i=0; i<max-2 && i<msgs.size();i++){
-		string text = *(msgs.at(i)).getMsg(); //remove the pointer to avoid modifying the original message
-		unsigned int cutoff = windowLength; //preserving the value of windowLength
-
-		if (text.length() > cutoff - 6){ //chop the message in two, put on lower, and lower 'max'
-			for (int j=cutoff-6; j>=0; j--){ //look for the nearest space, cut the string there
-				if (text.at(j) == ' '){
-					cutoff = j;
-					j = 0;
-				}
-			}
-			string secondhalf = text.substr(cutoff+1);
-			
-			text.resize(cutoff);
-			
-			clearLine(msgWin, 1, windowLength-2, (i+offset));
-			mvwprintw(msgWin, i+offset++, 2, "> %s", text.c_str());
-			//if (i+offset < max+2){ //TODO: Why is this not working?
-				clearLine(msgWin, 1, windowLength-2, (i+offset));	
-				mvwprintw(msgWin, i+offset, 2, "  %s", secondhalf.c_str());
-				max--;
-			//}
-		} else {
-			clearLine(msgWin, 1, windowLength-2, (i+offset));
-			mvwprintw(msgWin, i+offset, 2, "> %s", text.c_str());	
-		}
-	}
-	wrefresh(msgWin);
-}*/
 
 // pulls down necessary data from game to draw
 void Display::draw() {
@@ -97,9 +86,11 @@ void Display::draw() {
 void Display::draw(Map* map) {
 	//VISIBLE WORLD -- Kyle did you just make a lolcat reference? Oh my.
 	box(playWin, 0,0);
-	// wtf magic numbers, width - 2, height - 2 to account for borders
-	int height = 33;
-	int width = 53;
+	
+	int height, width;
+	getmaxyx(playWin,height,width);
+	height -= 2;
+	width -= 2;
 	chtype* view = camera->getViewableArea(map, target);
 	for (int x=0; x<width; x++){
 		for (int y=0; y<height; y++){
@@ -110,13 +101,6 @@ void Display::draw(Map* map) {
 	//now display it in the play window (playWin)
 	wrefresh(playWin);
 	
-	//check for inventory and skill, status, etc flags
-	if (invToggle){
-		//draw a small msg window, large invWindow
-		box(invWin, 0,0);
-		mvwprintw(invWin, 0, 4, "POSSESSIONS");
-		wrefresh(invWin);
-	}
 	//MENU
 	box(menuWin, 0,0);
 	wrefresh(menuWin);
@@ -146,11 +130,16 @@ void Display::draw(Inventory* inventory){
 	wclear(invWin);
 	int height, width;
 	getmaxyx(invWin, height, width);
-	if (inventorySelection < 0){ inventorySelection += inventory->getSize(); }
-	if (inventory->getSize() == 0){ inventorySelection = 0; }
-		else { inventorySelection %= inventory->getSize(); }
+	vector<Item*> groundInv = game->getMap()->getBlockAt(game->getPlayer()->getLoc())->getItems();
+	
+	if (groundInv.empty()){
+		invSelectControl = true;
+	}
 	if (showItemDetail && inventory->getSize() > 0){ //if the user wants to see the details of an item
-		Item* item = inventory->getItemAt(inventorySelection);
+		Item* item = inventory->getItemAt(inventorySelection);	
+		if (!invSelectControl) {
+			item = groundInv.at(groundSelection);
+		} 
 		mvwprintw(invWin, 2, 3, item->getName().c_str());
 		mvwprintw(invWin, 4, 5, item->getDescription().c_str());
 		mvwprintw(invWin, height-2, 4, "Weight: %d lbs", item->getWeight());
@@ -163,53 +152,54 @@ void Display::draw(Inventory* inventory){
 			mvwprintw(invWin, 4, width-30, "Base Damage: %d", weapon->getDamage());
 
 		}
-	} else {
-		for (int i=1; i<height-2; i++){	//draw the center column
+	} else {		//otherwise, draw the full inventory
+		for (int i=1; i<height-1; i++){	//draw the center column
 			mvwprintw(invWin, i, width/2, "|");
 		}
 		for (int i=1; i<width; i++){
-			mvwprintw(invWin, height-3, i, "-");
+			//mvwprintw(invWin, height-3, i, "-");
 		}
-		mvwprintw(invWin, height-2, 3, "<d> - Drop Item | <Enter> - Examine Item"); //Add commands here
-
-		int xLoc = 3, yLoc = 1;
-		bool nextCol = false;
-		for (int i=0; i<inventory->getSize(); i++){
-			string itemName = " ";
-			Item* item = inventory->getItemAt(i);
-			if (i == inventorySelection){
-				//set current working color to be yellow on black
-				wattron(invWin, COLOR_PAIR(YELLOW_BLACK));
-				itemName = "-";
-				itemName += item->getName().c_str();
-				itemName += "-";
-			} else {
-				itemName += item->getName().c_str();
-			}
-			if (nextCol){ 
-				mvwprintw(invWin,yLoc,xLoc+width/2, "%s  " , itemName.c_str());
-				yLoc++;
-			} else {
-				mvwprintw(invWin,yLoc,xLoc, "%s  ", itemName.c_str());
-			}
-			nextCol = !nextCol;
-
-			// revert back to previous color
-			wattroff(invWin, COLOR_PAIR(YELLOW_BLACK));
-		}
+		drawInventoryList(inventory->getItems(), 3, inventorySelection, invSelectControl);
+		//now draw the ground items
+		drawInventoryList(groundInv, width/2 + 4, groundSelection, !invSelectControl);
+	
 	}
+
+	
+	box(invWin, 0,0);
+	mvwprintw(invWin, 0, 3, "POSSESSIONS");
+	mvwprintw(invWin, 0, width/2+3, "GROUND");
+	wrefresh(invWin);
 			
 }
 
-void Display::dropItem() {
-	Coord* playerLoc = game->getPlayer()->getLoc();
-	Inventory* playerInv = game->getPlayer()->getInventory();
-	MapBlock* mapB = game->getMap()->getBlockAt(playerLoc->getX(), playerLoc->getY());
-	if (playerInv->getSize() > 0){
-		mapB->addItem(playerInv->getItemAt(inventorySelection));
-		playerInv->removeItemAt(inventorySelection);
-		showItemDetail = false;
+void Display::drawInventoryList(vector<Item*> items, int xLoc, int selection, bool highlight){
+	int height, width;
+	getmaxyx(invWin, height, width);
+
+	int yLoc = 1;
+	for (int i=minIndex; i<items.size() && i<=maxIndex; i++){
+		string itemName = " ";
+		Item* item = items.at(i);
+		if (i == selection && highlight){
+			//set current working color to be yellow on black
+			wattron(invWin, COLOR_PAIR(YELLOW_BLACK));
+			itemName = "-";
+			itemName += item->getName().c_str();
+			itemName += "-";
+		} else {
+			itemName += item->getName().c_str();
+		}
+		mvwprintw(invWin,yLoc,xLoc, "%s  ", itemName.c_str());
+		yLoc++;
+	
+		// revert back to previous color
+		wattroff(invWin, COLOR_PAIR(YELLOW_BLACK));
 	}
+}
+
+void Display::dropItem() {
+	
 }
 
 bool Display::invIsToggled(){
@@ -217,21 +207,31 @@ bool Display::invIsToggled(){
 }
 
 void Display::processKey(int input){
-	mvwprintw(menuWin, 4,4, "%d   ", input);
+	mvwprintw(menuWin, 4,4, "%d, %d   ", inventorySelection, groundSelection);
 	if (input == 'i'){
 		inventorySelection = 0;
 		showItemDetail = false;
 		this->toggleInventory();
 	} else if (input == 2) { //down
-		if (!showItemDetail) {inventorySelection += 2;}
+		if (!showItemDetail) {
+			if (invSelectControl){ inventorySelection += 1; }
+			else {groundSelection += 1; }
+			cleanSelections();
+		}
 	} else if (input == 3) { //up
-		if (!showItemDetail) {inventorySelection -= 2;}
+		if (!showItemDetail) {
+			if (invSelectControl){ inventorySelection -= 1; }
+			else {groundSelection -= 1; }
+			cleanSelections();
+		}
 	} else if (input == 4) { //left
-		if (!showItemDetail) {inventorySelection -= 1;}
+		invSelectControl = !invSelectControl;
 	} else if (input == 5) { //right
-		if (!showItemDetail) {inventorySelection += 1;}
+		invSelectControl = !invSelectControl;
 	} else if (input == 'd'){ //drop the item
-		dropItem();
+		if (invSelectControl){game->dropItem(inventorySelection);}
+	} else if (input == 'g'){
+		if (!invSelectControl){game->pickUpItem(groundSelection);} //pick up the item
 	} else if (input == 10) { //enter key
 		showItemDetail = !showItemDetail;
 	}
@@ -245,6 +245,10 @@ void Display::setTarget(Entity* entity){
 void Display::toggleInventory(){
 	invToggle = !invToggle;
 	if (invToggle){
+		minIndex = 0, maxIndex = 8; 
+		minGIndex = 0, maxGIndex = 8;
+		inventorySelection = groundSelection = 0;
+		invSelectControl = true;
 		wresize(msgWin, 4, 80);
 		mvwin(msgWin, 46,0);
 	} else {
