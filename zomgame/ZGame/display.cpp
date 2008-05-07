@@ -99,7 +99,10 @@ void Display::draw(Map* map) {
 		for (int y=0; y<height; y++){
 			int index = x + (y * width);	
 			// if on targeted block
-			if (x == transTarget.getX() && y == transTarget.getY()) {
+			// and target is no underneath player
+			if (x == transTarget.getX() && y == transTarget.getY()
+				&& !target->equals(getCenter()->getLoc())) {
+
 				short fg, bg;
 				// grab foreground colour of block
 				pair_content(map->getBlockAt(target)->getColor(), &fg, &bg);

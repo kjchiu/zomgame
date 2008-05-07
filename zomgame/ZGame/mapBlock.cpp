@@ -5,8 +5,6 @@ MapBlock::MapBlock(){
 	entityList = vector<Entity*>();
 	propList = vector<Prop*>();
 	itemList = vector<Item*>();
-	if (rand() % 5 > 3)
-		terrain = new Wheat();
 	terrain = new Grass();
 }
 
