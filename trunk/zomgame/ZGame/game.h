@@ -7,7 +7,7 @@
 #include "display.h"
 #include "entity.h"
 #include "player.h"
-#include "message.h"
+#include "messagefactory.h"
 #include "referee.h"
 #include "zombie.h"
 #include "weapon.h"
@@ -48,7 +48,6 @@ class Game {
 
 		void moveEntity(Entity* ent, Direction dir);
 		void moveTarget(Direction dir);
-		void displayMapBlockInfo(MapBlock* mb);
 		void dropItem(int index);
 		void pickUpItem(int index);
 		bool processKey(char key);

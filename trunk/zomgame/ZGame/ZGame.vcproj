@@ -221,6 +221,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\messagefactory.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\player.cpp"
 				>
 			</File>
@@ -292,6 +296,10 @@
 			</File>
 			<File
 				RelativePath=".\message.h"
+				>
+			</File>
+			<File
+				RelativePath=".\messagefactory.h"
 				>
 			</File>
 			<File

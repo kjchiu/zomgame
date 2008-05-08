@@ -52,6 +52,7 @@ Item* MapBlock::getItemAt(int index){
 	return itemList.at(index);
 }
 
+// only returns a copy - damn you nick
 vector<Item*> MapBlock::getItems() {
 	return itemList;
 }
