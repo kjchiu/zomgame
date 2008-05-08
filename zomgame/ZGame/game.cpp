@@ -81,7 +81,8 @@ void Game::init(int tWidth, int tHeight){
 	Weapon* weapon2 = new Weapon();
 	weapon2->setName("Weapon2");
 	map->getBlockAt(7,5)->addItem(weapon2);
-	
+	addMessage(new Message(weapon2->getListName().c_str()));
+
 	/*Prop* wall1 = new Prop();
 	wall1->setName("Wall");
 	wall1->setDisplayChar(ACS_CKBOARD);
@@ -141,6 +142,8 @@ void Game::moveEntity(Entity* ent, Direction dir){
 	// move was valid
 	// reset target
 	this->target->setCoord(ent->getLoc());
+		displayMapBlockInfo(map->getBlockAt(&moveLoc));
+
 }
 
 void Game::moveTarget(Direction dir) {
@@ -154,6 +157,25 @@ void Game::moveTarget(Direction dir) {
 	char* msg = new char[255];
 	sprintf(msg, "Target: (%d,%d)", target->getX(), target->getY());
 	addMessage(new Message(msg));
+	displayMapBlockInfo(map->getBlockAt(&moveLoc));
+}
+
+void Game::displayMapBlockInfo(MapBlock* mb){
+	if (mb->getItems().empty()){//there's nothing to display
+		return;
+	}
+	string mbInfo = "On the ground here is " + mb->getItemAt(0)->getListName();
+	if (mb->getItems().size() > 2){mbInfo += ",";}
+	for (int i=1; i<mb->getItems().size(); i++){
+		if (i==mb->getItems().size()-1){
+			mbInfo += " and " + mb->getItemAt(i)->getListName();
+		} else {
+			mbInfo += " " + mb->getItemAt(i)->getListName() + ",";
+		}
+	}
+	mbInfo += ".";
+	addMessage(new Message(&mbInfo));
+
 }
 
 void Game::dropItem(int index){
@@ -169,6 +191,11 @@ void Game::dropItem(int index){
 
 void Game::pickUpItem(int index){
 	Message* msg = new Message();
+	if (map->getBlockAt(player->getLoc())->getItems().size() == 0){
+		addMessage(new Message("There's nothing here"));
+		return;
+	}
+	
 	Item* item = map->getBlockAt(player->getLoc())->getItemAt(index);
 	ref->pickUpItem(player,item, msg);
 	map->getBlockAt(player->getLoc())->removeItem(item);
@@ -181,7 +208,7 @@ bool Game::processKey(char key){
 	} else if (key=='g'){
 		if (!map->getBlockAt(player->getLoc())->getItems().empty()){
 			if (map->getBlockAt(player->getLoc())->getItems().size() > 1)
-				display->toggleInventory();
+				display->toggleInventory(false);
 			else {
 				// this could possibly break it, lets hope 
 				// std::vector removes deadspace in the list.
@@ -189,7 +216,7 @@ bool Game::processKey(char key){
 			}
 		}
 	} else if (key=='m'){
-		Message* test = new Message("Testing\n123");
+		Message* test = new Message("123456789 223456789 323456789 423456789 523456789 623456789 723456789 823456789 923456789 023456789 123456789 123456789 123456789 123456789 123456789 123456789");
 		addMessage(test);
 	} else if (key=='w') {
 		moveEntity(player, NORTH);
@@ -204,7 +231,7 @@ bool Game::processKey(char key){
 		return false;
 	} else if (key=='i') {
 		addMessage(new Message("Inventory toggled"));
-		display->toggleInventory();
+		display->toggleInventory(true);
 	} else if (key == 'o') {
 		moveTarget(NORTH);
 	} else if (key == 'k') {

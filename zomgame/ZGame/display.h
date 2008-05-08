@@ -48,10 +48,9 @@ class Display {
 		void draw(Map* map);	
 		void draw(deque<Message> msgs);
 		void drawInventoryList(vector<Item*> items, int yLoc, int selection, bool highlight);
-		void dropItem();
 		bool invIsToggled();
 		bool processKey(int input);		
-		void toggleInventory();
+		void toggleInventory(bool selectedSide);
 
 
 

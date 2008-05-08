@@ -22,10 +22,30 @@ const char * Message::getCharMsg(){
 Message* Message::formatMsg(int length){
 	string* msg = getMsg();
 	string* newMsg = new string(""); 
-	int lastPos = 0;
-	int pos = 0;
+	int lastPos = 0, pos = 0;
+	//first go through the message and place a \n after 'length' number of characters
+	string substr = "";
+	for (int i=0; i<msg->size()/length; i++){
+		for (int j = lastPos+1; j<=(i+1)*(length-2); j++){
+			if (msg->at(j) == ' '){
+				pos = j;
+			}
+		}
+		if (pos == 0){
+			pos = (i+1)*(length-2);
+		}
+		(*newMsg) += msg->substr(lastPos, pos-lastPos) + "\n";
+		lastPos = pos+1;
+		pos = 0;
+		
+	} 
+	(*newMsg) += msg->substr(lastPos, msg->size() - lastPos);
 
-	string substr = string("");
+	this->setMsg(newMsg);
+	newMsg = new string("");
+	msg = getMsg();
+	
+	//now format the \n to take account of the borders
 	for (int i=0; i<msg->size(); i++){
 		if (msg->at(i) == '\n'){
 			numLines++;
@@ -34,7 +54,6 @@ Message* Message::formatMsg(int length){
 			(*newMsg) += msg->at(i);
 		}
 	}
-	(*newMsg) += "\n";
 	this->setMsg(newMsg);
 	
 	return this;
