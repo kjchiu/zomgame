@@ -23,6 +23,7 @@ class Renderable {
 		virtual string getDescription() {return desc;}
 		virtual long getDisplayChar() {return displayChar;}
 		virtual int getID() {return thisID;}
+		virtual string getListName();
 		virtual string getName() {return name;}
 		virtual void setName(string newName) {name = newName;}
 		virtual void setDescription(string newDesc) {desc = newDesc;}

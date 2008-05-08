@@ -15,10 +15,6 @@ void Display::init() {
 	msgWin = newwin(15,80,35,0);
 	menuWin = newwin(35,25,0,55);
 	invWin = newwin(11,80,35,0);
-	/*box(playWin, 0, 0);
-	box(msgWin,0,0);
-	box(menuWin,0,0);
-	box(invWin,0,0);*/
 //	skillWin;
 //	statWin;
 
@@ -62,11 +58,11 @@ void Display::cleanSelections(){
 	int groundSize = game->getMap()->getBlockAt(game->getPlayer()->getLoc())->getItems().size();
 	if (groundSelection < 0){ groundSelection += groundSize; }
 	if (groundSize == 0){ groundSelection = 0; }
-		else { groundSelection %= groundSize; }
+		else {groundSelection %= groundSize; }
 	if (groundSelection > maxGIndex){
 		minGIndex += groundSelection - maxGIndex;
 		maxGIndex += groundSelection - maxGIndex;
-	} else if (inventorySelection < minGIndex){
+	} else if (groundSelection < minGIndex){
 		maxGIndex -= minGIndex - groundSelection;
 		minGIndex -= minGIndex - groundSelection;
 	}
@@ -132,9 +128,7 @@ void Display::draw(deque<Message> msgs) {
 	for (unsigned int i=0; i<height-2 && i<msgs.size();i++){
 		string text = *(msgs.at(i)).getMsg(); //remove the pointer to avoid modifying the original message
 		unsigned int cutoff = width; //preserving the value of windowLength
-	
-	//	clearLine(msgWin, 1, width-2, (i+offset));
-		mvwprintw(msgWin, i+offset, 1, "> %s", text.c_str());
+		mvwprintw(msgWin, i+offset, 1, "> %s\n", text.c_str());
 		offset += msgs.at(i).getNumLines();
 	}
 
@@ -152,10 +146,16 @@ void Display::draw(Inventory* inventory){
 	
 	if (groundInv.empty()){
 		invSelectControl = true;
+	} 
+	if (inventory->getSize() == 0){
+		invSelectControl = false;
 	}
-	if (showItemDetail && inventory->getSize() > 0){ //if the user wants to see the details of an item
-		Item* item = inventory->getItemAt(inventorySelection);	
-		if (!invSelectControl) {
+	//if both are empty....?
+	if (showItemDetail && (inventory->getSize() > 0 || groundInv.size() > 0 )){ //if the user wants to see the details of an item
+		Item* item;
+		if (invSelectControl) {
+			item = inventory->getItemAt(inventorySelection);	
+		} else {
 			item = groundInv.at(groundSelection);
 		} 
 		mvwprintw(invWin, 2, 3, item->getName().c_str());
@@ -216,20 +216,16 @@ void Display::drawInventoryList(vector<Item*> items, int xLoc, int selection, bo
 	}
 }
 
-void Display::dropItem() {
-	
-}
-
 bool Display::invIsToggled(){
 	return invToggle;
 }
 
 bool Display::processKey(int input){
-	mvwprintw(menuWin, 4,4, "%d, %d   ", inventorySelection, groundSelection);
+	wclear(invWin);
 	if (input == 'i'){
 		inventorySelection = 0;
 		showItemDetail = false;
-		this->toggleInventory();
+		this->toggleInventory(true);
 	} else if (input == 2) { //down
 		if (!showItemDetail) {
 			if (invSelectControl){ inventorySelection += 1; }
@@ -247,7 +243,10 @@ bool Display::processKey(int input){
 	} else if (input == 5) { //right
 		invSelectControl = !invSelectControl;
 	} else if (input == 'd'){ //drop the item
-		if (invSelectControl){game->dropItem(inventorySelection);}
+		if (invSelectControl){
+			game->dropItem(inventorySelection);
+			cleanSelections();
+		}
 	} else if (input == 'g'){
 		if (!invSelectControl){game->pickUpItem(groundSelection);} //pick up the item
 	} else if (input == 10) { //enter key
@@ -255,7 +254,9 @@ bool Display::processKey(int input){
 	} else {
 		return false;
 	}
+	
 	draw();
+	
 	return true;
 }
 
@@ -271,13 +272,13 @@ void Display::setTarget(Coord* newTarget) {
 	target = newTarget;
 }
 
-void Display::toggleInventory(){
+void Display::toggleInventory(bool selectedSide){
 	invToggle = !invToggle;
+	invSelectControl = selectedSide;
 	if (invToggle){
 		minIndex = 0, maxIndex = 8; 
 		minGIndex = 0, maxGIndex = 8;
 		inventorySelection = groundSelection = 0;
-		invSelectControl = true;
 		wresize(msgWin, 4, 80);
 		mvwin(msgWin, 46,0);
 	} else {

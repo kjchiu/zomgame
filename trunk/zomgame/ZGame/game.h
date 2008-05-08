@@ -48,6 +48,7 @@ class Game {
 
 		void moveEntity(Entity* ent, Direction dir);
 		void moveTarget(Direction dir);
+		void displayMapBlockInfo(MapBlock* mb);
 		void dropItem(int index);
 		void pickUpItem(int index);
 		bool processKey(char key);
