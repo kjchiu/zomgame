@@ -142,7 +142,9 @@ void Game::moveEntity(Entity* ent, Direction dir){
 	// move was valid
 	// reset target
 	this->target->setCoord(ent->getLoc());
-		displayMapBlockInfo(map->getBlockAt(&moveLoc));
+	//displayMapBlockInfo(map->getBlockAt(&moveLoc));
+	Message *msg = MessageFactory::getItems(map->getBlockAt(&moveLoc)->getItems());
+	if (msg) addMessage(msg);
 
 }
 
@@ -154,29 +156,18 @@ void Game::moveTarget(Direction dir) {
 		return; //can't move here, outside of map
 	}
 	target->setCoord(&moveLoc);
+
+#if DEBUG
 	char* msg = new char[255];
 	sprintf(msg, "Target: (%d,%d)", target->getX(), target->getY());
 	addMessage(new Message(msg));
-	displayMapBlockInfo(map->getBlockAt(&moveLoc));
+#endif
+	
+	Message *msg = MessageFactory::getItems(map->getBlockAt(&moveLoc)->getItems());
+	if (msg) addMessage(msg);
 }
 
-void Game::displayMapBlockInfo(MapBlock* mb){
-	if (mb->getItems().empty()){//there's nothing to display
-		return;
-	}
-	string mbInfo = "On the ground here is " + mb->getItemAt(0)->getListName();
-	if (mb->getItems().size() > 2){mbInfo += ",";}
-	for (int i=1; i<mb->getItems().size(); i++){
-		if (i==mb->getItems().size()-1){
-			mbInfo += " and " + mb->getItemAt(i)->getListName();
-		} else {
-			mbInfo += " " + mb->getItemAt(i)->getListName() + ",";
-		}
-	}
-	mbInfo += ".";
-	addMessage(new Message(&mbInfo));
 
-}
 
 void Game::dropItem(int index){
 	Coord* playerLoc = getPlayer()->getLoc();
@@ -185,7 +176,8 @@ void Game::dropItem(int index){
 	if (playerInv->getSize() > 0){
 		mapB->addItem(playerInv->getItemAt(index));
 		playerInv->removeItemAt(index);
-		//showItemDetail = false;
+		//displayMapBlockInfo(map->getBlockAt(player->getLoc()));
+//		display->refresh();
 	}
 }
 

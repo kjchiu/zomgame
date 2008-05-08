@@ -3,6 +3,7 @@
 #include "game.h"
 //bool keepPlaying = true;
 
+#define DEBUG 0
 //extern Game *game;
 int main() {
 	srand(time(0));
