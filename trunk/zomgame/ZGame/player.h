@@ -3,12 +3,14 @@
 /* Represents the player */
 #include "map.h"
 #include "entity.h"
+#include "skills.h"
+#include <vector>
 
 class Player : public Entity{
-	private:
+	protected:
 		Coord* location;
 		int maxHealth, curHealth;
-
+		vector<int> skills;
 	public:
 		Player();
 		int getCurHealth();
@@ -17,6 +19,7 @@ class Player : public Entity{
 		void setCurHealth(int nCurHealth);
 		void setMaxHealth(int nMaxHealth);
 		void setLoc(Coord* nLocation);
+		vector<Skill*>* getSkills();
 		void draw(Map *map);
 };
 #endif

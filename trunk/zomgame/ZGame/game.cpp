@@ -238,7 +238,7 @@ bool Game::processKey(char key){
 }
 
 void Game::tick(){
-	for (int i=0; i<zombies.size(); i++){
+	for (unsigned int i=0; i<zombies.size(); i++){
 		Zombie* z = zombies.at(i);
 		z->tick(this);
 	}
