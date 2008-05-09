@@ -1,3 +1,5 @@
+#ifndef _PLAYER_H
+#define _PLAYER_H
 /* Represents the player */
 #include "map.h"
 #include "entity.h"
@@ -17,3 +19,4 @@ class Player : public Entity{
 		void setLoc(Coord* nLocation);
 		void draw(Map *map);
 };
+#endif
