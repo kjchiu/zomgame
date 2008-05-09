@@ -241,6 +241,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\skills.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\weapon.cpp"
 				>
 			</File>
@@ -316,6 +320,10 @@
 			</File>
 			<File
 				RelativePath=".\renderable.h"
+				>
+			</File>
+			<File
+				RelativePath=".\skills.h"
 				>
 			</File>
 			<File

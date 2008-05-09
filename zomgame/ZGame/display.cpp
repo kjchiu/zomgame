@@ -196,7 +196,7 @@ void Display::drawInventoryList(vector<Item*> items, int xLoc, int selection, bo
 	getmaxyx(invWin, height, width);
 
 	int yLoc = 1;
-	for (int i=minIndex; i<items.size() && i<=maxIndex; i++){
+	for (unsigned int i=minIndex; i<items.size() && i<=maxIndex; i++){
 		string itemName = " ";
 		Item* item = items.at(i);
 		if (i == selection && highlight){

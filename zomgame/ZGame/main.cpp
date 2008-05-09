@@ -5,6 +5,8 @@
 
 #define DEBUG 0
 //extern Game *game;
+
+
 int main() {
 	srand(time(0));
 	initscr();
