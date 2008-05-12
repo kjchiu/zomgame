@@ -197,6 +197,8 @@ void Game::pickUpItem(int index){
 bool Game::processKey(char key){
 	if (key=='~') {
 		
+	} else if (key=='c'){ 
+		display->toggleAttributes();
 	} else if (key=='g'){
 		if (!map->getBlockAt(player->getLoc())->getItems().empty()){
 			if (map->getBlockAt(player->getLoc())->getItems().size() > 1)
@@ -232,6 +234,8 @@ bool Game::processKey(char key){
 		moveTarget(SOUTH);
 	} else if (key == ';') {
 		moveTarget(EAST);
+	} else if (key == 'p') {
+		display->togglePopup();
 	}
 	display->draw();
 	return true;

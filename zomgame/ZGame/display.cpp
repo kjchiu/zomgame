@@ -15,6 +15,7 @@ void Display::init() {
 	msgWin = newwin(15,80,35,0);
 	menuWin = newwin(35,25,0,55);
 	invWin = newwin(11,80,35,0);
+	popupWin = newwin(20, 20, 10, 30);
 //	skillWin;
 //	statWin;
 
@@ -22,6 +23,8 @@ void Display::init() {
 	inventorySelection = -1;
 	showItemDetail = false;
 	groundSelection = -1;
+
+	popupToggle = false;
 
 	camera = new Camera();
 	camera->setViewableArea(33, 53); //height - 2, width - 2;
@@ -71,11 +74,15 @@ void Display::cleanSelections(){
 // pulls down necessary data from game to draw
 void Display::draw() {
 	refresh();
-	this->draw(game->getMap());
-	this->draw(game->getMessages());
+	if (!popupToggle) {
+		this->draw(game->getMap());
+	}
+		this->draw(game->getMessages());
 	if (invToggle){
 		this->draw(game->getPlayer()->getInventory());
-	}
+	} else if (attToggle) {
+	} 
+	
 	wrefresh(stdscr);
 	refresh();
 	
@@ -150,45 +157,31 @@ void Display::draw(Inventory* inventory){
 	if (inventory->getSize() == 0){
 		invSelectControl = false;
 	}
-	//if both are empty....?
 	if (showItemDetail && (inventory->getSize() > 0 || groundInv.size() > 0 )){ //if the user wants to see the details of an item
-		Item* item;
-		if (invSelectControl) {
-			item = inventory->getItemAt(inventorySelection);	
-		} else {
-			item = groundInv.at(groundSelection);
-		} 
-		mvwprintw(invWin, 2, 3, item->getName().c_str());
-		mvwprintw(invWin, 4, 5, item->getDescription().c_str());
-		mvwprintw(invWin, height-2, 4, "Weight: %d lbs", item->getWeight());
-		mvwprintw(invWin, height-2, width-20, "Bulk: %d", item->getBulk()); 
-		mvwprintw(invWin, height-2, 40, "Type: %s", item->getType().c_str());
-		if (item->getType().compare("Weapon") == 0) { //display weapon stats if its a weapon
-			Weapon* weapon = (Weapon*)item;
-			mvwprintw(invWin, 2, width-30, "Weapon Class: %s", weapon->getWClass().c_str());
-			mvwprintw(invWin, 3, width-30, "Durability: %d/%d", weapon->getCurDur(), weapon->getMaxDur());
-			mvwprintw(invWin, 4, width-30, "Base Damage: %d", weapon->getDamage());
-
-		}
+		if (invSelectControl) { //check the inventory selection
+			drawItemDetails(inventory->getItemAt(inventorySelection), height, width);	
+		} else { //check the ground selection
+			drawItemDetails(groundInv.at(groundSelection), height, width);
+		} 	
 	} else {		//otherwise, draw the full inventory
 		for (int i=1; i<height-1; i++){	//draw the center column
 			mvwprintw(invWin, i, width/2, "|");
 		}
-		for (int i=1; i<width; i++){
-			//mvwprintw(invWin, height-3, i, "-");
-		}
 		drawInventoryList(inventory->getItems(), 3, inventorySelection, invSelectControl);
 		//now draw the ground items
 		drawInventoryList(groundInv, width/2 + 4, groundSelection, !invSelectControl);
-	
 	}
 
-	
+	if (popupToggle) {
+		if (invSelectControl) {
+			drawItemUsages(inventory->getItemAt(inventorySelection));
+		}
+	}
+
 	box(invWin, 0,0);
 	mvwprintw(invWin, 0, 3, "POSSESSIONS");
 	mvwprintw(invWin, 0, width/2+3, "GROUND");
-	wrefresh(invWin);
-			
+	wrefresh(invWin);		
 }
 
 void Display::drawInventoryList(vector<Item*> items, int xLoc, int selection, bool highlight){
@@ -216,6 +209,28 @@ void Display::drawInventoryList(vector<Item*> items, int xLoc, int selection, bo
 	}
 }
 
+void Display::drawItemDetails(Item* item, int height, int width){
+	mvwprintw(invWin, 2, 3, item->getName().c_str());
+	mvwprintw(invWin, 4, 5, item->getDescription().c_str());
+	mvwprintw(invWin, height-2, 4, "Weight: %d lbs", item->getWeight());
+	mvwprintw(invWin, height-2, width-20, "Bulk: %d", item->getBulk()); 
+	mvwprintw(invWin, height-2, 40, "Type: %s", item->getType().c_str());
+	if (item->getType().compare("Weapon") == 0) { //display weapon stats if its a weapon
+		Weapon* weapon = (Weapon*)item;
+		mvwprintw(invWin, 2, width-30, "Weapon Class: %s", weapon->getWClass().c_str());
+		mvwprintw(invWin, 3, width-30, "Durability: %d/%d", weapon->getCurDur(), weapon->getMaxDur());
+		mvwprintw(invWin, 4, width-30, "Base Damage: %d", weapon->getDamage());
+	}
+}
+
+void Display::drawItemUsages(Item* item){
+	mvwprintw(popupWin, 1,1, "Hey");
+
+	box(popupWin, 0,0);
+	mvwprintw(popupWin, 0, 1, "USE ITEM");
+	wrefresh(popupWin);	
+}
+
 bool Display::invIsToggled(){
 	return invToggle;
 }
@@ -227,30 +242,35 @@ bool Display::processKey(int input){
 		showItemDetail = false;
 		this->toggleInventory(true);
 	} else if (input == 2) { //down
-		if (!showItemDetail) {
+		if (!showItemDetail && !popupToggle) {
 			if (invSelectControl){ inventorySelection += 1; }
 			else {groundSelection += 1; }
 			cleanSelections();
 		}
 	} else if (input == 3) { //up
-		if (!showItemDetail) {
+		if (!showItemDetail && !popupToggle) {
 			if (invSelectControl){ inventorySelection -= 1; }
 			else {groundSelection -= 1; }
 			cleanSelections();
 		}
 	} else if (input == 4) { //left
-		invSelectControl = !invSelectControl;
+		if (!popupToggle){
+			invSelectControl = !invSelectControl;
+		}
 	} else if (input == 5) { //right
 		invSelectControl = !invSelectControl;
 	} else if (input == 'd'){ //drop the item
-		if (invSelectControl){
+		if (invSelectControl && !popupToggle){
 			game->dropItem(inventorySelection);
 			cleanSelections();
 		}
 	} else if (input == 'g'){
-		if (!invSelectControl){game->pickUpItem(groundSelection);} //pick up the item
+		if (!invSelectControl && !popupToggle){game->pickUpItem(groundSelection);} //pick up the item
 	} else if (input == 10) { //enter key
-		showItemDetail = !showItemDetail;
+		if (!popupToggle){showItemDetail = !showItemDetail;}
+	} else if (input == 'u'){
+		togglePopup();
+		//populate the window with item usages
 	} else {
 		return false;
 	}
@@ -274,6 +294,7 @@ void Display::setTarget(Coord* newTarget) {
 
 void Display::toggleInventory(bool selectedSide){
 	invToggle = !invToggle;
+	attToggle = false;
 	invSelectControl = selectedSide;
 	if (invToggle){
 		minIndex = 0, maxIndex = 8; 
@@ -285,6 +306,22 @@ void Display::toggleInventory(bool selectedSide){
 		wresize(msgWin, 15, 80);
 		mvwin(msgWin, 35,0);
 	}
+}
+
+void Display::toggleAttributes(){
+	invToggle = false;
+	attToggle = !attToggle;
+	if (attToggle){
+		wresize(msgWin, 4, 80);
+		mvwin(msgWin, 46,0);
+	} else {
+		wresize(msgWin, 15, 80);
+		mvwin(msgWin, 35,0);
+	}
+}
+
+void Display::togglePopup(){
+	popupToggle = !popupToggle;
 }
 
 	
