@@ -21,18 +21,20 @@ class Display {
 	private:
 		Camera* camera;
 		WINDOW* playWin;
+		WINDOW* popupWin;
 		WINDOW* msgWin;
 		WINDOW* menuWin;
 		WINDOW* invWin;
 		WINDOW* skillWin;
 		WINDOW* statWin;
-		bool invToggle, invSelectControl; //invSelectControl = true if the player is manipulatin the left side of the inv
+		bool invToggle, invSelectControl, showItemDetail; //invSelectControl = true if the player is manipulatin the left side of the inv
 		Entity* center;
 		Coord* target;
 		Game* game;
 		int inventorySelection, minIndex, maxIndex;
 		int groundSelection, minGIndex, maxGIndex;
-		bool showItemDetail;
+		bool attToggle;
+		bool popupToggle;
 
 	public:
 		Display(Game* game);
@@ -48,11 +50,13 @@ class Display {
 		void draw(Map* map);	
 		void draw(deque<Message> msgs);
 		void drawInventoryList(vector<Item*> items, int yLoc, int selection, bool highlight);
+		void drawItemDetails(Item* item, int height, int width);
+		void drawItemUsages(Item* item); 
 		bool invIsToggled();
 		bool processKey(int input);		
 		void toggleInventory(bool selectedSide);
-
-
+		void toggleAttributes();
+		void togglePopup();
 
 };
 
