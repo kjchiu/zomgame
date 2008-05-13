@@ -13,11 +13,10 @@ Display::Display(Game* game) {
 void Display::init() {
 	resize_term(50,80);
 	playWin = newwin(35,55,0,0); //height, width, starty, startx
-	msgWin = newwin(15,80,35,0);
-	menuWin = newwin(35,25,0,55);
-	invWin = newwin(11,80,35,0);
-	popupWin = newwin(20, 20, 10, 30);
-//	skillWin;
+	msgWin = newwin(15,80,35,0); 
+	menuWin = newwin(35,25,0,55); 
+	invWin = newwin(11,80,35,0); //displays the inventory
+	popupWin = newwin(20, 20, 10, 30); //displays what skills can be used on an item
 //	statWin;
 
 	invToggle = false;
@@ -26,6 +25,7 @@ void Display::init() {
 	groundSelection = -1;
 
 	popupToggle = false;
+	popupSelection = 0;
 
 	camera = new Camera();
 	camera->setViewableArea(33, 53); //height - 2, width - 2;
@@ -74,10 +74,9 @@ void Display::cleanSelections(){
 
 // pulls down necessary data from game to draw
 void Display::draw() {
-	refresh();
 	if (!popupToggle) {
 		this->draw(game->getMap());
-	}
+	} 
 	this->draw(game->getMessages());
 	if (invToggle){
 		this->draw(game->getPlayer()->getInventory());
@@ -173,10 +172,9 @@ void Display::draw(Inventory* inventory){
 		drawInventoryList(groundInv, width/2 + 4, groundSelection, !invSelectControl);
 	}
 
+	//draw the skills popup if necessary
 	if (popupToggle) {
-		if (invSelectControl) {
-			drawItemUsages(inventory->getItemAt(inventorySelection));
-		}
+		drawPopup(inventory->getItemAt(inventorySelection)); 
 	}
 
 	box(invWin, 0,0);
@@ -224,9 +222,20 @@ void Display::drawItemDetails(Item* item, int height, int width){
 	}
 }
 
-void Display::drawItemUsages(Item* item){
+void Display::drawPopup(Item* item){
+	wclear(popupWin);
+	if (popupSelection < 0) {popupSelection = 0;}
+	//if (popupSelection > item->getSkillsArray.size()-1) {popupSelection = item->getSkillsArray.size()-1;}
 	mvwprintw(popupWin, 1,2, "%s", item->getName().c_str());
-	
+	for (int i=0; i<5; i++){
+		if (i==popupSelection){
+			wattron(popupWin, COLOR_PAIR(YELLOW_BLACK));
+			mvwprintw(popupWin, i+2, 3, "-%d-", i);
+			wattroff(popupWin, COLOR_PAIR(YELLOW_BLACK));
+		} else {
+			mvwprintw(popupWin, i+2, 4, "%d", i);
+		}
+	}
 	box(popupWin, 0,0);
 	mvwprintw(popupWin, 0, 1, "USE ITEM");
 	wrefresh(popupWin);	
@@ -259,7 +268,7 @@ bool Display::processKeyInventory(int input){
 			if (invSelectControl){ inventorySelection += 1; }
 			else {groundSelection += 1; }
 			cleanSelections();
-		}
+		} 
 	} else if (input == 3) { //up
 		if (!showItemDetail) {
 			if (invSelectControl){ inventorySelection -= 1; }
@@ -292,9 +301,9 @@ bool Display::processKeyUseItem(int input){
 	if (input == 'u'){
 		this->togglePopup();
 	} else if (input == 2) { //down
-		
+		popupSelection++; 
 	} else if (input == 3) { //up
-		
+		popupSelection--;
 	} else if (input == 10) { //enter
 		//use the selected skill
 	} else {
@@ -345,7 +354,10 @@ void Display::toggleAttributes(){
 }
 
 void Display::togglePopup(){
-	popupToggle = !popupToggle;
+	if (invSelectControl){ //can only use items you've picked up
+		popupToggle = !popupToggle;
+		popupSelection = 0;
+	}
 }
 
 	
