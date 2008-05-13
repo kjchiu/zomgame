@@ -77,7 +77,7 @@ void Display::draw() {
 	if (!popupToggle) {
 		this->draw(game->getMap());
 	}
-		this->draw(game->getMessages());
+	this->draw(game->getMessages());
 	if (invToggle){
 		this->draw(game->getPlayer()->getInventory());
 	} else if (attToggle) {
@@ -224,8 +224,8 @@ void Display::drawItemDetails(Item* item, int height, int width){
 }
 
 void Display::drawItemUsages(Item* item){
-	mvwprintw(popupWin, 1,1, "Hey");
-
+	mvwprintw(popupWin, 1,2, "%s", item->getName().c_str());
+	
 	box(popupWin, 0,0);
 	mvwprintw(popupWin, 0, 1, "USE ITEM");
 	wrefresh(popupWin);	
@@ -235,48 +235,71 @@ bool Display::invIsToggled(){
 	return invToggle;
 }
 
+/* Decides what context to process the key in. Returns false if no context */
 bool Display::processKey(int input){
+	if (this->popupToggle){
+		this->processKeyUseItem(input);
+		return true;
+	} else if (this->invToggle){
+		this->processKeyInventory(input);
+		return true;
+	}
+	return false;
+}
+
+bool Display::processKeyInventory(int input){
 	wclear(invWin);
 	if (input == 'i'){
 		inventorySelection = 0;
 		showItemDetail = false;
 		this->toggleInventory(true);
 	} else if (input == 2) { //down
-		if (!showItemDetail && !popupToggle) {
+		if (!showItemDetail) {
 			if (invSelectControl){ inventorySelection += 1; }
 			else {groundSelection += 1; }
 			cleanSelections();
 		}
 	} else if (input == 3) { //up
-		if (!showItemDetail && !popupToggle) {
+		if (!showItemDetail) {
 			if (invSelectControl){ inventorySelection -= 1; }
 			else {groundSelection -= 1; }
 			cleanSelections();
 		}
 	} else if (input == 4) { //left
-		if (!popupToggle){
 			invSelectControl = !invSelectControl;
-		}
 	} else if (input == 5) { //right
 		invSelectControl = !invSelectControl;
 	} else if (input == 'd'){ //drop the item
-		if (invSelectControl && !popupToggle){
+		if (invSelectControl){
 			game->dropItem(inventorySelection);
 			cleanSelections();
 		}
 	} else if (input == 'g'){
-		if (!invSelectControl && !popupToggle){game->pickUpItem(groundSelection);} //pick up the item
+		if (!invSelectControl){game->pickUpItem(groundSelection);} //pick up the item
 	} else if (input == 10) { //enter key
-		if (!popupToggle){showItemDetail = !showItemDetail;}
+		showItemDetail = !showItemDetail;
 	} else if (input == 'u'){
 		togglePopup();
-		//populate the window with item usages
 	} else {
 		return false;
 	}
-	
-	draw();
-	
+
+	return true;
+}
+
+bool Display::processKeyUseItem(int input){
+	if (input == 'u'){
+		this->togglePopup();
+	} else if (input == 2) { //down
+		
+	} else if (input == 3) { //up
+		
+	} else if (input == 10) { //enter
+		//use the selected skill
+	} else {
+		return false;
+	}
+
 	return true;
 }
 
