@@ -261,11 +261,7 @@ void Game::run(){
 		this->draw();
 		refresh();
 		input = getch();
-		if (display->invIsToggled()) { //process the key in the inventory screen
-			display->processKey(input);
-		} else if (false) { //status is toggled, etc
-
-		} else {
+		if (!display->processKey(input)){ //if display does not need to process the key 
 			keepPlaying = this->processKey(input);	//if no windows are open, process in the game	
 		}
 	}

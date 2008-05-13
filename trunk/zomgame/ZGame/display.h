@@ -34,7 +34,7 @@ class Display {
 		int inventorySelection, minIndex, maxIndex;
 		int groundSelection, minGIndex, maxGIndex;
 		bool attToggle;
-		bool popupToggle;
+		bool popupToggle, popSelectedIndex;
 
 	public:
 		Display(Game* game);
@@ -53,7 +53,9 @@ class Display {
 		void drawItemDetails(Item* item, int height, int width);
 		void drawItemUsages(Item* item); 
 		bool invIsToggled();
-		bool processKey(int input);		
+		bool processKey(int input);
+		bool processKeyInventory(int input);
+		bool processKeyUseItem(int input);
 		void toggleInventory(bool selectedSide);
 		void toggleAttributes();
 		void togglePopup();
