@@ -35,7 +35,8 @@ class Display {
 		int inventorySelection, minIndex, maxIndex;
 		int groundSelection, minGIndex, maxGIndex;
 		bool attToggle;
-		bool popupToggle, popSelectedIndex;
+		bool popupToggle;
+		int popupSelection;
 
 	public:
 		Display(Game* game);
@@ -52,7 +53,7 @@ class Display {
 		void draw(deque<Message> msgs);
 		void drawInventoryList(vector<Item*> items, int yLoc, int selection, bool highlight);
 		void drawItemDetails(Item* item, int height, int width);
-		void drawItemUsages(Item* item); 
+		void drawPopup(Item* item);	//draw the skills an item can utilize 
 		bool invIsToggled();
 		bool processKey(int input);
 		bool processKeyInventory(int input);
