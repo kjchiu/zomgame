@@ -34,9 +34,10 @@ class Display {
 		Game* game;
 		int inventorySelection, minIndex, maxIndex;
 		int groundSelection, minGIndex, maxGIndex;
+		int popupSelection, minPopupIndex, maxPopupIndex;
 		bool attToggle;
 		bool popupToggle;
-		int popupSelection;
+		vector<int>* skills;
 
 	public:
 		Display(Game* game);

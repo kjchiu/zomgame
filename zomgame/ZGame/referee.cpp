@@ -1,6 +1,7 @@
 #include "referee.h"
 
-Referee::Referee(){
+Referee::Referee(Game* game){
+	this->game = game;
 	
 }
 
@@ -25,3 +26,14 @@ bool Referee::resolveAttack(Entity* attacker, Entity* defender, Message* msg) {
 	msg->setMsg(message.c_str());
 	return true;
 }
+
+bool Referee::resolve(Player* player, void* target, int (*action)(Player*, void*, vector<Message*>*)) {	
+	vector<Message*> log;
+	int result =  action(player, target, &log);
+	for (int i = 0; i < log.size(); i++) {
+		game->addMessage(log.at(i));
+	}
+	//delete log;
+	return result == 0;
+}
+

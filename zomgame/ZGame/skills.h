@@ -3,6 +3,9 @@
 
 #include <string>
 #include <hash_map>
+#include "player.h"
+#include "message.h"
+#include "messagefactory.h"
 //#include "boost/filesystem.hpp"
 
 enum SkillType {PASSIVE, ACTIVE};
@@ -10,16 +13,19 @@ enum SkillType {PASSIVE, ACTIVE};
 #define TARGET_ENTITY 2
 #define TARGET_POSITION 4
 
+class Player; // fucking forward declarations :(
 
 struct  Skill{
 	int id;
 	std::string name;
 	std::string description;
+	std::string success;
+	std::string failure;
 	SkillType type;
 	unsigned char targetable;
+	int (*action)(Player* p, void* target, vector<Message*>* log);
 };
 
-typedef std::pair<int, Skill> SkillEntry;
 
 class SkillTable {
 private:
@@ -34,6 +40,7 @@ public:
 };
 
 
-
+int repair(Player* p, void* target, vector<Message*>* log);
+int eat(Player* p, void* target, vector<Message*>* log);
 
 #endif

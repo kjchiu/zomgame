@@ -7,14 +7,20 @@
 #include "entity.h"
 #include "item.h"
 #include "globals.h"
+#include <vector>
+#include "messagefactory.h"
+#include "game.h"
+
+class Game;
 
 class Referee {
 	private:
-
+		Game* game;
 	public:
-		Referee();
+		Referee(Game*);
 		bool pickUpItem(Entity* picker, Item* item, Message* msg);
 		bool resolveAttack(Entity* attacker, Entity* defender, Message* msg);
+		bool resolve(Player* player, void* target, int (*action)(Player*, void*, vector<Message*>*) );
 };
 
 #endif
