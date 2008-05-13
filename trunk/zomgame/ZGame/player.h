@@ -5,6 +5,7 @@
 #include "entity.h"
 #include "skills.h"
 #include <vector>
+#include "globals.h"
 
 class Player : public Entity{
 	protected:

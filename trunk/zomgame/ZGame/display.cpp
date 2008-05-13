@@ -4,6 +4,7 @@
 using namespace std;
 
 
+
 Display::Display(Game* game) {
 	init();
 	this->game = game;

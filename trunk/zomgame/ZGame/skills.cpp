@@ -9,9 +9,24 @@ Skill* SkillTable::getSkill(int id) {
 }
 
 void SkillTable::load(std::string filename) {
-	Skill eat;
-	eat.id = skill_count;
-	eat.name = "eat";
-	eat.description = "eat stuff";
+	Skill s;
+	s.id = skill_count;
+	s.name = "eat";
+	s.description = "eat stuff";
+	insert(s);
+
+	s.id = ++skill_count;
+	s.name = "handgun";
+	s.description = "Proficiency with handguns.\nIncreases accuracy and stuff. yay!";
+	insert(s);
+
+	s.id = ++skill_count;
+	s.name = "blunt";
+	s.description = "blunt melee weapons";
+	insert(s);
+	
 }
 
+void SkillTable::insert(Skill skill) {
+	table.insert(SkillEntry(skill.id, skill));
+}

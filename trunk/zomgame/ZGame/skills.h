@@ -23,7 +23,7 @@ typedef std::pair<int, Skill> SkillEntry;
 
 class SkillTable {
 private:
-
+	void insert(Skill skill);
 protected:
 	stdext::hash_map<int, Skill> table;
 	int skill_count;

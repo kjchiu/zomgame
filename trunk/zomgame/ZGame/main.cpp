@@ -6,6 +6,8 @@
 #define DEBUG 0
 //extern Game *game;
 
+SkillTable skill_list;
+
 
 int main() {
 	srand(time(0));

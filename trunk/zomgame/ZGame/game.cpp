@@ -2,6 +2,7 @@
 #include <curses.h>
 #include "game.h"
 #include "referee.h"
+#include "globals.h"
 
 Game::Game(){
 	init(100,100);
@@ -13,6 +14,7 @@ Game::Game(int tWidth, int tHeight){
 }
 
 void Game::init(int tWidth, int tHeight){
+	skill_list.load(std::string("."));
 	map = new Map();
 	player = new Player();
 	player->setName("Durr");
@@ -255,6 +257,7 @@ void Game::draw(){
 void Game::run(){
 	char input;
 	bool keepPlaying = true;
+	addMessage(MessageFactory::getMessage(skill_list.getSkill(1)->description));
 	while (keepPlaying){
 		//tick, draw, until something results in quitting
 		this->tick();
