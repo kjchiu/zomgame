@@ -287,6 +287,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\globals.h"
+				>
+			</File>
+			<File
 				RelativePath=".\includes.h"
 				>
 			</File>

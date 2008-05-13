@@ -8,6 +8,7 @@
 #include <curses.h>
 #include "inventory.h"
 #include "message.h"
+#include "globals.h"
 
 #ifndef _GAME_H_
 class Game;

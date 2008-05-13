@@ -6,6 +6,7 @@
 #include "message.h"
 #include "entity.h"
 #include "item.h"
+#include "globals.h"
 
 class Referee {
 	private:
