@@ -18,7 +18,9 @@ struct  Skill{
 	SkillType type;
 	unsigned char targetable;
 };
+
 typedef std::pair<int, Skill> SkillEntry;
+
 class SkillTable {
 private:
 
