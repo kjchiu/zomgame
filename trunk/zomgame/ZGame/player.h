@@ -7,6 +7,9 @@
 #include <vector>
 #include "globals.h"
 
+struct Skill;
+class SkillTable;
+
 class Player : public Entity{
 	protected:
 		Coord* location;
@@ -20,7 +23,7 @@ class Player : public Entity{
 		void setCurHealth(int nCurHealth);
 		void setMaxHealth(int nMaxHealth);
 		void setLoc(Coord* nLocation);
-		vector<Skill*>* getSkills();
+		vector<int>* getSkills();
 		void draw(Map *map);
 };
 #endif

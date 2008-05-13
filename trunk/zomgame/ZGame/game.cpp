@@ -21,7 +21,8 @@ void Game::init(int tWidth, int tHeight){
 	player->setLoc(new Coord(10,10));
 	target = new Coord(player->getLoc());
 	map->getBlockAt(player->getLoc())->addEntity(player);
-	ref = new Referee();
+
+	ref = new Referee(this);
 	display = new Display(this);
 	display->setCenter(player);
 	display->setTarget(target);

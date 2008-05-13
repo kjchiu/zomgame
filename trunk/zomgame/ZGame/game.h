@@ -14,6 +14,7 @@
 
 class Game;
 class Display;
+class Referee;
 
 using namespace std;
 
@@ -36,7 +37,7 @@ class Game {
 		void init(int tWidth, int tHeight);
 		
 		Map* getMap() { return this->map;}
-
+		Referee* getReferee() { return this->ref;}
 		void addMessage(Message* msg);
 		deque<Message> getMessages();
 

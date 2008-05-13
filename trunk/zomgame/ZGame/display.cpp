@@ -24,6 +24,7 @@ void Display::init() {
 	showItemDetail = false;
 	groundSelection = -1;
 
+
 	popupToggle = false;
 	popupSelection = 0;
 
@@ -143,6 +144,7 @@ void Display::draw(deque<Message> msgs) {
 	box(msgWin, 0,0);
 	mvwprintw(msgWin, 0, 3, "MESSAGE LOG");
 	wrefresh(msgWin);
+	
 }
 
 void Display::draw(Inventory* inventory){
@@ -227,13 +229,15 @@ void Display::drawPopup(Item* item){
 	if (popupSelection < 0) {popupSelection = 0;}
 	//if (popupSelection > item->getSkillsArray.size()-1) {popupSelection = item->getSkillsArray.size()-1;}
 	mvwprintw(popupWin, 1,2, "%s", item->getName().c_str());
-	for (int i=0; i<5; i++){
+	vector<int>* skills = game->getPlayer()->getSkills();
+	for (int i=0; i<maxPopupIndex; i++){
 		if (i==popupSelection){
 			wattron(popupWin, COLOR_PAIR(YELLOW_BLACK));
-			mvwprintw(popupWin, i+2, 3, "-%d-", i);
+			
+			mvwprintw(popupWin, i+2, 2, "-%s-", skill_list.getSkill(skills->at(i))->name.data());
 			wattroff(popupWin, COLOR_PAIR(YELLOW_BLACK));
 		} else {
-			mvwprintw(popupWin, i+2, 4, "%d", i);
+			mvwprintw(popupWin, i+2, 3, "%s", skill_list.getSkill(skills->at(i))->name.data());
 		}
 	}
 	box(popupWin, 0,0);
