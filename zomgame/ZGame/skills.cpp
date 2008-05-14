@@ -33,15 +33,11 @@ void SkillTable::load(std::string filename) {
 	s.description = "Repair an item.";
 	s.action = &repair;
 	insert(s);
-	
-	
 
-	
 }
 
 void SkillTable::insert(Skill skill) {
 	table.insert(std::pair<int, Skill>(skill.id, skill));
-	
 }
 
 int repair(Player* p, void* target, vector<Message*>* log) {
