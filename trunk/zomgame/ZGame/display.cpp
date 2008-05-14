@@ -19,13 +19,13 @@ void Display::init() {
 	popupWin = newwin(20, 20, 10, 30); //displays what skills can be used on an item
 //	statWin;
 
-	invToggle = false;
 	inventorySelection = -1;
 	showItemDetail = false;
 	groundSelection = -1;
+	
+	dState = new DisplayState();
+	dState->init();
 
-
-	popupToggle = false;
 	popupSelection = 0;
 
 	camera = new Camera();
@@ -75,11 +75,11 @@ void Display::cleanSelections(){
 
 // pulls down necessary data from game to draw
 void Display::draw() {
-	if (!popupToggle) {
+	if (!popupIsToggled()) {
 		this->draw(game->getMap());
 	} 
 	this->draw(game->getMessages());
-	if (invToggle){
+	if (invIsToggled()){
 		this->draw(game->getPlayer()->getInventory());
 	} else if (attToggle) {
 	} 
@@ -154,13 +154,13 @@ void Display::draw(Inventory* inventory){
 	vector<Item*> groundInv = game->getMap()->getBlockAt(game->getPlayer()->getLoc())->getItems();
 	
 	if (groundInv.empty()){
-		invSelectControl = true;
+		dState->invSide = true;
 	} 
 	if (inventory->getSize() == 0){
-		invSelectControl = false;
+		dState->invSide = false;
 	}
 	if (showItemDetail && (inventory->getSize() > 0 || groundInv.size() > 0 )){ //if the user wants to see the details of an item
-		if (invSelectControl) { //check the inventory selection
+		if (dState->invIsHighlighted()) { //check the inventory selection
 			drawItemDetails(inventory->getItemAt(inventorySelection), height, width);	
 		} else { //check the ground selection
 			drawItemDetails(groundInv.at(groundSelection), height, width);
@@ -169,13 +169,13 @@ void Display::draw(Inventory* inventory){
 		for (int i=1; i<height-1; i++){	//draw the center column
 			mvwprintw(invWin, i, width/2, "|");
 		}
-		drawInventoryList(inventory->getItems(), 3, inventorySelection, invSelectControl);
+		drawInventoryList(inventory->getItems(), 3, inventorySelection, dState->invIsHighlighted());
 		//now draw the ground items
-		drawInventoryList(groundInv, width/2 + 4, groundSelection, !invSelectControl);
+		drawInventoryList(groundInv, width/2 + 4, groundSelection, !dState->invIsHighlighted());
 	}
 
 	//draw the skills popup if necessary
-	if (popupToggle) {
+	if (popupIsToggled()) {
 		drawPopup(inventory->getItemAt(inventorySelection)); 
 	}
 
@@ -246,19 +246,23 @@ void Display::drawPopup(Item* item){
 }
 
 bool Display::invIsToggled(){
-	return invToggle;
+	return dState->invIsToggled();
 }
 
 /* Decides what context to process the key in. Returns false if no context */
 bool Display::processKey(int input){
-	if (this->popupToggle){
+	if (popupIsToggled()){
 		this->processKeyUseItem(input);
 		return true;
-	} else if (this->invToggle){
+	} else if (invIsToggled()){
 		this->processKeyInventory(input);
 		return true;
 	}
 	return false;
+}
+
+bool Display::popupIsToggled(){
+	return dState->popupIsToggled();
 }
 
 bool Display::processKeyInventory(int input){
@@ -269,27 +273,27 @@ bool Display::processKeyInventory(int input){
 		this->toggleInventory(true);
 	} else if (input == 2) { //down
 		if (!showItemDetail) {
-			if (invSelectControl){ inventorySelection += 1; }
+			if (dState->invIsHighlighted()){ inventorySelection += 1; }
 			else {groundSelection += 1; }
 			cleanSelections();
 		} 
 	} else if (input == 3) { //up
 		if (!showItemDetail) {
-			if (invSelectControl){ inventorySelection -= 1; }
+			if (dState->invIsHighlighted()){ inventorySelection -= 1; }
 			else {groundSelection -= 1; }
 			cleanSelections();
 		}
 	} else if (input == 4) { //left
-			invSelectControl = !invSelectControl;
+		dState->switchInvSelect();
 	} else if (input == 5) { //right
-		invSelectControl = !invSelectControl;
+		dState->switchInvSelect();
 	} else if (input == 'd'){ //drop the item
-		if (invSelectControl){
+		if (dState->invIsHighlighted()){
 			game->dropItem(inventorySelection);
 			cleanSelections();
 		}
 	} else if (input == 'g'){
-		if (!invSelectControl){game->pickUpItem(groundSelection);} //pick up the item
+		if (!dState->invIsHighlighted()){game->pickUpItem(groundSelection);} //pick up the item
 	} else if (input == 10) { //enter key
 		showItemDetail = !showItemDetail;
 	} else if (input == 'u'){
@@ -303,7 +307,7 @@ bool Display::processKeyInventory(int input){
 
 bool Display::processKeyUseItem(int input){
 	if (input == 'u'){
-		this->togglePopup();
+		togglePopup();
 	} else if (input == 2) { //down
 		popupSelection++; 
 	} else if (input == 3) { //up
@@ -330,10 +334,8 @@ void Display::setTarget(Coord* newTarget) {
 }
 
 void Display::toggleInventory(bool selectedSide){
-	invToggle = !invToggle;
-	attToggle = false;
-	invSelectControl = selectedSide;
-	if (invToggle){
+	dState->toggleInv();
+	if (dState->invIsToggled()){
 		minIndex = 0, maxIndex = 8; 
 		minGIndex = 0, maxGIndex = 8;
 		inventorySelection = groundSelection = 0;
@@ -346,7 +348,6 @@ void Display::toggleInventory(bool selectedSide){
 }
 
 void Display::toggleAttributes(){
-	invToggle = false;
 	attToggle = !attToggle;
 	if (attToggle){
 		wresize(msgWin, 4, 80);
@@ -358,8 +359,8 @@ void Display::toggleAttributes(){
 }
 
 void Display::togglePopup(){
-	if (invSelectControl){ //can only use items you've picked up
-		popupToggle = !popupToggle;
+	if (dState->invIsHighlighted() || dState->popupIsToggled()){ //can only use items you've picked up
+		dState->togglePopup();
 		popupSelection = 0;
 	}
 }

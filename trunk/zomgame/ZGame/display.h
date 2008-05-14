@@ -17,6 +17,19 @@ class Game;
 class Display;
 #endif
 
+struct DisplayState {
+	enum State {MAPDISP, INVDISP, INVPOP, ATTR};
+	State state;
+	bool invSide; //true means that the player is in their inventory, false means the selection is on the ground
+	void init() { state = MAPDISP; invSide = true;}
+	void toggleInv() {if (state == MAPDISP){state = INVDISP; invSide=true;} else {state = MAPDISP;}}
+	void togglePopup() {if (state == INVDISP && invSide == true){state = INVPOP;} else if (state == INVPOP){state = INVDISP;}}
+	void switchInvSelect() { invSide = !invSide; }
+	bool invIsToggled() {if (state == INVDISP || state == INVPOP){return true;} return false;}
+	bool popupIsToggled() {if (state == INVPOP){return true;} return false;}
+	bool invIsHighlighted() {if (state == INVDISP){ return invSide;} return false;}
+	
+};
 
 class Display {
 	private:
@@ -28,7 +41,7 @@ class Display {
 		WINDOW* invWin;
 		WINDOW* skillWin;
 		WINDOW* statWin;
-		bool invToggle, invSelectControl, showItemDetail; //invSelectControl = true if the player is manipulatin the left side of the inv
+		bool showItemDetail; //invSelectControl = true if the player is manipulatin the left side of the inv
 		Entity* center;
 		Coord* target;
 		Game* game;
@@ -37,6 +50,7 @@ class Display {
 		int popupSelection, minPopupIndex, maxPopupIndex;
 		bool attToggle;
 		bool popupToggle;
+		DisplayState* dState;
 		vector<int>* skills;
 
 	public:
@@ -56,6 +70,7 @@ class Display {
 		void drawItemDetails(Item* item, int height, int width);
 		void drawPopup(Item* item);	//draw the skills an item can utilize 
 		bool invIsToggled();
+		bool popupIsToggled();
 		bool processKey(int input);
 		bool processKeyInventory(int input);
 		bool processKeyUseItem(int input);
