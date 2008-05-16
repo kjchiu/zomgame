@@ -29,6 +29,7 @@ public:
 	void setCurrentAction(currentAction nAction);
 	void setTarget(Coord* nTarget);
 	void tick(Game* game); //implements AI
+	
 
 };
 

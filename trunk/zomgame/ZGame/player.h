@@ -6,6 +6,7 @@
 #include "skills.h"
 #include <vector>
 #include "globals.h"
+#include "weapon.h"
 
 struct Skill;
 class SkillTable;
@@ -13,15 +14,14 @@ class SkillTable;
 class Player : public Entity{
 	protected:
 		Coord* location;
-		int maxHealth, curHealth;
 		vector<int> skills;
+		Weapon* equippedWeapon;
+
 	public:
 		Player();
-		int getCurHealth();
-		int getMaxHealth();
+		void equip(Weapon* weapon);
+		Weapon* getEquippedWeapon();
 		Coord* getLoc();
-		void setCurHealth(int nCurHealth);
-		void setMaxHealth(int nMaxHealth);
 		void setLoc(Coord* nLocation);
 		vector<int>* getSkills();
 		void draw(Map *map);

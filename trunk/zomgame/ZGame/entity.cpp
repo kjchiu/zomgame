@@ -12,6 +12,8 @@ Entity::Entity(string newName){
 void Entity::init(){
 	color = 2;
 	inventory = new Inventory();
+	setCurHealth(10);
+	setMaxHealth(10);
 }
 
 void Entity::addAttribute(Attribute* att){
@@ -46,4 +48,19 @@ int Entity::getValueOf(string attName){
 
 void Entity::setLoc(Coord* newLoc){
 	location = newLoc;
+}
+
+int Entity::getCurHealth(){
+	return curHealth;
+}
+
+int Entity::getMaxHealth(){
+	return maxHealth;
+}
+void Entity::setCurHealth(int nCurHealth){
+	curHealth = nCurHealth;
+}
+
+void Entity::setMaxHealth(int nMaxHealth){
+	maxHealth = nMaxHealth;
 }

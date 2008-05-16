@@ -8,30 +8,50 @@ Skill* SkillTable::getSkill(int id) {
 	return &(table.find(id)->second);
 }
 
+/* Finds an id of a skill given. Runs in O(n), not very efficient */
+int SkillTable::getSkillID(std::string skillName){
+	for (int i=0; i<table.size(); i++){
+		if (getSkill(i)->name == skillName){
+			return table.find(i)->first;
+		}
+	}
+	return -1;
+}
+
 void SkillTable::load(std::string filename) {
 	Skill s;
-	s.id = skill_count;
-	s.name = "eat";
-	s.description = "eat stuff";
-	s.action = &eat;
-	insert(s);
-
-	s.id = ++skill_count;
-	s.name = "handgun";
-	s.description = "Proficiency with handguns.\nIncreases accuracy and stuff. yay!";
+	
+	//PASSIVE
+	s.id = skill_count++;
+	s.name = "Handgun";
+	s.description = "Proficiency with handguns.\nIncreases accuracy and the ability to maintain and repair them.";
 	s.action = NULL;
 	insert(s);
 
-	s.id = ++skill_count;
-	s.name = "blunt";
-	s.description = "blunt melee weapons";
+	s.id = skill_count++;
+	s.name = "Blunt";
+	s.description = "Proficiency with heavy, blunt weaponry.\nIncreases skill and time before breaking.";
 	s.action = NULL;
 	insert(s);
 
-	s.id = ++skill_count;
-	s.name = "repair";
+	//ACTIVE
+	s.id = skill_count++;
+	s.name = "Repair";
 	s.description = "Repair an item.";
 	s.action = &repair;
+	insert(s);
+
+	s.id = skill_count++;
+	s.name = "Equip";
+	s.description = "Equip a weapon.";
+	s.action = &equip;
+	insert(s);
+
+	//INHERENT
+	s.id = skill_count++;
+	s.name = "Consume";
+	s.description = "Eat food and drink water to keep starvation from sapping your stamina.";
+	s.action = &eat;
 	insert(s);
 
 }
@@ -55,6 +75,14 @@ int eat(Player* p, void* target, vector<Message*>* log) {
 		p->getInventory()->removeItem(item);
 	}
 	std::string* msg = new std::string("Ate a " + item->getName());
+	log->push_back(new Message(msg));
+	return 0;
+}
+
+int equip(Player* p, void* target, vector<Message*>* log) {
+	Weapon* weapon = static_cast<Weapon*>(target);
+	p->equip(weapon);
+	std::string* msg = new std::string("Equipped " + weapon->getListName());
 	log->push_back(new Message(msg));
 	return 0;
 }

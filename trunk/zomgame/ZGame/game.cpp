@@ -17,7 +17,7 @@ void Game::init(int tWidth, int tHeight){
 	skill_list.load(std::string("."));
 	map = new Map();
 	player = new Player();
-	player->setName("Durr");
+	player->setName("PlayerMan");
 	player->setLoc(new Coord(10,10));
 	target = new Coord(player->getLoc());
 	map->getBlockAt(player->getLoc())->addEntity(player);
@@ -55,29 +55,17 @@ void Game::init(int tWidth, int tHeight){
 	item3->setName("Item3");
 	Item* item4 = new Item();
 	item4->setName("Item4");
-	Item* item5 = new Item();
-	item5->setName("Item5");
-	Item* item6 = new Item();
-	item6->setName("Item6");
-	Item* item7 = new Item();
-	item7->setName("Item7");
-	Item* item8 = new Item();
-	item8->setName("Item8");
-	Item* item9 = new Item();
-	item9->setName("Item9");
-	Item* item10 = new Item();
-	item10->setName("Item10");
+	Item* foodItem = new Item();
+	foodItem->setName("Chocolate Bar");
+	foodItem->setType(Item::FOOD);
+	foodItem->addSkill(skill_list.getSkillID("Consume"));
+	foodItem->setDescription("A good-looking chocolate bar wrapped in foil.");
 	
 	player->getInventory()->addItem(item1);
 	player->getInventory()->addItem(item2);
 	player->getInventory()->addItem(item3);
 	player->getInventory()->addItem(item4);
-	player->getInventory()->addItem(item5);
-	player->getInventory()->addItem(item6);
-	player->getInventory()->addItem(item7);
-	player->getInventory()->addItem(item8);
-	player->getInventory()->addItem(item9);
-	player->getInventory()->addItem(item10);
+	player->getInventory()->addItem(foodItem);
 
 	Weapon* weapon1 = new Weapon();
 	map->getBlockAt(7,5)->addItem(weapon1);
@@ -122,9 +110,7 @@ Coord* Game::getTarget() {
 
 void Game::moveEntity(Entity* ent, Direction dir){
 	Coord moveLoc = (*directionOffsets[dir]) + (*ent->getLoc());
-	if (moveLoc.getX() < 0 || moveLoc.getY() < 0 || 
-		moveLoc.getX() >= map->getWidth() || moveLoc.getY() >= map->getHeight()){
-		//this->addMessage(new Message("You cannot move beyond here"));
+	if (moveLoc.getX() < 0 || moveLoc.getY() < 0 || moveLoc.getX() >= map->getWidth() || moveLoc.getY() >= map->getHeight()){
 		return; //can't move here, outside of map
 	}
 	if (isPassable(&moveLoc)){
@@ -137,15 +123,13 @@ void Game::moveEntity(Entity* ent, Direction dir){
 			Message msg;
 			if (ref->resolveAttack(ent, checkBlock->getTopEntity(), &msg)) { //true means the battle was won
 				checkBlock->removeEntity(checkBlock->getTopEntity());
-				addMessage(&msg);
 			}
-
+			addMessage(&msg);
 		}
 	}
-	// move was valid
-	// reset target
+	// move was valid,  reset target
 	this->target->setCoord(ent->getLoc());
-	//displayMapBlockInfo(map->getBlockAt(&moveLoc));
+	
 	Message *msg = MessageFactory::getItems(map->getBlockAt(&moveLoc)->getItems());
 	if (msg) addMessage(msg);
 
@@ -258,7 +242,7 @@ void Game::draw(){
 void Game::run(){
 	char input;
 	bool keepPlaying = true;
-	addMessage(MessageFactory::getMessage(skill_list.getSkill(1)->description));
+	addMessage(MessageFactory::getMessage(skill_list.getSkill(0)->description));
 	while (keepPlaying){
 		//tick, draw, until something results in quitting
 		this->tick();

@@ -3,8 +3,6 @@
 
 using namespace std;
 
-
-
 Display::Display(Game* game) {
 	init();
 	this->game = game;
@@ -226,11 +224,12 @@ void Display::drawItemDetails(Item* item, int height, int width){
 
 void Display::drawPopup(Item* item){
 	wclear(popupWin);
+	vector<int>* skills = item->getSkills();
+
 	if (popupSelection < 0) {popupSelection = 0;}
-	//if (popupSelection > item->getSkillsArray.size()-1) {popupSelection = item->getSkillsArray.size()-1;}
+	if (popupSelection > skills->size()-1) {popupSelection = skills->size()-1;}
 	mvwprintw(popupWin, 1,2, "%s", item->getName().c_str());
-	vector<int>* skills = game->getPlayer()->getSkills();
-	for (int i=0; i<maxPopupIndex; i++){
+	for (int i=0; i<skills->size(); i++){
 		if (i==popupSelection){
 			wattron(popupWin, COLOR_PAIR(YELLOW_BLACK));
 			
@@ -313,7 +312,12 @@ bool Display::processKeyUseItem(int input){
 	} else if (input == 3) { //up
 		popupSelection--;
 	} else if (input == 10) { //enter
+		dState->togglePopup();
+		Item* item = game->getPlayer()->getInventory()->getItemAt(inventorySelection);
+		inventorySelection = 0;
 		//use the selected skill
+		game->getReferee()->resolve(game->getPlayer(), 
+			item, skill_list.getSkill(item->getSkills()->at(popupSelection))->action);
 	} else {
 		return false;
 	}
