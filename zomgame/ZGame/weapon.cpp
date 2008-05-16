@@ -4,7 +4,7 @@ Weapon::Weapon(){
 	setName("Weapon");
 	setDisplayChar('/');
 	setDescription("This is some sort of weapon.");
-	setType("Weapon");
+	setType(Item::WEAPON);
 
 	setWClass("Club");
 	setCurDur(100);

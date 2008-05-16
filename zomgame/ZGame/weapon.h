@@ -1,5 +1,8 @@
 /* A weapon in the game. Inherits from Item, and has some properties in addition to it. */
 
+#ifndef _WEAPON_H
+#define _WEAPON_H
+
 #include "item.h"
 #include <string>
 
@@ -24,5 +27,6 @@ class Weapon : public Item {
 		void setDamage(int nDmg);
 		void setMaxDur(int nMaxD);
 		
-		
 };
+
+#endif

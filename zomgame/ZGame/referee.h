@@ -18,6 +18,7 @@ class Referee {
 		Game* game;
 	public:
 		Referee(Game*);
+		bool doActionOnItem(Item* item, int skillIndex);
 		bool pickUpItem(Entity* picker, Item* item, Message* msg);
 		bool resolveAttack(Entity* attacker, Entity* defender, Message* msg);
 		bool resolve(Player* player, void* target, int (*action)(Player*, void*, vector<Message*>*) );

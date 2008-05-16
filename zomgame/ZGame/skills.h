@@ -37,10 +37,12 @@ public:
 	SkillTable();
 	void load(std::string filename);
 	Skill* getSkill(int id);
+	int getSkillID(std::string skillName);
 };
 
 
 int repair(Player* p, void* target, vector<Message*>* log);
 int eat(Player* p, void* target, vector<Message*>* log);
+int equip(Player* p, void* target, vector<Message*>* log);
 
 #endif

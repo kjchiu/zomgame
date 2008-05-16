@@ -14,6 +14,7 @@ class Entity : public Renderable {
 		Coord* location;
 		Inventory* inventory;
 		vector<Attribute*>* attributes;
+		int curHealth, maxHealth;
 		
 	public:
 		Entity();
@@ -21,10 +22,15 @@ class Entity : public Renderable {
 		void init();
 		virtual void addAttribute(Attribute* att);
 		virtual vector<Attribute*>* getAttributes();
+		virtual int getCurHealth();
 		virtual Inventory* getInventory();
+		virtual int getMaxHealth();
 		virtual Coord* getLoc();
 		virtual int getValueOf(string attName);
+		virtual void setCurHealth(int nCurHealth);
 		virtual void setLoc(Coord* nLocation);	
+		virtual void setMaxHealth(int nMaxHealth);
+	
 };
 
 #endif

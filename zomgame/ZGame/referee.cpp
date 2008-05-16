@@ -2,7 +2,11 @@
 
 Referee::Referee(Game* game){
 	this->game = game;
-	
+	srand(0);
+}
+
+bool Referee::doActionOnItem(Item* item, int skillIndex){
+	return true;
 }
 
 bool Referee::pickUpItem(Entity* picker, Item* item, Message* msg){
@@ -18,13 +22,25 @@ bool Referee::pickUpItem(Entity* picker, Item* item, Message* msg){
 }
 
 bool Referee::resolveAttack(Entity* attacker, Entity* defender, Message* msg) {
-	string message = attacker->getName();
-	message += " attacks ";
-	message += defender->getName();
-	message += " for over 9000!";
-	//subtract HP, stamina, whatever.
+	//subtract stamina
+	string message = attacker->getName() + " attacks " + defender->getName();
+	//check probability to hit based on player skill first
+	if (rand() % 100 < 20){ //durr magic number 20
+		message += " but misses.";
+		msg->setMsg(message.c_str());	
+		return false;
+	} 
+	int dmg = rand() % 10;
+	defender->setCurHealth(defender->getCurHealth() - dmg);
+	//points display is gay. percentile-based damage output yes.
+	if (dmg < 3) { message += " and strikes a glancing blow."; }
+	else if (dmg > 2 && dmg < 7) { message += " with a solid hit. "; }
+	else if (dmg >= 7) { message += " with a powerful blow!";}
 	msg->setMsg(message.c_str());
-	return true;
+	if (defender->getCurHealth() < 0) {
+		return true;
+	}
+	return false;
 }
 
 bool Referee::resolve(Player* player, void* target, int (*action)(Player*, void*, vector<Message*>*)) {	

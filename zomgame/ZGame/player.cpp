@@ -9,6 +9,15 @@ Player::Player(){
 	skills.push_back(1);
 	skills.push_back(2);
 	skills.push_back(3);
+	equip(NULL);
+}
+
+void Player::equip(Weapon* weapon){
+	equippedWeapon = weapon;
+}
+
+Weapon* Player::getEquippedWeapon(){
+	return equippedWeapon;
 }
 
 Coord* Player::getLoc(){
