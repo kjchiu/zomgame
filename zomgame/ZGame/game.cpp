@@ -3,6 +3,7 @@
 #include "game.h"
 #include "referee.h"
 #include "globals.h"
+#include <sstream>
 
 Game::Game(){
 	init(100,100);
@@ -14,6 +15,7 @@ Game::Game(int tWidth, int tHeight){
 }
 
 void Game::init(int tWidth, int tHeight){
+	tickCount = 0;	
 	skill_list.load(std::string("."));
 	map = new Map();
 	player = new Player();
@@ -91,6 +93,18 @@ Coord* Game::getTarget() {
 	return target;
 }
 
+unsigned int Game::getTime(){
+	return tickCount;
+}
+
+bool Game::isPassable(Coord* nextLoc){
+	MapBlock* checkBlock = map->getBlockAt(nextLoc->getX(), nextLoc->getY());
+	if (checkBlock->isPassable()){
+		return true;
+	}
+	return false;
+}
+
 void Game::moveEntity(Entity* ent, Direction dir){
 	Coord moveLoc = (*directionOffsets[dir]) + (*ent->getLoc());
 	if (moveLoc.getX() < 0 || moveLoc.getY() < 0 || moveLoc.getX() >= map->getWidth() || moveLoc.getY() >= map->getHeight()){
@@ -164,19 +178,21 @@ void Game::pickUpItem(int index){
 	addMessage(msg);
 }
 
-bool Game::processKey(char key){
+int Game::processKey(char key){
 	if (key=='~') {
 		
 	} else if (key=='c'){ 
 		display->toggleAttributes();
 	} else if (key=='g'){
 		if (!map->getBlockAt(player->getLoc())->getItems().empty()){
-			if (map->getBlockAt(player->getLoc())->getItems().size() > 1)
+			if (map->getBlockAt(player->getLoc())->getItems().size() > 1) {
 				display->toggleInventory(false);
-			else {
+				return 5;
+			} else {
 				// this could possibly break it, lets hope 
 				// std::vector removes deadspace in the list.
 				this->pickUpItem(0);
+				return 2; //based on item bulk
 			}
 		}
 	} else if (key=='m'){
@@ -185,18 +201,23 @@ bool Game::processKey(char key){
 		addMessage(test);
 	} else if (key=='w') {
 		moveEntity(player, NORTH);
+		return 10; //based on speed
 	} else if (key=='a') {
 		moveEntity(player, WEST);
+		return 10; //based on speed
 	}  else if (key=='s') {
 		moveEntity(player, SOUTH);
+		return 10; //based on speed
 	} else if (key=='d') {
 		moveEntity(player, EAST);
+		return 10; //based on speed
 	} else if (key=='q') {
 		//do some stuff, but for now
-		return false;
+		return -1;
 	} else if (key=='i') {
 		addMessage(new Message("Inventory toggled"));
 		display->toggleInventory(true);
+		return 5;
 	} else if (key == 'o') {
 		moveTarget(NORTH);
 	} else if (key == 'k') {
@@ -209,7 +230,7 @@ bool Game::processKey(char key){
 		display->togglePopup();
 	}
 	display->draw();
-	return true;
+	return 0;
 }
 
 void Game::tick(){
@@ -225,24 +246,19 @@ void Game::draw(){
 
 void Game::run(){
 	char input;
-	bool keepPlaying = true;
+	int frameTime = 0;
 	addMessage(MessageFactory::getMessage(skill_list.getSkill(0)->description));
-	while (keepPlaying){
+	while (frameTime >= 0){
+		frameTime = 0;
 		//tick, draw, until something results in quitting
 		this->tick();
 		this->draw();
 		refresh();
 		input = getch();
-		if (!display->processKey(input)){ //if display does not need to process the key 
-			keepPlaying = this->processKey(input);	//if no windows are open, process in the game	
+		frameTime = display->processKey(input);
+		if (frameTime <= -1){ //if display does not need to process the key 
+			frameTime = this->processKey(input);	//if no windows are open, process in the game	
 		}
+		tickCount += frameTime;
 	}
-}
-
-bool Game::isPassable(Coord* nextLoc){
-	MapBlock* checkBlock = map->getBlockAt(nextLoc->getX(), nextLoc->getY());
-	if (checkBlock->isPassable()){
-		return true;
-	}
-	return false;
 }

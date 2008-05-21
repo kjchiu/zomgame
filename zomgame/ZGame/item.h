@@ -30,6 +30,7 @@ class Item : public Renderable {
 		string getType();
 		int getWeight();	
 		vector<int>* getSkills();
+		void removeSkill(int skillNum);
 		void setBulk(int nBulk);
 		void setType(ItemType nType);
 		void setWeight(int nWeight);

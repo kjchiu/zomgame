@@ -44,6 +44,19 @@ int Item::getWeight(){
 	return weight;
 }
 
+void Item::removeSkill(int skillNum){
+	int arraySize = associatedSkills->size();
+	for (unsigned int i=0;i<arraySize;i++){
+		if (associatedSkills->at(i) == skillNum){
+			if (i==arraySize - 1){
+				associatedSkills->pop_back();
+			} else {
+				associatedSkills->erase(associatedSkills->begin()+i, associatedSkills->begin()+i+1); 
+			} 
+		}
+	}
+}
+
 void Item::setBulk(int nBulk){
 	bulk = nBulk;
 }

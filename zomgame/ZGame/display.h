@@ -72,7 +72,7 @@ class Display {
 		void drawPopup(Item* item);	//draw the skills an item can utilize 
 		bool invIsToggled();
 		bool popupIsToggled();
-		bool processKey(int input);
+		int processKey(int input);
 		bool processKeyInventory(int input);
 		bool processKeyUseItem(int input);
 		void toggleInventory(bool selectedSide);

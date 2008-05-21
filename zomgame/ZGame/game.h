@@ -28,6 +28,7 @@ class Game {
 		Player* player;
 		Coord* target;
 		vector<Zombie*> zombies;
+		unsigned int tickCount;
 
 	public:		
 		enum Direction {NORTH, NORTHEAST, EAST, SOUTHEAST, SOUTH, SOUTHWEST, WEST, NORTHWEST};
@@ -36,8 +37,8 @@ class Game {
 		Game(int tWidth, int tHeight);
 		void init(int tWidth, int tHeight);
 		
-		Map* getMap() { return this->map;}
-		Referee* getReferee() { return this->ref;}
+		Map* getMap() {return this->map;}
+		Referee* getReferee() {return this->ref;}
 		void addMessage(Message* msg);
 		deque<Message> getMessages();
 
@@ -51,14 +52,12 @@ class Game {
 		void moveTarget(Direction dir);
 		void dropItem(int index);
 		void pickUpItem(int index);
-		bool processKey(char key);
+		int processKey(char key);
 		void setCharAt(char setChar, int x, int y);
 		bool isPassable(Coord* nextLoc);
+		unsigned int getTime();
 		void tick();
 		void run();
-
-		//static const int WIDTH = 80, HEIGHT = 50;
-		
 };
 
 #endif

@@ -19,7 +19,7 @@ int main() {
 	//start_color();
 	keypad(stdscr, TRUE);
 
-	nodelay(stdscr, TRUE);
+//	nodelay(stdscr, TRUE);
 	int row,col;
 	getmaxyx(stdscr,row,col);		/* get the number of rows and columns */
 	

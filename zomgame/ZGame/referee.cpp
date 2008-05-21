@@ -28,7 +28,7 @@ bool Referee::resolveAttack(Entity* attacker, Entity* defender, Message* msg) {
 	if (defender->getName() == game->getPlayer()->getName()){message += "you";} else {message += "the " + defender->getName();}
 	//check probability to hit based on player skill first
 	if (rand() % 100 < 20){ //durr magic number 20
-		message += " but the attack missses.";
+		message += " but the attack misses.";
 		msg->setMsg(message.c_str());	
 		return false;
 	} 
@@ -44,6 +44,12 @@ bool Referee::resolveAttack(Entity* attacker, Entity* defender, Message* msg) {
 	if (dmg >= maxDmg/2) { message += " with a powerful blow!";}
 	msg->setMsg(message.c_str());
 	defender->getAttribute("Health")->changeCurValueBy(-dmg);
+
+	//break the weapon if it runs out of durability
+	if (attacker->getEquippedWeapon()->getDurability()->getCurValue() <= 0){
+		attacker->getInventory()->removeItem(attacker->getEquippedWeapon());
+		attacker->equip(NULL);
+	}
 	if (defender->getAttribute("Health")->getCurValue() <= 0) {
 		return true;
 	}
@@ -59,4 +65,3 @@ bool Referee::resolve(Player* player, void* target, int (*action)(Player*, void*
 	//delete log;
 	return result == 0;
 }
-

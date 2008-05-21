@@ -83,9 +83,6 @@ void Display::draw() {
 	} 
 	
 	draw(game->getPlayer());
-
-	wrefresh(stdscr);
-	refresh();
 	
 }
 
@@ -201,7 +198,7 @@ void Display::draw(Player* player){
 	mvwprintw(menuWin, 4, 2, "Strength: %d", player->getAttribute("Strength")->getCurValue());
 	mvwprintw(menuWin, 5, 2, "WeapDur: %d/%d", player->getEquippedWeapon()->getDurability()->getCurValue(), 
 									player->getEquippedWeapon()->getDurability()->getMaxValue());
-	
+	mvwprintw(menuWin, 6, 2, "TickCount: %d", game->getTime());
 
 	box(menuWin, 0,0);
 	mvwprintw(menuWin, 0, 3, "PLAYER");
@@ -277,15 +274,15 @@ bool Display::invIsToggled(){
 }
 
 /* Decides what context to process the key in. Returns false if no context */
-bool Display::processKey(int input){
+int Display::processKey(int input){
 	if (popupIsToggled()){
 		this->processKeyUseItem(input);
-		return true;
+		return 0;
 	} else if (invIsToggled()){
 		this->processKeyInventory(input);
-		return true;
+		return 0;
 	}
-	return false;
+	return -1;
 }
 
 bool Display::popupIsToggled(){
@@ -324,7 +321,7 @@ bool Display::processKeyInventory(int input){
 	} else if (input == 10) { //enter key
 		showItemDetail = !showItemDetail;
 	} else if (input == 'u'){
-		togglePopup();
+		togglePopup();	//show the abilities of the item
 	} else {
 		return false;
 	}
