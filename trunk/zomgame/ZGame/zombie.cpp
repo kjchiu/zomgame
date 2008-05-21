@@ -1,6 +1,8 @@
 #include "zombie.h"
+#include "wanderstate.h"
 #include <ctime>
-//friend code 2105-9270-2682 
+
+
 Zombie::Zombie() {
 	if (rand() % 3 > 1) {
 		color = 5;
@@ -15,7 +17,11 @@ Zombie::Zombie() {
 		addAttribute(new Attribute("Health", 10));
 		addAttribute(new Attribute("Strength", 5));
 	}
-	curAction = NOTHING;
+	curAction = WANDERING;
+	
+	brains = (BrainState*)malloc(sizeof(BrainState) * num_states);
+	brains[0] = BrainState(this);
+	brains[1] = WanderState(this);
 }
 
 int Zombie::getCurrentAction(){
@@ -35,12 +41,13 @@ void Zombie::setTarget(Coord* nTarget){
 }
 
 void Zombie::tick(Game* game) { //eat_brains()
-	if (curAction == NOTHING){
+	/*if (curAction == NOTHING){
 //		game->addMessage(new Message("Zombie is lazy"));
 		return;//?
 	} else if (curAction == WANDERING) {
 		string* msg = new string("Zombie is wandering");
 		game->addMessage(new Message(msg));
 		game->moveEntity(this, Game::NORTH);
-	}
+	}*/
+	//brains[curAction].tick(game);
 }

@@ -249,6 +249,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\wanderstate.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\weapon.cpp"
 				>
 			</File>
@@ -340,6 +344,10 @@
 			</File>
 			<File
 				RelativePath=".\terrain.h"
+				>
+			</File>
+			<File
+				RelativePath=".\wanderstate.h"
 				>
 			</File>
 			<File
