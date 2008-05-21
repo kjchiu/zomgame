@@ -10,7 +10,7 @@ bool Referee::doActionOnItem(Item* item, int skillIndex){
 }
 
 bool Referee::pickUpItem(Entity* picker, Item* item, Message* msg){
-	string message = "You";//picker->getName();
+	string message = "You";
 	message += " picked up the ";
 	message += item->getName();
 	msg->setMsg(message.c_str());
@@ -23,21 +23,28 @@ bool Referee::pickUpItem(Entity* picker, Item* item, Message* msg){
 
 bool Referee::resolveAttack(Entity* attacker, Entity* defender, Message* msg) {
 	//subtract stamina
-	string message = attacker->getName() + " attacks " + defender->getName();
+	string message = attacker->getName() + " attacks ";
+	if (attacker->getName() == game->getPlayer()->getName()){message = "You attack ";}
+	if (defender->getName() == game->getPlayer()->getName()){message += "you";} else {message += "the " + defender->getName();}
 	//check probability to hit based on player skill first
 	if (rand() % 100 < 20){ //durr magic number 20
-		message += " but misses.";
+		message += " but the attack missses.";
 		msg->setMsg(message.c_str());	
 		return false;
 	} 
-	int dmg = rand() % 10;
-	defender->setCurHealth(defender->getCurHealth() - dmg);
-	//points display is gay. percentile-based damage output yes.
-	if (dmg < 3) { message += " and strikes a glancing blow."; }
-	else if (dmg > 2 && dmg < 7) { message += " with a solid hit. "; }
-	else if (dmg >= 7) { message += " with a powerful blow!";}
+
+	//work on damage calculations and output messages
+	attacker->getEquippedWeapon()->getDurability()->changeCurValueBy(-(rand()%3)-1);
+	int maxDmg = attacker->getAttribute("Strength")->getCurValue() + attacker->getEquippedWeapon()->getDamage();
+	int dmg = rand() % maxDmg; 
+	defender->getAttribute("Health")->changeCurValueBy(-dmg);
+	//points display is gay. percentile-based verbal damage output yes.
+	if (dmg < maxDmg/5) { message += " with a weak strike."; }
+	if (dmg >= maxDmg/5 && dmg < maxDmg/2) { message += " with a solid hit. "; }
+	if (dmg >= maxDmg/2) { message += " with a powerful blow!";}
 	msg->setMsg(message.c_str());
-	if (defender->getCurHealth() < 0) {
+	defender->getAttribute("Health")->changeCurValueBy(-dmg);
+	if (defender->getAttribute("Health")->getCurValue() <= 0) {
 		return true;
 	}
 	return false;

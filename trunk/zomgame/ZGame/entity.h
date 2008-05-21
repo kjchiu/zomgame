@@ -6,6 +6,7 @@
 #include "attribute.h"
 #include "renderable.h"
 #include "inventory.h"
+#include "weapon.h"
 
 using namespace std;
 
@@ -14,23 +15,22 @@ class Entity : public Renderable {
 		Coord* location;
 		Inventory* inventory;
 		vector<Attribute*>* attributes;
-		int curHealth, maxHealth;
+		Weapon* equippedWeapon;
 		
 	public:
 		Entity();
 		Entity(string name);
 		void init();
 		virtual void addAttribute(Attribute* att);
-		virtual vector<Attribute*>* getAttributes();
-		virtual int getCurHealth();
+		void equip(Weapon* weapon);
+		vector<Attribute*>* getAttributes();
+		int getAttributeValue(string attName);
+		Attribute* getAttribute(string attName);
+		Weapon* getEquippedWeapon();
 		virtual Inventory* getInventory();
-		virtual int getMaxHealth();
 		virtual Coord* getLoc();
-		virtual int getValueOf(string attName);
-		virtual void setCurHealth(int nCurHealth);
+		virtual int getValueOf(string attName); //returns the curValue only
 		virtual void setLoc(Coord* nLocation);	
-		virtual void setMaxHealth(int nMaxHealth);
-	
 };
 
 #endif

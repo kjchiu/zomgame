@@ -5,7 +5,6 @@
 Map::Map(){
 	height = MAPHEIGHT;
 	width = MAPWIDTH;
-	srand(time(0));
 	for (int i=0; i<height*width; ++i) {		
         map[i] = new MapBlock(); //fill the map with blank areas
 		if (rand() % 10 > 8) {

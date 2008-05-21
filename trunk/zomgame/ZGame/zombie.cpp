@@ -6,10 +6,14 @@ Zombie::Zombie() {
 		color = 5;
 		displayChar = 0x151;
 		setName("Uber Zombie");
+		addAttribute(new Attribute("Health", 20));
+		addAttribute(new Attribute("Strength", 15));
 	} else  {
 		color = 5;
 		displayChar = 'Z';
 		setName("Zombie");
+		addAttribute(new Attribute("Health", 10));
+		addAttribute(new Attribute("Strength", 5));
 	}
 	curAction = NOTHING;
 }

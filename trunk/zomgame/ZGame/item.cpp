@@ -1,6 +1,9 @@
 #include "item.h"
 
+int Item::id = 0;
+
 Item::Item(){
+	thisID = ++id;
 	setName("NewItem");
 	setColor(5);
 	setDescription("This is a generic item");
@@ -17,6 +20,10 @@ void Item::addSkill(int skillNum){
 
 int Item::getBulk(){
 	return bulk;
+}
+
+int Item::getID() const {
+	return thisID;	
 }
 
 vector<int>* Item::getSkills(){
@@ -51,4 +58,8 @@ void Item::setType(ItemType nType){
 
 void Item::setWeight(int nWeight){
 	weight = nWeight;
+}
+
+bool Item::operator==(const Item& otherItem) const {
+	return (getID() == otherItem.getID());
 }

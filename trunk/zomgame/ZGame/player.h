@@ -15,12 +15,9 @@ class Player : public Entity{
 	protected:
 		Coord* location;
 		vector<int> skills;
-		Weapon* equippedWeapon;
-
+		
 	public:
 		Player();
-		void equip(Weapon* weapon);
-		Weapon* getEquippedWeapon();
 		Coord* getLoc();
 		void setLoc(Coord* nLocation);
 		vector<int>* getSkills();

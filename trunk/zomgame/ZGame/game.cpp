@@ -18,6 +18,7 @@ void Game::init(int tWidth, int tHeight){
 	map = new Map();
 	player = new Player();
 	player->setName("PlayerMan");
+	player->getName().c_str();
 	player->setLoc(new Coord(10,10));
 	target = new Coord(player->getLoc());
 	map->getBlockAt(player->getLoc())->addEntity(player);
@@ -47,45 +48,27 @@ void Game::init(int tWidth, int tHeight){
 	zombones->setLoc(new Coord(2,6));
 	map->getBlockAt(zombones->getLoc())->addEntity(zombones);
 	zombies.push_back(zombones);
-	Item* item1 = new Item();
-	item1->setName("Item1");
-	Item* item2 = new Item();
-	item2->setName("Item2");
-	Item* item3 = new Item();
-	item3->setName("Item3");
-	Item* item4 = new Item();
-	item4->setName("Item4");
+	
 	Item* foodItem = new Item();
 	foodItem->setName("Chocolate Bar");
 	foodItem->setType(Item::FOOD);
 	foodItem->addSkill(skill_list.getSkillID("Consume"));
 	foodItem->setDescription("A good-looking chocolate bar wrapped in foil.");
-	
-	player->getInventory()->addItem(item1);
-	player->getInventory()->addItem(item2);
-	player->getInventory()->addItem(item3);
-	player->getInventory()->addItem(item4);
 	player->getInventory()->addItem(foodItem);
 
-	Weapon* weapon1 = new Weapon();
-	map->getBlockAt(7,5)->addItem(weapon1);
+	player->addAttribute(new Attribute("Strength", 10));
+
+	Weapon* katana = new Weapon("Katana", 5);
+	katana->addSkill(skill_list.getSkillID("Equip"));
+	katana->setDescription("Damn, it's a ninja weapon!");
+	map->getBlockAt(7,5)->addItem(katana);
+
 	Weapon* weapon2 = new Weapon();
 	weapon2->setName("Weapon2");
 	map->getBlockAt(7,5)->addItem(weapon2);
 	addMessage(new Message(weapon2->getListName().c_str()));
-
-	/*Prop* wall1 = new Prop();
-	wall1->setName("Wall");
-	wall1->setDisplayChar(ACS_CKBOARD);
-	wall1->setPassable(false);
-	map->getBlockAt(5,5)->addProp(wall1);
-	wall1 = new Prop();
-	wall1->setName("Wall");
-	wall1->setDisplayChar(ACS_CKBOARD);
-	wall1->setPassable(false);
-	map->getBlockAt(5,6)->addProp(wall1);*/
 }
-
+	
 /**
  *	Force the redraw otherwise message isnt drawn 
  *	until the next tick.
@@ -197,7 +180,8 @@ bool Game::processKey(char key){
 			}
 		}
 	} else if (key=='m'){
-		Message* test = new Message("123456789 223456789 323456789 423456789 523456789 623456789 723456789 823456789 923456789 023456789 123456789 123456789 123456789 123456789 123456789 123456789");
+		player->getAttribute("Strength")->changeCurValueBy(-1);
+		Message* test = new Message("Strength reduced by 1");
 		addMessage(test);
 	} else if (key=='w') {
 		moveEntity(player, NORTH);

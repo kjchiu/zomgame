@@ -10,7 +10,7 @@ Message* MessageFactory::getItems(std::vector<Item*> items) {
 		msg = "On the ground lies ";
 		
 		msg += items.at(0)->getListName();
-		for (int i = 1; i < items.size(); i++) {
+		for (unsigned int i = 1; i < items.size(); i++) {
 			if (i == items.size() - 1) {
 				msg += " and " + items.at(i)->getListName();
 			} else {

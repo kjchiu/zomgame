@@ -12,14 +12,6 @@ Player::Player(){
 	equip(NULL);
 }
 
-void Player::equip(Weapon* weapon){
-	equippedWeapon = weapon;
-}
-
-Weapon* Player::getEquippedWeapon(){
-	return equippedWeapon;
-}
-
 Coord* Player::getLoc(){
 	return location;
 }

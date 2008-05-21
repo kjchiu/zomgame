@@ -82,6 +82,8 @@ void Display::draw() {
 	} else if (attToggle) {
 	} 
 	
+	draw(game->getPlayer());
+
 	wrefresh(stdscr);
 	refresh();
 	
@@ -121,9 +123,6 @@ void Display::draw(Map* map) {
 	//now display it in the play window (playWin)
 	wrefresh(playWin);
 	
-	//MENU
-	box(menuWin, 0,0);
-	wrefresh(menuWin);
 }
 
 
@@ -183,22 +182,51 @@ void Display::draw(Inventory* inventory){
 	wrefresh(invWin);		
 }
 
+void Display::draw(Player* player){
+	wclear(menuWin); //first clear the window
+
+	string condition = "Healthy";
+	//player = game->getPlayer();
+	int curHealth = player->getAttribute("Health")->getCurValue(), 
+		maxHealth = player->getAttribute("Health")->getMaxValue();
+	if (curHealth < maxHealth/1){condition = "Slightly Wounded";}
+	if (curHealth < maxHealth/2){condition = "Wounded";}
+	if (curHealth < maxHealth/3){condition = "Badly Wounded";}
+	if (curHealth < maxHealth/4){condition = "Critical";}
+	if (curHealth < maxHealth/5){condition = "Near Death";}
+	
+	mvwprintw(menuWin, 1, 2, "%s", game->getPlayer()->getName().c_str());
+	mvwprintw(menuWin, 2, 2, "Condition: %d/%d", curHealth, maxHealth);
+	mvwprintw(menuWin, 3, 2, "Weapon: %s", player->getEquippedWeapon()->getName().c_str());
+	mvwprintw(menuWin, 4, 2, "Strength: %d", player->getAttribute("Strength")->getCurValue());
+	mvwprintw(menuWin, 5, 2, "WeapDur: %d/%d", player->getEquippedWeapon()->getDurability()->getCurValue(), 
+									player->getEquippedWeapon()->getDurability()->getMaxValue());
+	
+
+	box(menuWin, 0,0);
+	mvwprintw(menuWin, 0, 3, "PLAYER");
+	wrefresh(menuWin);
+}
+
 void Display::drawInventoryList(vector<Item*> items, int xLoc, int selection, bool highlight){
 	int height, width;
 	getmaxyx(invWin, height, width);
 
 	int yLoc = 1;
 	for (unsigned int i=minIndex; i<items.size() && i<=maxIndex; i++){
-		string itemName = " ";
+		string itemName = "  ";
 		Item* item = items.at(i);
+		if (item == game->getPlayer()->getEquippedWeapon()){
+			itemName = "E ";
+		}
 		if (i == selection && highlight){
 			//set current working color to be yellow on black
 			wattron(invWin, COLOR_PAIR(YELLOW_BLACK));
-			itemName = "-";
+			itemName += "-";
 			itemName += item->getName().c_str();
 			itemName += "-";
 		} else {
-			itemName += item->getName().c_str();
+			itemName += " " + item->getName();
 		}
 		mvwprintw(invWin,yLoc,xLoc, "%s  ", itemName.c_str());
 		yLoc++;
@@ -217,7 +245,7 @@ void Display::drawItemDetails(Item* item, int height, int width){
 	if (item->getType().compare("Weapon") == 0) { //display weapon stats if its a weapon
 		Weapon* weapon = (Weapon*)item;
 		mvwprintw(invWin, 2, width-30, "Weapon Class: %s", weapon->getWClass().c_str());
-		mvwprintw(invWin, 3, width-30, "Durability: %d/%d", weapon->getCurDur(), weapon->getMaxDur());
+		mvwprintw(invWin, 3, width-30, "Durability: %d/%d", weapon->getDurability()->getCurValue(), weapon->getDurability()->getMaxValue());
 		mvwprintw(invWin, 4, width-30, "Base Damage: %d", weapon->getDamage());
 	}
 }
