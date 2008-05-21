@@ -47,6 +47,12 @@ void SkillTable::load(std::string filename) {
 	s.action = &equip;
 	insert(s);
 
+	s.id = skill_count++;
+	s.name = "Unequip";
+	s.description = "Unequip a weapon.";
+	s.action = &unequip;
+	insert(s);
+
 	//INHERENT
 	s.id = skill_count++;
 	s.name = "Consume";
@@ -82,7 +88,19 @@ int eat(Player* p, void* target, vector<Message*>* log) {
 int equip(Player* p, void* target, vector<Message*>* log) {
 	Weapon* weapon = static_cast<Weapon*>(target);
 	p->equip(weapon);
+	weapon->removeSkill(skill_list.getSkillID("Equip"));
+	weapon->addSkill(skill_list.getSkillID("Unequip"));
 	std::string* msg = new std::string("Equipped " + weapon->getListName());
+	log->push_back(new Message(msg));
+	return 0;
+}
+
+int unequip(Player* p, void* target, vector<Message*>* log) {
+	Weapon* weapon = static_cast<Weapon*>(target);
+	p->equip(NULL);
+	weapon->removeSkill(skill_list.getSkillID("Unequip"));
+	weapon->addSkill(skill_list.getSkillID("Equip"));
+	std::string* msg = new std::string("You unequipped " + weapon->getListName());
 	log->push_back(new Message(msg));
 	return 0;
 }

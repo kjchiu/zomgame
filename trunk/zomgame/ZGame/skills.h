@@ -40,9 +40,10 @@ public:
 	int getSkillID(std::string skillName);
 };
 
-
+//SKILL FUNCTIONS
 int repair(Player* p, void* target, vector<Message*>* log);
 int eat(Player* p, void* target, vector<Message*>* log);
 int equip(Player* p, void* target, vector<Message*>* log);
+int unequip(Player* p, void* target, vector<Message*>* log);
 
 #endif
