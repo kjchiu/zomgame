@@ -19,17 +19,21 @@ class Item : public Renderable {
 		ItemType type; //determines what type of item this is
 		string typeNames[4];
 		vector<int>* associatedSkills;
+		static int id;
+		int thisID;
 		
 	public:
 		Item();
 		void addSkill(int skillNum);
 		int getBulk();
+		int getID() const;
 		string getType();
 		int getWeight();	
 		vector<int>* getSkills();
 		void setBulk(int nBulk);
 		void setType(ItemType nType);
 		void setWeight(int nWeight);
+		bool operator==(const Item&) const;
 
 
 };

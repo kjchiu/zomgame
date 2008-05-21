@@ -4,6 +4,7 @@
 #define _WEAPON_H
 
 #include "item.h"
+#include "attribute.h"
 #include <string>
 
 using namespace std;
@@ -13,20 +14,17 @@ class Weapon : public Item {
 	private:
 		string wClass; //relates to what skill is associated with the weapon
 		int damage;
-		int curDurability;
-		int maxDurability; //likely always going to have 100, maybe this can be modified?
+		Attribute* durability; //likely always going to have 100, maybe this can be modified?
 
 	public:
 		Weapon();
+		Weapon(string nName, int damage);
+		void init(string nName, int damage);
+		Attribute* getDurability();
 		string getWClass();
-		int getCurDur();
 		int getDamage();
-		int getMaxDur();
 		void setWClass(string nClass);
-		void setCurDur(int nCurD);	
-		void setDamage(int nDmg);
-		void setMaxDur(int nMaxD);
-		
+		void setDamage(int nDamage);
 };
 
 #endif

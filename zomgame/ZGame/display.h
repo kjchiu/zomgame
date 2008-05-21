@@ -66,6 +66,7 @@ class Display {
 		void draw(Inventory* inventory);
 		void draw(Map* map);	
 		void draw(deque<Message> msgs);
+		void draw(Player* player);
 		void drawInventoryList(vector<Item*> items, int yLoc, int selection, bool highlight);
 		void drawItemDetails(Item* item, int height, int width);
 		void drawPopup(Item* item);	//draw the skills an item can utilize 
