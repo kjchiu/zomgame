@@ -16,6 +16,7 @@ class Coord {
 		int getX() const;
 		int getY() const;
 		Coord operator+(const Coord&) const;
+		Coord operator-(const Coord&) const;
 		void setCoord(const Coord* coord);
 		bool equals(Coord* coord);
 		string* toString();

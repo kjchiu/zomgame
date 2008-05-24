@@ -32,6 +32,8 @@ void Display::init() {
 
 	// TODO: we really need to move colour palette stuff somewhere else
 #define DEFAULT_COLOR 0
+	if (can_change_color())
+		init_color(15, 0, 1000, 1000);
 	init_pair(0, COLOR_WHITE, COLOR_BLACK);
 	init_pair(1, COLOR_GREEN, COLOR_BLACK);
 	init_pair(2, COLOR_RED, COLOR_BLACK);
@@ -39,6 +41,7 @@ void Display::init() {
 #define YELLOW_BLACK 4
 	init_pair(4, COLOR_YELLOW, COLOR_BLACK);  
 	init_pair(5, COLOR_MAGENTA, COLOR_BLACK);
+	init_pair(6, 15, COLOR_BLACK);
 #define TARGET_COLOR COLOR_RED
 #define TARGET_PAIR 6
 }

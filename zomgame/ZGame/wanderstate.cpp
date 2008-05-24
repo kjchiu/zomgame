@@ -1,7 +1,7 @@
 #include "wanderstate.h"
 
 WanderState::WanderState(Zombie* _zombie) : BrainState(_zombie){
-	dir = Game::SOUTH;
+	dir = SOUTH;
 	wanderChance = 40;
 }
 
@@ -11,19 +11,20 @@ void WanderState::tick(Game* game) {
 		int newdir = rand() % 4;
 		switch(newdir) {
 			case 0:
-				dir = Game::NORTH;
+				dir = NORTH;
 				break;
 			case 1:
-				dir = Game::EAST;
+				dir = EAST;
 				break;
 			case 2:
-				dir = Game::SOUTH;
+				dir = SOUTH;
 				break;
 			case 3:
-				dir = Game::WEST;
+				dir = WEST;
 				break;
 		}
 	}
-	game->moveEntity(zombie, dir);
+	if (chance > 10)
+		zombie->queueMove(game->getTime() + 20, dir);
 
 }

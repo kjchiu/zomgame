@@ -201,6 +201,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\huntingstate.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\inventory.cpp"
 				>
 			</File>
@@ -292,6 +296,10 @@
 			</File>
 			<File
 				RelativePath=".\globals.h"
+				>
+			</File>
+			<File
+				RelativePath=".\huntingstate.h"
 				>
 			</File>
 			<File
