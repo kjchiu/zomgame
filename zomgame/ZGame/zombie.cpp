@@ -73,7 +73,7 @@ void Zombie::tick(Game* game) { //eat_brains()
 		if (moveQueue.front().first > game->getTime()) {
 			break;
 		} else {
-			game->moveEntity(this, moveQueue.front().second);
+			game->move(this, moveQueue.front().second);
 			moveQueue.pop_front();
 		}
 	}

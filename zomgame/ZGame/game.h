@@ -33,8 +33,6 @@ class Game {
 		unsigned int tickCount;
 
 	public:		
-		
-
 		Game();
 		Game(int tWidth, int tHeight);
 		void init(int tWidth, int tHeight);
@@ -51,6 +49,8 @@ class Game {
 		void drawMenu();
 
 		bool moveEntity(Entity* ent, Direction dir);
+		bool move(Zombie* z, Direction dir);
+		bool move(Player* p, Direction dir);
 		void moveTarget(Direction dir);
 		void dropItem(int index);
 		void pickUpItem(int index);
