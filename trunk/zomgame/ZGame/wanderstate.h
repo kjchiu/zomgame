@@ -6,7 +6,7 @@ private:
 	WanderState() : BrainState(NULL) {};
 protected:
 	int wanderChance;
-	Game::Direction dir;
+	Direction dir;
 public:
 	WanderState(Zombie*);
 	virtual ~WanderState() {}

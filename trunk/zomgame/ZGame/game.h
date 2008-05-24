@@ -18,6 +18,8 @@ class Referee;
 
 using namespace std;
 
+enum Direction {NORTH, NORTHEAST, EAST, SOUTHEAST, SOUTH, SOUTHWEST, WEST, NORTHWEST};
+
 class Game {
 	private:
 		deque<Message> messages;
@@ -31,7 +33,7 @@ class Game {
 		unsigned int tickCount;
 
 	public:		
-		enum Direction {NORTH, NORTHEAST, EAST, SOUTHEAST, SOUTH, SOUTHWEST, WEST, NORTHWEST};
+		
 
 		Game();
 		Game(int tWidth, int tHeight);

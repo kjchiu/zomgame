@@ -13,7 +13,7 @@ void Entity::init(){
 	color = 2;
 	inventory = new Inventory();
 	attributes = new vector<Attribute*>();
-	addAttribute(new Attribute("Health", 10));
+	addAttribute(new Attribute("Health", 1000));
 	equip(NULL);
 }
 
