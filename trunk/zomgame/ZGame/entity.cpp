@@ -59,7 +59,7 @@ Attribute* Entity::getAttribute(string attName){
 
 Weapon* Entity::getEquippedWeapon(){
 	if (equippedWeapon == NULL){
-		return new Weapon(); //returns bare fists
+		equip(new Weapon()); //returns bare fists
 	}
 	return equippedWeapon;
 }

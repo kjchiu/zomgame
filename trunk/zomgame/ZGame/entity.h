@@ -17,6 +17,7 @@ class Entity : public Renderable {
 		vector<Attribute*>* attributes;
 		Weapon* equippedWeapon;
 		int speed;
+		int siteRadius;
 		
 	public:
 		Entity();
@@ -33,6 +34,7 @@ class Entity : public Renderable {
 		virtual int getValueOf(string attName); //returns the curValue only
 		virtual void setLoc(Coord* nLocation);	
 		virtual int getSpeed() { return speed; }
+		virtual int getSiteRadius() { return siteRadius; }
 };
 
 #endif
