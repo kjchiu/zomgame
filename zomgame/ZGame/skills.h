@@ -2,7 +2,12 @@
 #define _SKILLS_H
 
 #include <string>
-#include <hash_map>
+#ifdef _GCC
+	#include <ext/hash_map>
+	#define stdext __gnu_cxx
+#else
+	#include <hash_map>
+#endif
 #include "player.h"
 #include "message.h"
 #include "messagefactory.h"
