@@ -45,7 +45,7 @@ void Game::init(int tWidth, int tHeight){
 	zombones->setLoc(new Coord(2,6));
 	map->getBlockAt(zombones->getLoc())->addEntity(zombones);
 	zombies.push_back(zombones);
-	for ( int i = 0; i < 200; i++) {
+	for ( int i = 0; i < 1000; i++) {
 		zombones = new Zombie();
 		zombones->setLoc(new Coord(rand() % 50, rand() % 50));
 		map->getBlockAt(zombones->getLoc())->addEntity(zombones);
