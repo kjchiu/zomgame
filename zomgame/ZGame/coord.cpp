@@ -37,9 +37,15 @@ Coord Coord::operator-(const Coord& otherCoord) const {
 bool Coord::equals(Coord* coord) {
 	return this->x == coord->getX() && this->y == coord->getY();
 }
+
 void Coord::setCoord(const Coord* coord) {
 	this->x = coord->getX();
 	this->y = coord->getY();
+}
+
+int Coord::getDistance(const Coord &coord) const {
+	Coord delta = Coord(x - coord.getX(), y - coord.getY());
+	return sqrt((double)(delta.getX() * delta.getX() + delta.getY() * delta.getY()));
 }
 
 string* Coord::toString(){

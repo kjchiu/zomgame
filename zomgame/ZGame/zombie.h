@@ -27,33 +27,32 @@ public:
 	virtual void tick(Game* game) {};
 };
 
-	enum currentAction {NOTHING, WANDERING, INVESTIGATING, HUNTING};
+
+enum currentAction {NOTHING, WANDERING, INVESTIGATING, HUNTING};
+
 class Zombie : public Entity {
 private:
 	friend class BrainState;
 	
-
 protected:
 	Coord* target; 
 	currentAction curAction;
 	BrainState** brains;
+	short* colors;
 	static const int num_states = 4;
 	std::deque<std::pair<int,Direction>> moveQueue;
 	
-
 public:
 	Zombie();
-
 	int getCurrentAction();
 	Coord* getTarget();
 	void setCurrentAction(currentAction nAction);
 	void setTarget(Coord* nTarget);
 	void tick(Game* game); //implements AI
 	void queueMove(int time, Direction dir);
+	virtual int getSiteRadius();
+	virtual short getColor();
 	
-
-	
-
 };
 
 

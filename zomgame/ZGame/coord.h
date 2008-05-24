@@ -4,7 +4,7 @@
 #define _COORD_H
 
 #include <string>
-
+#include "math.h"
 using namespace std;
 
 class Coord {
@@ -17,6 +17,7 @@ class Coord {
 		int getY() const;
 		Coord operator+(const Coord&) const;
 		Coord operator-(const Coord&) const;
+		int getDistance(const Coord &coord) const;
 		void setCoord(const Coord* coord);
 		bool equals(Coord* coord);
 		string* toString();
