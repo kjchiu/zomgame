@@ -248,6 +248,9 @@ void Game::run(){
 	char input;
 	int frameTime = 0;
 	addMessage(MessageFactory::getMessage(skill_list.getSkill(0)->description));
+#ifdef _GCC 
+	addMessage(new Message("yay ming gcc")); 
+#endif
 	while (frameTime >= 0){
 		frameTime = 0;
 		//tick, draw, until something results in quitting

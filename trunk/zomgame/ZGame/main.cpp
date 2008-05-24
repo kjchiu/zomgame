@@ -25,7 +25,9 @@ int main() {
 	
 	Game *game;
 	game = new Game(); //make a new game
+
 	game->run();
+
 	refresh();
 
 	endwin();
