@@ -127,10 +127,60 @@ bool Game::moveEntity(Entity* ent, Direction dir){
 			return false;
 		}
 	}
+}
 
-	
+bool Game::move(Player* p, Direction dir){
+	Coord *moveLoc = new Coord((*directionOffsets[dir]) + (*p->getLoc()));
+	if (moveLoc->getX() < 0 || moveLoc->getY() < 0 || moveLoc->getX() >= map->getWidth() || moveLoc->getY() >= map->getHeight()){
+		return false; //can't move here, outside of map
+	}
+	if (isPassable(moveLoc)){
+		map->getBlockAt(p->getLoc())->removeEntity(p);
+		p->setLoc(moveLoc);
+		map->getBlockAt(p->getLoc())->addEntity(p);
+	} else { //why is it not passable?
+		MapBlock* checkBlock = map->getBlockAt(moveLoc->getX(), moveLoc->getY());
+		if (checkBlock->hasEntities()){  //resolve an attack (what about friendly NPCs?)	
+			Message msg;
+			if (ref->resolveAttack(p, checkBlock->getTopEntity(), &msg)) { //true means the battle was won
+				checkBlock->removeEntity(checkBlock->getTopEntity());
+			}
+			addMessage(&msg);
+		} else {
+			return false;
+		}
+	}		
 	Message *msg = MessageFactory::getItems(map->getBlockAt(moveLoc)->getItems());
 	if (msg) addMessage(msg);
+	return true;
+}
+
+bool Game::move(Zombie* zombie, Direction dir){
+	Coord *moveLoc = new Coord((*directionOffsets[dir]) + (*zombie->getLoc()));
+	if (moveLoc->getX() < 0 || moveLoc->getY() < 0 || moveLoc->getX() >= map->getWidth() || moveLoc->getY() >= map->getHeight()){
+		return false; //can't move here, outside of map
+	}
+	if (isPassable(moveLoc)){
+		map->getBlockAt(zombie->getLoc())->removeEntity(zombie);
+		zombie->setLoc(moveLoc);
+		map->getBlockAt(zombie->getLoc())->addEntity(zombie);
+	} else { //why is it not passable?
+		MapBlock* checkBlock = map->getBlockAt(moveLoc->getX(), moveLoc->getY());
+		if (checkBlock->hasEntities()){  //resolve an attack (what about friendly NPCs?)	
+			Message msg;
+			if (*player->getLoc() == *moveLoc) {
+				if (ref->resolveAttack(zombie, checkBlock->getTopEntity(), &msg)) { //true means the battle was won
+					checkBlock->removeEntity(checkBlock->getTopEntity());
+				}
+				addMessage(&msg);
+			} else {
+				; // wtf stop attacking other zombies
+			}
+			
+		} else {
+			return false;
+		}
+	}		
 	return true;
 
 }
@@ -203,16 +253,16 @@ int Game::processKey(char key){
 		Message* test = new Message("Strength reduced by 1");
 		addMessage(test);
 	} else if (key=='w') {
-		moveEntity(player, NORTH);
+		move(player, NORTH);
 		return 10; //based on speed
 	} else if (key=='a') {
-		moveEntity(player, WEST);
+		move(player, WEST);
 		return 10; //based on speed
 	}  else if (key=='s') {
-		moveEntity(player, SOUTH);
+		move(player, SOUTH);
 		return 10; //based on speed
 	} else if (key=='d') {
-		moveEntity(player, EAST);
+		move(player, EAST);
 		return 10; //based on speed
 	} else if (key=='.') {
 		return 10;

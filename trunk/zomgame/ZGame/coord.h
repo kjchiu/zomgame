@@ -17,6 +17,7 @@ class Coord {
 		int getY() const;
 		Coord operator+(const Coord&) const;
 		Coord operator-(const Coord&) const;
+		bool operator==(const Coord&) const;
 		int getDistance(const Coord &coord) const;
 		void setCoord(const Coord* coord);
 		bool equals(Coord* coord);
