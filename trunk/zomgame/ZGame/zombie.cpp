@@ -6,7 +6,7 @@
 Zombie::Zombie() {
 	if (rand() % 3 > 1) {
 		color = 5;
-		displayChar = 0x151;
+		displayChar = 'z';
 		setName("Uber Zombie");
 		addAttribute(new Attribute("Health", 20));
 		addAttribute(new Attribute("Strength", 15));
@@ -19,9 +19,9 @@ Zombie::Zombie() {
 	}
 	curAction = WANDERING;
 	
-	brains = (BrainState*)malloc(sizeof(BrainState) * num_states);
-	brains[0] = BrainState(this);
-	brains[1] = WanderState(this);
+	brains = new BrainState*[num_states];
+	brains[0] = new BrainState(this);
+	brains[1] = new WanderState(this);
 }
 
 int Zombie::getCurrentAction(){
@@ -41,13 +41,5 @@ void Zombie::setTarget(Coord* nTarget){
 }
 
 void Zombie::tick(Game* game) { //eat_brains()
-	/*if (curAction == NOTHING){
-//		game->addMessage(new Message("Zombie is lazy"));
-		return;//?
-	} else if (curAction == WANDERING) {
-		string* msg = new string("Zombie is wandering");
-		game->addMessage(new Message(msg));
-		game->moveEntity(this, Game::NORTH);
-	}*/
-	//brains[curAction].tick(game);
+	brains[curAction]->tick(game);
 }

@@ -48,7 +48,7 @@ class Game {
 		void draw();
 		void drawMenu();
 
-		void moveEntity(Entity* ent, Direction dir);
+		bool moveEntity(Entity* ent, Direction dir);
 		void moveTarget(Direction dir);
 		void dropItem(int index);
 		void pickUpItem(int index);

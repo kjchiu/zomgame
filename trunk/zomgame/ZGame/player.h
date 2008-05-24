@@ -11,7 +11,7 @@
 struct Skill;
 class SkillTable;
 
-class Player : public Entity{
+class Player : public Entity {
 	protected:
 		Coord* location;
 		vector<int> skills;

@@ -40,16 +40,17 @@ void Game::init(int tWidth, int tHeight){
 	directionOffsets[6] = new Coord(-1,0);
 	directionOffsets[7] = new Coord(-1,-1);
 
-	Entity* ent1 = new Entity("Zombie 1");
-	ent1->setDisplayChar('Z');
-	ent1->setColor(3);
 
-	map->getBlockAt(6,6)->addItem(new Item());
-	map->getBlockAt(1,1)->addEntity(ent1);
 	Zombie* zombones = new Zombie();
 	zombones->setLoc(new Coord(2,6));
 	map->getBlockAt(zombones->getLoc())->addEntity(zombones);
 	zombies.push_back(zombones);
+	for ( int i = 0; i < 100; i++) {
+		zombones = new Zombie();
+		zombones->setLoc(new Coord(rand() % 50, rand() % 50));
+		map->getBlockAt(zombones->getLoc())->addEntity(zombones);
+		zombies.push_back(zombones);
+	}
 	
 	Item* foodItem = new Item();
 	foodItem->setName("Chocolate Bar");
@@ -105,30 +106,32 @@ bool Game::isPassable(Coord* nextLoc){
 	return false;
 }
 
-void Game::moveEntity(Entity* ent, Direction dir){
-	Coord moveLoc = (*directionOffsets[dir]) + (*ent->getLoc());
-	if (moveLoc.getX() < 0 || moveLoc.getY() < 0 || moveLoc.getX() >= map->getWidth() || moveLoc.getY() >= map->getHeight()){
-		return; //can't move here, outside of map
+bool Game::moveEntity(Entity* ent, Direction dir){
+	Coord *moveLoc = new Coord((*directionOffsets[dir]) + (*ent->getLoc()));
+	if (moveLoc->getX() < 0 || moveLoc->getY() < 0 || moveLoc->getX() >= map->getWidth() || moveLoc->getY() >= map->getHeight()){
+		return false; //can't move here, outside of map
 	}
-	if (isPassable(&moveLoc)){
+	if (isPassable(moveLoc)){
 		map->getBlockAt(ent->getLoc())->removeEntity(ent);
-		ent->setLoc(&moveLoc);
+		ent->setLoc(moveLoc);
 		map->getBlockAt(ent->getLoc())->addEntity(ent);
 	} else { //why is it not passable?
-		MapBlock* checkBlock = map->getBlockAt(moveLoc.getX(), moveLoc.getY());
+		MapBlock* checkBlock = map->getBlockAt(moveLoc->getX(), moveLoc->getY());
 		if (checkBlock->hasEntities()){  //resolve an attack (what about friendly NPCs?)	
 			Message msg;
 			if (ref->resolveAttack(ent, checkBlock->getTopEntity(), &msg)) { //true means the battle was won
 				checkBlock->removeEntity(checkBlock->getTopEntity());
 			}
 			addMessage(&msg);
+		} else {
+			return false;
 		}
 	}
-	// move was valid,  reset target
-	this->target->setCoord(ent->getLoc());
+
 	
-	Message *msg = MessageFactory::getItems(map->getBlockAt(&moveLoc)->getItems());
+	Message *msg = MessageFactory::getItems(map->getBlockAt(moveLoc)->getItems());
 	if (msg) addMessage(msg);
+	return true;
 
 }
 
@@ -261,6 +264,10 @@ void Game::run(){
 		frameTime = display->processKey(input);
 		if (frameTime <= -1){ //if display does not need to process the key 
 			frameTime = this->processKey(input);	//if no windows are open, process in the game	
+			this->target->setCoord(getPlayer()->getLoc());
+		}
+		for (int i = 0; i < zombies.size(); i++) {
+			zombies.at(i)->tick(this);
 		}
 		tickCount += frameTime;
 	}
