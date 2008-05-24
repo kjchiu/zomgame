@@ -32,7 +32,7 @@ public:
 protected:
 	Coord* target; 
 	currentAction curAction;
-	BrainState* brains;
+	BrainState** brains;
 	static const int num_states = 4;
 
 public:

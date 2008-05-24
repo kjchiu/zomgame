@@ -1,7 +1,7 @@
 #include "player.h"
 
 
-Player::Player(){
+Player::Player() : Entity(){
 	name = "NameHere";
 	location = new Coord();
 	displayChar = '@';
@@ -9,7 +9,7 @@ Player::Player(){
 	skills.push_back(1);
 	skills.push_back(2);
 	skills.push_back(3);
-	equip(NULL);
+	
 }
 
 Coord* Player::getLoc(){

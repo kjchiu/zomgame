@@ -14,6 +14,7 @@ void Entity::init(){
 	inventory = new Inventory();
 	attributes = new vector<Attribute*>();
 	addAttribute(new Attribute("Health", 10));
+	equip(NULL);
 }
 
 void Entity::addAttribute(Attribute* att){

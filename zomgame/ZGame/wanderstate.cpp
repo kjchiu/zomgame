@@ -2,11 +2,14 @@
 
 WanderState::WanderState(Zombie* _zombie) : BrainState(_zombie){
 	dir = Game::SOUTH;
+	wanderChance = 40;
 }
 
 void WanderState::tick(Game* game) {
-	if (rand() % 100 < this->wanderChance) {
-		switch(rand() % 4) {
+	int chance = rand() % 100;
+	if (chance < this->wanderChance) {
+		int newdir = rand() % 4;
+		switch(newdir) {
 			case 0:
 				dir = Game::NORTH;
 				break;
@@ -22,4 +25,5 @@ void WanderState::tick(Game* game) {
 		}
 	}
 	game->moveEntity(zombie, dir);
+
 }
