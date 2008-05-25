@@ -10,8 +10,8 @@ void HuntingState::tick(Game* game) {
 		} 
 	Coord delta = *game->getPlayer()->getLoc() - *zombie->getLoc();
 	Direction dx, dy;
-	dx = (delta.getX() > 0) ? Direction::EAST : Direction::WEST;
-	dy = (delta.getY() > 0) ? Direction::SOUTH : Direction::NORTH;
+	dx = (delta.getX() > 0) ? ::EAST : ::WEST;
+	dy = (delta.getY() > 0) ? ::SOUTH : ::NORTH;
 	Direction dir = (abs(delta.getX()) > abs(delta.getY())) ? dx : dy;
 	if (delta.getX() || delta.getY())
 		zombie->queueMove(game->getTime() + zombie->getSpeed(), dir);

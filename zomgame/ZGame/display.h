@@ -73,8 +73,8 @@ class Display {
 		bool invIsToggled();
 		bool popupIsToggled();
 		int processKey(int input);
-		bool processKeyInventory(int input);
-		bool processKeyUseItem(int input);
+		int processKeyInventory(int input);
+		int processKeyUseItem(int input);
 		void toggleInventory(bool selectedSide);
 		void toggleAttributes();
 		void togglePopup();

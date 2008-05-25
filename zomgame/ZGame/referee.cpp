@@ -9,14 +9,27 @@ bool Referee::doActionOnItem(Item* item, int skillIndex){
 	return true;
 }
 
-bool Referee::pickUpItem(Entity* picker, Item* item, Message* msg){
-	string message = "You";
-	message += " picked up the ";
-	message += item->getName();
+bool Referee::dropItem(Entity* dropper, int index, Message* msg){
+	Item* item = dropper->getInventory()->getItemAt(index);
+	dropper->getInventory()->removeItem(item);
+	game->getMap()->getBlockAt(dropper->getLoc())->addItem(item);
+	string message = "You dropped " + item->getListName();
 	msg->setMsg(message.c_str());
+	return true;
+}
+
+bool Referee::pickUpItem(Entity* picker, MapBlock* loc, int index, Message* msg){
+	if (loc->getItems().size() == 0){
+		return false;
+	}
+	
+	Item* item = loc->getItemAt(index);
+	loc->removeItem(item);
 	
 	//check for bulk
 	picker->getInventory()->addItem(item);
+	string retString = "You pick up " + item->getListName();
+	msg->setMsg(retString.c_str());
 
 	return true;
 }
@@ -56,6 +69,7 @@ bool Referee::resolveAttack(Entity* attacker, Entity* defender, Message* msg) {
 	return false;
 }
 
+/* Performs a skill (action) on a target */
 bool Referee::resolve(Player* player, void* target, int (*action)(Player*, void*, vector<Message*>*)) {	
 	vector<Message*> log;
 	int result =  action(player, target, &log);
