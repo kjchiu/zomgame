@@ -47,6 +47,7 @@ class Game {
 		Coord* getTarget();
 		void draw();
 		void drawMenu();
+		int processKey(int input);
 
 		bool moveEntity(Entity* ent, Direction dir);
 		bool move(Zombie* z, Direction dir);

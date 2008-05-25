@@ -315,6 +315,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\keycodes.h"
+				>
+			</File>
+			<File
 				RelativePath=".\map.h"
 				>
 			</File>

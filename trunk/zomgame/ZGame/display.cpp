@@ -1,4 +1,5 @@
 #include "display.h"
+#include "keycodes.h"
 #include <deque>
 
 using namespace std;
@@ -272,8 +273,16 @@ void Display::drawPopup(Item* item){
 	wrefresh(popupWin);	
 }
 
+Entity* Display::getCenter() {
+	return center;
+}
+
 bool Display::invIsToggled(){
 	return dState->invIsToggled();
+}
+
+bool Display::popupIsToggled(){
+	return dState->popupIsToggled();
 }
 
 /* Decides what context to process the key in. Returns false if no context */
@@ -286,10 +295,6 @@ int Display::processKey(int input){
 	return -1;
 }
 
-bool Display::popupIsToggled(){
-	return dState->popupIsToggled();
-}
-
 int Display::processKeyInventory(int input){
 	wclear(invWin);
 	if (input == 'i'){
@@ -297,21 +302,21 @@ int Display::processKeyInventory(int input){
 		showItemDetail = false;
 		this->toggleInventory(true);
 		return 5;
-	} else if (input == 2) { //down
+	} else if (input == WIN_KEY_DOWN) { //down
 		if (!showItemDetail) {
 			if (dState->invIsHighlighted()){ inventorySelection += 1; }
 			else {groundSelection += 1; }
 			cleanSelections();
 		} 
-	} else if (input == 3) { //up
+	} else if (input == WIN_KEY_UP) { //up
 		if (!showItemDetail) {
 			if (dState->invIsHighlighted()){ inventorySelection -= 1; }
 			else {groundSelection -= 1; }
 			cleanSelections();
 		}
-	} else if (input == 4) { //left
+	} else if (input == WIN_KEY_LEFT) { //left
 		dState->switchInvSelect();
-	} else if (input == 5) { //right
+	} else if (input == WIN_KEY_RIGHT) { //right
 		dState->switchInvSelect();
 	} else if (input == 'd'){ //drop the item
 		if (dState->invIsHighlighted()){
@@ -329,7 +334,7 @@ int Display::processKeyInventory(int input){
 			game->addMessage(&msg);
 			return 5;
 		} //pick up the item
-	} else if (input == 10) { //enter key
+	} else if (input == WIN_KEY_ENTER) { //enter key
 		showItemDetail = !showItemDetail;
 		return 1;
 	} else if (input == 'u'){
@@ -342,11 +347,11 @@ int Display::processKeyInventory(int input){
 int Display::processKeyUseItem(int input){
 	if (input == 'u'){
 		togglePopup();
-	} else if (input == 2) { //down
+	} else if (input == WIN_KEY_DOWN) { 
 		popupSelection++; 
-	} else if (input == 3) { //up
+	} else if (input == WIN_KEY_UP) { 
 		popupSelection--;
-	} else if (input == 10) { //enter
+	} else if (input == WIN_KEY_ENTER) {
 		dState->togglePopup();
 		Item* item = game->getPlayer()->getInventory()->getItemAt(inventorySelection);
 		inventorySelection = 0;
@@ -356,10 +361,6 @@ int Display::processKeyUseItem(int input){
 	}
 
 	return 0;
-}
-
-Entity* Display::getCenter() {
-	return center;
 }
 
 void Display::setCenter(Entity* newCenter){
