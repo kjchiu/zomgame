@@ -204,7 +204,19 @@ void Game::moveTarget(Direction dir) {
 	if (msg) addMessage(msg);
 }
 
-int Game::processKey(char key){
+int Game::processKey(int key){
+	if (PDC_get_key_modifiers() & PDC_KEY_MODIFIER_CONTROL){
+		if (key==CTRL_KEY_W){
+			
+		} else if (key==CTRL_KEY_A){
+
+		} else if (key==CTRL_KEY_S){
+
+		} else if (key==CTRL_KEY_D){
+
+		}
+	}
+
 	if (key=='~') {
 		
 	} else if (key=='c'){ 

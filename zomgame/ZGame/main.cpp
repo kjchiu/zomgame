@@ -16,6 +16,8 @@ int main() {
 	cbreak();
 	leaveok(stdscr, false);
 	curs_set(0);
+	PDC_save_key_modifiers(TRUE);
+	PDC_return_key_modifiers(TRUE);
 	//start_color();
 	keypad(stdscr, TRUE);
 
