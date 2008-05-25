@@ -61,7 +61,7 @@ void Game::init(int tWidth, int tHeight){
 
 	player->addAttribute(new Attribute("Strength", 10));
 
-	Weapon* katana = new Weapon("Katana", 5);
+	Weapon* katana = new Weapon("Katana", 1000);
 	katana->addSkill(skill_list.getSkillID("Equip"));
 	katana->setDescription("Damn, it's a ninja weapon!");
 	map->getBlockAt(7,5)->addItem(katana);
@@ -204,33 +204,6 @@ void Game::moveTarget(Direction dir) {
 	if (msg) addMessage(msg);
 }
 
-
-
-void Game::dropItem(int index){
-	Coord* playerLoc = getPlayer()->getLoc();
-	Inventory* playerInv = getPlayer()->getInventory();
-	MapBlock* mapB = getMap()->getBlockAt(playerLoc->getX(), playerLoc->getY());
-	if (playerInv->getSize() > 0){
-		mapB->addItem(playerInv->getItemAt(index));
-		playerInv->removeItemAt(index);
-		//displayMapBlockInfo(map->getBlockAt(player->getLoc()));
-//		display->refresh();
-	}
-}
-
-void Game::pickUpItem(int index){
-	Message* msg = new Message();
-	if (map->getBlockAt(player->getLoc())->getItems().size() == 0){
-		addMessage(new Message("There's nothing here"));
-		return;
-	}
-	
-	Item* item = map->getBlockAt(player->getLoc())->getItemAt(index);
-	ref->pickUpItem(player,item, msg);
-	map->getBlockAt(player->getLoc())->removeItem(item);
-	addMessage(msg);
-}
-
 int Game::processKey(char key){
 	if (key=='~') {
 		
@@ -241,11 +214,6 @@ int Game::processKey(char key){
 			if (map->getBlockAt(player->getLoc())->getItems().size() > 1) {
 				display->toggleInventory(false);
 				return 5;
-			} else {
-				// this could possibly break it, lets hope 
-				// std::vector removes deadspace in the list.
-				this->pickUpItem(0);
-				return 2; //based on item bulk
 			}
 		}
 	} else if (key=='m'){

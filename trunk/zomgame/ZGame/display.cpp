@@ -279,11 +279,9 @@ bool Display::invIsToggled(){
 /* Decides what context to process the key in. Returns false if no context */
 int Display::processKey(int input){
 	if (popupIsToggled()){
-		this->processKeyUseItem(input);
-		return 0;
+		return this->processKeyUseItem(input);
 	} else if (invIsToggled()){
-		this->processKeyInventory(input);
-		return 0;
+		return this->processKeyInventory(input);
 	}
 	return -1;
 }
@@ -292,12 +290,13 @@ bool Display::popupIsToggled(){
 	return dState->popupIsToggled();
 }
 
-bool Display::processKeyInventory(int input){
+int Display::processKeyInventory(int input){
 	wclear(invWin);
 	if (input == 'i'){
 		inventorySelection = 0;
 		showItemDetail = false;
 		this->toggleInventory(true);
+		return 5;
 	} else if (input == 2) { //down
 		if (!showItemDetail) {
 			if (dState->invIsHighlighted()){ inventorySelection += 1; }
@@ -316,23 +315,31 @@ bool Display::processKeyInventory(int input){
 		dState->switchInvSelect();
 	} else if (input == 'd'){ //drop the item
 		if (dState->invIsHighlighted()){
-			game->dropItem(inventorySelection);
+			Message msg;
+			game->getReferee()->dropItem(game->getPlayer(), inventorySelection, &msg);
+			game->addMessage(&msg);
 			cleanSelections();
+			return 5;
 		}
 	} else if (input == 'g'){
-		if (!dState->invIsHighlighted()){game->pickUpItem(groundSelection);} //pick up the item
+		if (!dState->invIsHighlighted()){
+			Message msg;
+			game->getReferee()->pickUpItem(game->getPlayer(), game->getMap()->getBlockAt(game->getPlayer()->getLoc()), 
+											groundSelection, &msg);
+			game->addMessage(&msg);
+			return 5;
+		} //pick up the item
 	} else if (input == 10) { //enter key
 		showItemDetail = !showItemDetail;
+		return 1;
 	} else if (input == 'u'){
 		togglePopup();	//show the abilities of the item
-	} else {
-		return false;
 	}
 
-	return true;
+	return 0;
 }
 
-bool Display::processKeyUseItem(int input){
+int Display::processKeyUseItem(int input){
 	if (input == 'u'){
 		togglePopup();
 	} else if (input == 2) { //down
@@ -344,13 +351,11 @@ bool Display::processKeyUseItem(int input){
 		Item* item = game->getPlayer()->getInventory()->getItemAt(inventorySelection);
 		inventorySelection = 0;
 		//use the selected skill
-		game->getReferee()->resolve(game->getPlayer(), 
+		return game->getReferee()->resolve(game->getPlayer(), 
 			item, skill_list.getSkill(item->getSkills()->at(popupSelection))->action);
-	} else {
-		return false;
 	}
 
-	return true;
+	return 0;
 }
 
 Entity* Display::getCenter() {
