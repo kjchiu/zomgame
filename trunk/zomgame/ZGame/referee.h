@@ -18,6 +18,7 @@ class Referee {
 		Game* game;
 	public:
 		Referee(Game*);
+		int attackLocation(Entity* attacker, MapBlock* loc, Message* msg);
 		bool doActionOnItem(Item* item, int skillIndex);
 		bool dropItem(Entity* dropper, int index, Message* msg);
 		bool pickUpItem(Entity* picker, MapBlock* loc, int index, Message* msg);

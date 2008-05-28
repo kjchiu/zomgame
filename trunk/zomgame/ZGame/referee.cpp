@@ -5,6 +5,30 @@ Referee::Referee(Game* game){
 	srand(0);
 }
 
+int Referee::attackLocation(Entity* attacker, MapBlock* loc, Message* msg){
+	string retString = "";
+	int maxDmg = attacker->getAttribute("Strength")->getCurValue() + attacker->getEquippedWeapon()->getDamage();
+	int dmg = rand() % maxDmg; 
+	if (loc->hasEntities()){ //first, check for entities	
+		loc->getTopEntity()->getAttribute("Health")->changeCurValueBy(-dmg);
+		retString = "Attacked " + loc->getTopEntity()->getName();
+		if (loc->getTopEntity()->getAttribute("Health")->getCurValue() <= 0){
+			loc->removeEntity(loc->getTopEntity());	
+		}
+	} else if (loc->hasProps()){ //then, for props
+		loc->getTopProp()->getDurability()->changeCurValueBy(-dmg); //maybe some damage resistance?
+		retString = "Attacked " + loc->getTopProp()->getListName();
+		if (loc->getTopProp()->getDurability()->getCurValue() <= 0){
+			loc->removeProp(loc->getTopProp());	
+		}
+	} else { 
+		retString = "There is nothing to attack.";
+	}
+			
+	msg->setMsg(retString.c_str());
+	return 0;
+}
+
 bool Referee::doActionOnItem(Item* item, int skillIndex){
 	return true;
 }
