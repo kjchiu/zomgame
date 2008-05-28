@@ -14,15 +14,6 @@
 
 using namespace std;
 
-struct mapData {
-	union data {
-			//Object o,
-			//Prop p,
-			//Entity* e;
-	};
-	int height;
-};
-
 class MapBlock {
 	private:
 		Terrain* terrain;
@@ -40,7 +31,9 @@ class MapBlock {
 		Item* getItemAt(int index);
 		vector<Item*> getItems();
 		Entity* getTopEntity();
+		Prop* getTopProp();
 		bool hasEntities();
+		bool hasProps();
 		bool isPassable();
 		void removeEntity(Entity* entity);
 		void removeItem(Item* item);

@@ -56,6 +56,8 @@ class Game {
 		void setCharAt(char setChar, int x, int y);
 		bool isPassable(Coord* nextLoc);
 		unsigned int getTime();
+
+		void quitGame();
 		void tick();
 		void run();
 };

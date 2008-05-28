@@ -3,6 +3,7 @@
 #include "game.h"
 #include "referee.h"
 #include "globals.h"
+#include "keycodes.h"
 #include <sstream>
 
 Game::Game(){
@@ -45,7 +46,7 @@ void Game::init(int tWidth, int tHeight){
 	zombones->setLoc(new Coord(2,6));
 	map->getBlockAt(zombones->getLoc())->addEntity(zombones);
 	zombies.push_back(zombones);
-	for ( int i = 0; i < 1000; i++) {
+	for ( int i = 0; i < 100; i++) {
 		zombones = new Zombie();
 		zombones->setLoc(new Coord(rand() % 50, rand() % 50));
 		map->getBlockAt(zombones->getLoc())->addEntity(zombones);
@@ -66,10 +67,9 @@ void Game::init(int tWidth, int tHeight){
 	katana->setDescription("Damn, it's a ninja weapon!");
 	map->getBlockAt(7,5)->addItem(katana);
 
-	Weapon* weapon2 = new Weapon();
-	weapon2->setName("Weapon2");
-	map->getBlockAt(7,5)->addItem(weapon2);
-	addMessage(new Message(weapon2->getListName().c_str()));
+	Prop* chair = new Prop(true);
+	chair->setName("Chair");
+	map->getBlockAt(8,8)->addProp(chair);
 }
 	
 /**
@@ -175,8 +175,8 @@ bool Game::move(Zombie* zombie, Direction dir){
 				addMessage(&msg);
 			} else {
 				; // wtf stop attacking other zombies
+				//but their flesh is so delicious nomnombrainsnomnom
 			}
-			
 		} else {
 			return false;
 		}
@@ -189,34 +189,37 @@ void Game::moveTarget(Direction dir) {
 	Coord moveLoc = (*directionOffsets[dir]) + (*getTarget());
 	if (moveLoc.getX() < 0 || moveLoc.getY() < 0 || 
 		moveLoc.getX() >= map->getWidth() || moveLoc.getY() >= map->getHeight()){
-		//this->addMessage(new Message("You cannot move beyond here"));
 		return; //can't move here, outside of map
 	}
 	target->setCoord(&moveLoc);
-
-#if DEBUG
-	char* msg = new char[255];
-	sprintf(msg, "Target: (%d,%d)", target->getX(), target->getY());
-	addMessage(new Message(msg));
-#endif
-	
 	Message *msg = MessageFactory::getItems(map->getBlockAt(&moveLoc)->getItems());
 	if (msg) addMessage(msg);
 }
 
 int Game::processKey(int key){
 	if (PDC_get_key_modifiers() & PDC_KEY_MODIFIER_CONTROL){
-		if (key==CTRL_KEY_W){
-			
-		} else if (key==CTRL_KEY_A){
-
-		} else if (key==CTRL_KEY_S){
-
-		} else if (key==CTRL_KEY_D){
-
+		if (key==WIN_KEY_CTRL_W){
+			Message message;
+			ref->attackLocation(getPlayer(), getMap()->getBlockAt(&((*directionOffsets[NORTH])+(*player->getLoc()))), &message); 	
+			addMessage(&message);
+			return 5;
+		} else if (key==WIN_KEY_CTRL_A){
+			Message message;
+			ref->attackLocation(getPlayer(), getMap()->getBlockAt(&((*directionOffsets[WEST])+(*player->getLoc()))), &message); 	
+			addMessage(&message);
+			return 5;
+		} else if (key==WIN_KEY_CTRL_S){
+			Message message;
+			ref->attackLocation(getPlayer(), getMap()->getBlockAt(&((*directionOffsets[SOUTH])+(*player->getLoc()))), &message); 	
+			addMessage(&message);
+			return 5;
+		} else if (key==WIN_KEY_CTRL_D){
+			Message message;
+			ref->attackLocation(getPlayer(), getMap()->getBlockAt(&((*directionOffsets[EAST])+(*player->getLoc()))), &message); 	
+			addMessage(&message);
+			return 5;
 		}
 	}
-
 	if (key=='~') {
 		
 	} else if (key=='c'){ 
@@ -247,7 +250,8 @@ int Game::processKey(int key){
 	} else if (key=='.') {
 		return 10;
 	} else if (key=='q') {
-		//do some stuff, but for now
+		//do some stuff, but for now quit
+		quitGame();
 		return -1;
 	} else if (key=='i') {
 		addMessage(new Message("Inventory toggled"));
@@ -266,6 +270,10 @@ int Game::processKey(int key){
 	}
 	display->draw();
 	return 0;
+}
+
+void Game::quitGame(){
+	
 }
 
 void Game::tick(){
