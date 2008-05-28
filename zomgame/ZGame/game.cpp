@@ -70,6 +70,21 @@ void Game::init(int tWidth, int tHeight){
 	Prop* chair = new Prop(true);
 	chair->setName("Chair");
 	map->getBlockAt(8,8)->addProp(chair);
+
+	Prop* wall = new Prop(false);
+	wall->setName("Wall");
+	map->getBlockAt(7,7)->addProp(wall);
+	map->getBlockAt(7,8)->addProp(wall);
+	map->getBlockAt(7,9)->addProp(wall);
+	map->getBlockAt(7,10)->addProp(wall);
+	map->getBlockAt(8,10)->addProp(wall);
+	map->getBlockAt(9,10)->addProp(wall);
+	map->getBlockAt(10,10)->addProp(wall);
+	map->getBlockAt(10,9)->addProp(wall);
+	map->getBlockAt(10,8)->addProp(wall);
+	map->getBlockAt(10,7)->addProp(wall);
+	map->getBlockAt(9,7)->addProp(wall);
+	map->getBlockAt(8,7)->addProp(wall);
 }
 	
 /**
@@ -226,10 +241,8 @@ int Game::processKey(int key){
 		display->toggleAttributes();
 	} else if (key=='g'){
 		if (!map->getBlockAt(player->getLoc())->getItems().empty()){
-			if (map->getBlockAt(player->getLoc())->getItems().size() > 1) {
-				display->toggleInventory(false);
-				return 5;
-			}
+			display->toggleInventory(false);
+			return 5;
 		}
 	} else if (key=='m'){
 		player->getAttribute("Strength")->changeCurValueBy(-1);
