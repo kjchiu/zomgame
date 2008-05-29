@@ -133,3 +133,9 @@ void MapBlock::removeProp(Prop *prop){
 void MapBlock::setTerrain(Terrain* ter){
 	terrain = ter;
 }
+
+Message* MapBlock::getBlockInfo() {
+	char buf[512];
+	sprintf(&buf[0], "Entities: %d, Props: %d, passable: %d", entityList.size(), propList.size(), isPassable());
+	return new Message(new std::string(buf));
+}

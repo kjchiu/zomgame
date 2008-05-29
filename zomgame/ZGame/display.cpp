@@ -356,10 +356,8 @@ int Display::processKeyUseItem(int input){
 		Item* item = game->getPlayer()->getInventory()->getItemAt(inventorySelection);
 		inventorySelection = 0;
 		//use the selected skill
-		return game->getReferee()->resolve(game->getPlayer(), 
-			item, skill_list.getSkill(item->getSkills()->at(popupSelection))->action);
+		return game->getReferee()->resolve(game->getPlayer(), item, skill_list.getSkill(item->getSkills()->at(popupSelection))->action);
 	}
-
 	return 0;
 }
 

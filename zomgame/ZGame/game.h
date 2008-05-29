@@ -1,6 +1,9 @@
 #ifndef _GAME_H
 #define _GAME_H
 
+#define DEBUG 1
+
+
 #include <deque>
 
 #include "renderable.h"
@@ -11,6 +14,7 @@
 #include "referee.h"
 #include "zombie.h"
 #include "weapon.h"
+
 
 class Game;
 class Display;

@@ -69,6 +69,7 @@ void Game::init(int tWidth, int tHeight){
 
 	Prop* chair = new Prop(true);
 	chair->setName("Chair");
+	chair->setDisplayChar('h');
 	map->getBlockAt(8,8)->addProp(chair);
 
 	Prop* wall = new Prop(false);
@@ -167,6 +168,7 @@ bool Game::move(Player* p, Direction dir){
 	}		
 	Message *msg = MessageFactory::getItems(map->getBlockAt(moveLoc)->getItems());
 	if (msg) addMessage(msg);
+	this->target->setCoord(getPlayer()->getLoc());
 	return true;
 }
 
@@ -189,8 +191,8 @@ bool Game::move(Zombie* zombie, Direction dir){
 				}
 				addMessage(&msg);
 			} else {
-				; // wtf stop attacking other zombies
-				//but their flesh is so delicious nomnombrainsnomnom
+				// wtf stop attacking other zombies
+				// but their flesh is so delicious nomnombrainsnomnom
 			}
 		} else {
 			return false;
@@ -244,11 +246,22 @@ int Game::processKey(int key){
 			display->toggleInventory(false);
 			return 5;
 		}
-	} else if (key=='m'){
-		player->getAttribute("Strength")->changeCurValueBy(-1);
+	}	
+#if DEBUG 
+	else if (key=='m'){
+		/*player->getAttribute("Strength")->changeCurValueBy(-1);
 		Message* test = new Message("Strength reduced by 1");
 		addMessage(test);
-	} else if (key=='w') {
+		*/
+		char buf[128];
+		sprintf(&buf[0], "Querying (%d,%d)", target->getX(), target->getY());
+		addMessage(map->getBlockAt(this->getTarget())->getBlockInfo());
+		addMessage(new Message(new std::string(buf)));
+		
+	}
+#endif
+
+	else if (key=='w') {
 		move(player, NORTH);
 		return 10; //based on speed
 	} else if (key=='a') {
@@ -310,17 +323,16 @@ void Game::run(){
 	while (frameTime >= 0){
 		frameTime = 0;
 		//tick, draw, until something results in quitting
-		this->tick();
+		
 		this->draw();
 		refresh();
 		input = getch();
 		frameTime = display->processKey(input);
 		if (frameTime <= -1){ //if display does not need to process the key 
-			frameTime = this->processKey(input);	//if no windows are open, process in the game	
-			this->target->setCoord(getPlayer()->getLoc());
+			frameTime = this->processKey(input);	//if no windows are open, process in the game				
 		}
-		for (int i = 0; i < zombies.size(); i++) {
-			zombies.at(i)->tick(this);
+		if (frameTime > 0) {
+			this->tick();
 		}
 		tickCount += frameTime;
 	}

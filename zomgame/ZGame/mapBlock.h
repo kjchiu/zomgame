@@ -11,13 +11,15 @@
 #include "item.h"
 #include "TerrainTypes\terrain_types.h"
 #include "curses.h"
+#include "message.h"
+
 
 using namespace std;
 
 class MapBlock {
 	private:
 		Terrain* terrain;
-		vector<Item* > itemList;
+		vector<Item*> itemList;
 		vector<Entity*> entityList;
 		vector<Prop*> propList;
 		
@@ -39,6 +41,8 @@ class MapBlock {
 		void removeItem(Item* item);
 		void removeProp(Prop* prop);
 		void setTerrain(Terrain* ter);
+		Message* getBlockInfo();
+
 };
 
 #endif
