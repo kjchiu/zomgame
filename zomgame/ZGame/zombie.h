@@ -41,7 +41,7 @@ protected:
 	short* colors;
 	static const int num_states = 4;
 	std::deque<std::pair<int,Direction>> moveQueue;
-	
+
 public:
 	Zombie();
 	int getCurrentAction();
@@ -52,7 +52,7 @@ public:
 	void queueMove(int time, Direction dir);
 	virtual int getSiteRadius();
 	virtual short getColor();
-	
+	virtual void respawn(Coord* c);
 };
 
 

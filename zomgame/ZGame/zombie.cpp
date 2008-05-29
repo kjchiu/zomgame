@@ -86,3 +86,9 @@ void Zombie::tick(Game* game) { //eat_brains()
 		}
 	}
 }
+
+void Zombie::respawn(Coord* c) {
+	getAttribute("Health")->changeCurValueBy(20);
+	curAction = WANDERING;
+	this->setLoc(c);
+}

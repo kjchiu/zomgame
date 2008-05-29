@@ -305,7 +305,31 @@ void Game::quitGame(){
 void Game::tick(){
 	for (unsigned int i=0; i<zombies.size(); i++){
 		Zombie* z = zombies.at(i);
-		z->tick(this);
+		if (z->getAttribute("Health")->getCurValue()) {
+			z->tick(this); 
+		} else {
+			// respawn the zombie
+			Coord c;
+			do {
+				c = Coord(rand() % map->getWidth(), rand() % map->getHeight());
+			} while(!map->getBlockAt(c.getX(), c.getY())->isPassable() && !map->getBlockAt(c.getX(), c.getY())->hasEntities());
+			
+			char bufA[128];
+			char bufB[128];
+			sprintf(&bufA[0],"Respawn zombie @ (%d,%d)", z->getLoc()->getX(), z->getLoc()->getY());			
+			
+			map->getBlockAt(z->getLoc())->removeEntity(z);
+			z->respawn(new Coord(c));
+			sprintf(&bufB[0],"Zombie moved to (%d,%d)", z->getLoc()->getX(), z->getLoc()->getY());
+			addMessage(new Message(new std::string(bufB)));
+			addMessage(new Message(new std::string(bufA)));
+			map->getBlockAt(&c)->addEntity(z);
+			z->tick(this);
+
+
+		}
+
+
 	}
 }
 
