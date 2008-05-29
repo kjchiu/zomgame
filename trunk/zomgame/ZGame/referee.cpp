@@ -60,7 +60,10 @@ bool Referee::pickUpItem(Entity* picker, MapBlock* loc, int index, Message* msg)
 
 bool Referee::resolveAttack(Entity* attacker, Entity* defender, Message* msg) {
 	//subtract stamina
-	string message = attacker->getName() + " attacks ";
+	char loc[10];
+	sprintf(&loc[0], "(%d,%d)", attacker->getLoc()->getX(), attacker->getLoc()->getY());
+
+	string message = attacker->getName() + std::string(loc) + " attacks ";
 	if (attacker->getName() == game->getPlayer()->getName()){message = "You attack ";}
 	if (defender->getName() == game->getPlayer()->getName()){message += "you";} else {message += "the " + defender->getName();}
 	//check probability to hit based on player skill first
@@ -69,6 +72,7 @@ bool Referee::resolveAttack(Entity* attacker, Entity* defender, Message* msg) {
 		msg->setMsg(message.c_str());	
 		return false;
 	} 
+	
 
 	//work on damage calculations and output messages
 	attacker->getEquippedWeapon()->getDurability()->changeCurValueBy(-(rand()%3)-1);

@@ -3,7 +3,7 @@
 #include "game.h"
 //bool keepPlaying = true;
 
-#define DEBUG 0
+
 //extern Game *game;
 
 SkillTable skill_list;
@@ -23,6 +23,7 @@ int main() {
 
 //	nodelay(stdscr, TRUE);
 	int row,col;
+
 	getmaxyx(stdscr,row,col);		/* get the number of rows and columns */
 	
 	Game *game;

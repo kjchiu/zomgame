@@ -24,6 +24,8 @@ struct  Skill{
 	int id;
 	std::string name;
 	std::string description;
+	//TODO: change success/failure to string formatters
+	//		to be arguments for sprintf
 	std::string success;
 	std::string failure;
 	SkillType type;
@@ -51,4 +53,37 @@ int eat(Player* p, void* target, vector<Message*>* log);
 int equip(Player* p, void* target, vector<Message*>* log);
 int unequip(Player* p, void* target, vector<Message*>* log);
 
+
+/**
+[COMBAT]
+shoot
+pistol
+shotgun
+rifle
+machinegun
+explosives		- nades blah
+unarmed			-
+small melee		-
+medium melee	-
+large melee		-
+demolitions		- tnt etc. demoing buildings safely
+
+[PASSIVE]
+survival		- make fires, tie knots etc.
+running			- affects stamina while running etc
+swimming		- "
+
+
+[ACTIVE]
+traps			- 
+cooking			- ability to prep food, poisin is bad mmkay
+stealth			- in urban areas
+woodsman		- hunting/tracking ability
+construction	- ability to construct barricades etc
+first aid		- hot hot murses
+pharmacy		- 
+
+*/
+
 #endif
+

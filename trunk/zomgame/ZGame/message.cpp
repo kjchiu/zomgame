@@ -74,4 +74,5 @@ void Message::setMsg(const char* msg){
 
 void Message::setMsg(string* msg){
 	message = msg;
+	numLines = 0;
 }
