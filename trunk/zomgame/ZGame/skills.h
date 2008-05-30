@@ -56,22 +56,21 @@ int unequip(Player* p, void* target, vector<Message*>* log);
 
 /**
 [COMBAT]
-shoot
 pistol
 shotgun
 rifle
 machinegun
 explosives		- nades blah
-unarmed			-
-small melee		-
-medium melee	-
-large melee		-
+unarmed			- fists of furyyyy
+bludg.	melee	- baseball bats, pipes, golf clubs
+edged melee 	- swords
+exotic melee	- battle axes, medieval weapons 
 demolitions		- tnt etc. demoing buildings safely
 
 [PASSIVE]
 survival		- make fires, tie knots etc.
 running			- affects stamina while running etc
-swimming		- "
+swimming		- no fatties with bathing suits plz
 
 
 [ACTIVE]

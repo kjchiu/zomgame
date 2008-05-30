@@ -15,8 +15,9 @@ void Display::init() {
 	msgWin = newwin(15,80,35,0); 
 	menuWin = newwin(35,25,0,55); 
 	invWin = newwin(11,80,35,0); //displays the inventory
-	popupWin = newwin(20, 20, 10, 30); //displays what skills can be used on an item
+//	popupWin = newwin(20, 20, 10, 30); //displays what skills can be used on an item
 //	statWin;
+	popupWin = new PopupWin(10, 30, 20, 20);
 
 	inventorySelection = -1;
 	showItemDetail = false;
@@ -85,7 +86,7 @@ void Display::draw() {
 		this->draw(game->getPlayer()->getInventory());
 	} else if (attToggle) {
 	} 
-	
+
 	draw(game->getPlayer());
 	
 }
@@ -174,7 +175,7 @@ void Display::draw(Inventory* inventory){
 
 	//draw the skills popup if necessary
 	if (popupIsToggled()) {
-		drawPopup(inventory->getItemAt(inventorySelection)); 
+		popupWin->draw(); 
 	}
 
 	box(invWin, 0,0);
@@ -250,7 +251,7 @@ void Display::drawItemDetails(Item* item, int height, int width){
 		mvwprintw(invWin, 4, width-30, "Base Damage: %d", weapon->getDamage());
 	}
 }
-
+/*
 void Display::drawPopup(Item* item){
 	wclear(popupWin);
 	vector<int>* skills = item->getSkills();
@@ -271,6 +272,10 @@ void Display::drawPopup(Item* item){
 	box(popupWin, 0,0);
 	mvwprintw(popupWin, 0, 1, "USE ITEM");
 	wrefresh(popupWin);	
+}*/
+
+void Display::drawPopup(Item* item){
+	popupWin->draw();
 }
 
 Entity* Display::getCenter() {
@@ -338,6 +343,7 @@ int Display::processKeyInventory(int input){
 		showItemDetail = !showItemDetail;
 		return 1;
 	} else if (input == 'u'){
+		this->setUpSkillWindow(game->getPlayer()->getInventory()->getItemAt(inventorySelection));
 		togglePopup();	//show the abilities of the item
 	}
 
@@ -348,15 +354,17 @@ int Display::processKeyUseItem(int input){
 	if (input == 'u'){
 		togglePopup();
 	} else if (input == WIN_KEY_DOWN) { 
-		popupSelection++; 
+		popupWin->incrementSelection(); 
 	} else if (input == WIN_KEY_UP) { 
-		popupSelection--;
+		popupWin->decrementSelection();
 	} else if (input == WIN_KEY_ENTER) {
 		dState->togglePopup();
 		Item* item = game->getPlayer()->getInventory()->getItemAt(inventorySelection);
-		inventorySelection = 0;
+		//inventorySelection = 0;
 		//use the selected skill
-		return game->getReferee()->resolve(game->getPlayer(), item, skill_list.getSkill(item->getSkills()->at(popupSelection))->action);
+		return game->getReferee()->resolve(game->getPlayer(), 
+								item, 
+								skill_list.getSkill(item->getSkills()->at(popupWin->getSelectedIndex()))->action);
 	}
 	return 0;
 }
@@ -369,9 +377,24 @@ void Display::setTarget(Coord* newTarget) {
 	target = newTarget;
 }
 
+
+void Display::setUpSkillWindow(Item* item){
+	wclear(popupWin->getWindow());
+	
+	vector<string>* skillNames = new vector<string>();
+	
+	for (int i=0; i<item->getSkills()->size(); i++){
+		skillNames->push_back(skill_list.getSkill(item->getSkills()->at(i))->name);
+	}
+
+	popupWin->setHeader(item->getName());
+	popupWin->setList(skillNames);
+}
+
 void Display::toggleInventory(bool selectedSide){
 	dState->toggleInv();
 	if (dState->invIsToggled()){
+		if (!selectedSide){ dState->switchInvSelect(); }
 		minIndex = 0, maxIndex = 8; 
 		minGIndex = 0, maxGIndex = 8;
 		inventorySelection = groundSelection = 0;

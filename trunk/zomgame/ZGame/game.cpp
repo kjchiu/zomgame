@@ -116,6 +116,9 @@ unsigned int Game::getTime(){
 
 bool Game::isPassable(Coord* nextLoc){
 	MapBlock* checkBlock = map->getBlockAt(nextLoc->getX(), nextLoc->getY());
+	if (!map->isWithinMap(nextLoc)){
+		return false;
+	}
 	if (checkBlock->isPassable()){
 		return true;
 	}
@@ -147,59 +150,48 @@ bool Game::moveEntity(Entity* ent, Direction dir){
 
 bool Game::move(Player* p, Direction dir){
 	Coord *moveLoc = new Coord((*directionOffsets[dir]) + (*p->getLoc()));
-	if (moveLoc->getX() < 0 || moveLoc->getY() < 0 || moveLoc->getX() >= map->getWidth() || moveLoc->getY() >= map->getHeight()){
-		return false; //can't move here, outside of map
-	}
-	if (isPassable(moveLoc)){
-		map->getBlockAt(p->getLoc())->removeEntity(p);
-		p->setLoc(moveLoc);
-		map->getBlockAt(p->getLoc())->addEntity(p);
-	} else { //why is it not passable?
+	if (map->isWithinMap(moveLoc)){
 		MapBlock* checkBlock = map->getBlockAt(moveLoc->getX(), moveLoc->getY());
-		if (checkBlock->hasEntities()){  //resolve an attack (what about friendly NPCs?)	
+		if (checkBlock->hasEntities()){
 			Message msg;
-			if (ref->resolveAttack(p, checkBlock->getTopEntity(), &msg)) { //true means the battle was won
-				checkBlock->removeEntity(checkBlock->getTopEntity());
-			}
+			ref->resolveAttack(p, checkBlock->getTopEntity(), &msg); //does the removing 
 			addMessage(&msg);
+			return true;
+		} else if (checkBlock->hasProps()) {
+
 		} else {
-			return false;
-		}
-	}		
-	Message *msg = MessageFactory::getItems(map->getBlockAt(moveLoc)->getItems());
-	if (msg) addMessage(msg);
-	this->target->setCoord(getPlayer()->getLoc());
-	return true;
+			map->getBlockAt(p->getLoc())->removeEntity(p);
+			p->setLoc(moveLoc);
+			map->getBlockAt(p->getLoc())->addEntity(p);
+			Message *msg = MessageFactory::getItems(map->getBlockAt(moveLoc)->getItems());
+			if (msg) {addMessage(msg);}
+			this->target->setCoord(getPlayer()->getLoc());
+		} 
+		
+	}
+	return false;
 }
 
 bool Game::move(Zombie* zombie, Direction dir){
 	Coord *moveLoc = new Coord((*directionOffsets[dir]) + (*zombie->getLoc()));
-	if (moveLoc->getX() < 0 || moveLoc->getY() < 0 || moveLoc->getX() >= map->getWidth() || moveLoc->getY() >= map->getHeight()){
-		return false; //can't move here, outside of map
-	}
-	if (isPassable(moveLoc)){
-		map->getBlockAt(zombie->getLoc())->removeEntity(zombie);
-		zombie->setLoc(moveLoc);
-		map->getBlockAt(zombie->getLoc())->addEntity(zombie);
-	} else { //why is it not passable?
+	if (map->isWithinMap(moveLoc)){
 		MapBlock* checkBlock = map->getBlockAt(moveLoc->getX(), moveLoc->getY());
-		if (checkBlock->hasEntities()){  //resolve an attack (what about friendly NPCs?)	
+		if (checkBlock->hasEntities()){
+			if (*player->getLoc() != *moveLoc) { return false;} //don't attack or move onto other zombies
 			Message msg;
-			if (*player->getLoc() == *moveLoc) {
-				if (ref->resolveAttack(zombie, checkBlock->getTopEntity(), &msg)) { //true means the battle was won
-					checkBlock->removeEntity(checkBlock->getTopEntity());
-				}
-				addMessage(&msg);
-			} else {
-				// wtf stop attacking other zombies
-				// but their flesh is so delicious nomnombrainsnomnom
-			}
-		} else {
-			return false;
-		}
-	}		
-	return true;
+			ref->resolveAttack(zombie, checkBlock->getTopEntity(), &msg); //does the removing 
+			addMessage(&msg);
+			return true;
+		} else if (checkBlock->hasProps()) {
 
+		} else {
+			map->getBlockAt(zombie->getLoc())->removeEntity(zombie);
+			zombie->setLoc(moveLoc);
+			map->getBlockAt(zombie->getLoc())->addEntity(zombie);
+		} 
+		
+	}
+	return false;
 }
 
 void Game::moveTarget(Direction dir) {
@@ -318,18 +310,14 @@ void Game::tick(){
 			char bufB[128];
 			sprintf(&bufA[0],"Respawn zombie @ (%d,%d)", z->getLoc()->getX(), z->getLoc()->getY());			
 			
-			map->getBlockAt(z->getLoc())->removeEntity(z);
+			//map->getBlockAt(z->getLoc())->removeEntity(z);
 			z->respawn(new Coord(c));
 			sprintf(&bufB[0],"Zombie moved to (%d,%d)", z->getLoc()->getX(), z->getLoc()->getY());
 			addMessage(new Message(new std::string(bufB)));
 			addMessage(new Message(new std::string(bufA)));
 			map->getBlockAt(&c)->addEntity(z);
 			z->tick(this);
-
-
 		}
-
-
 	}
 }
 
