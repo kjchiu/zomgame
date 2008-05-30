@@ -28,6 +28,7 @@ class Map{
 		int getHeight();
 		int getWidth();
 		void setBlockAt(MapBlock *mBlock, int x, int y);
+		bool isWithinMap(Coord* checkCoord);
 		
 
 };

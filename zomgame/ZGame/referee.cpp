@@ -59,8 +59,8 @@ bool Referee::pickUpItem(Entity* picker, MapBlock* loc, int index, Message* msg)
 }
 
 bool Referee::resolveAttack(Entity* attacker, Entity* defender, Message* msg) {
-	//subtract stamina
 	char loc[10];
+	int maxDmg, dmg;
 	sprintf(&loc[0], "(%d,%d)", attacker->getLoc()->getX(), attacker->getLoc()->getY());
 
 	string message = attacker->getName() + std::string(loc) + " attacks ";
@@ -72,12 +72,11 @@ bool Referee::resolveAttack(Entity* attacker, Entity* defender, Message* msg) {
 		msg->setMsg(message.c_str());	
 		return false;
 	} 
-	
-
+	//TODO: subtract stamina
 	//work on damage calculations and output messages
 	attacker->getEquippedWeapon()->getDurability()->changeCurValueBy(-(rand()%3)-1);
-	int maxDmg = attacker->getAttribute("Strength")->getCurValue() + attacker->getEquippedWeapon()->getDamage();
-	int dmg = rand() % maxDmg; 
+	maxDmg = attacker->getAttribute("Strength")->getCurValue() + attacker->getEquippedWeapon()->getDamage();
+	dmg = rand() % maxDmg; 
 	defender->getAttribute("Health")->changeCurValueBy(-dmg);
 	//points display is gay. percentile-based verbal damage output yes.
 	if (dmg < maxDmg/5) { message += " with a weak strike."; }
@@ -91,7 +90,11 @@ bool Referee::resolveAttack(Entity* attacker, Entity* defender, Message* msg) {
 		attacker->getInventory()->removeItem(attacker->getEquippedWeapon());
 		attacker->equip(NULL);
 	}
+	//eliminate the defender
 	if (defender->getAttribute("Health")->getCurValue() <= 0) {
+		MapBlock* defenderSpace = game->getMap()->getBlockAt(defender->getLoc());
+		defenderSpace->removeEntity(defender); //get rid of it
+		defender->setLoc(new Coord(-2,-2));
 		return true;
 	}
 	return false;

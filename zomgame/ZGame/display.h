@@ -9,6 +9,7 @@
 #include "inventory.h"
 #include "message.h"
 #include "globals.h"
+#include "popupWin.h"
 
 #ifndef _GAME_H_
 class Game;
@@ -25,7 +26,7 @@ struct DisplayState {
 	void toggleInv() {if (state == MAPDISP){state = INVDISP; invSide=true;} else {state = MAPDISP;}}
 	void togglePopup() {if (state == INVDISP && invSide == true){state = INVPOP;} else if (state == INVPOP){state = INVDISP;}}
 	void switchInvSelect() { invSide = !invSide; }
-	bool invIsToggled() {if (state == INVDISP || state == INVPOP){return true;} return false;}
+	bool invIsToggled() {if (state != MAPDISP && state != ATTR){return true;} return false;}
 	bool popupIsToggled() {if (state == INVPOP){return true;} return false;}
 	bool invIsHighlighted() {if (state == INVDISP){ return invSide;} return false;}
 	
@@ -35,12 +36,13 @@ class Display {
 	private:
 		Camera* camera;
 		WINDOW* playWin;
-		WINDOW* popupWin;
+		//WINDOW* popWin;
 		WINDOW* msgWin;
 		WINDOW* menuWin;
 		WINDOW* invWin;
 		WINDOW* skillWin;
 		WINDOW* statWin;
+		PopupWin* popupWin;
 		bool showItemDetail; //invSelectControl = true if the player is manipulatin the left side of the inv
 		Entity* center;
 		Coord* target;
@@ -75,6 +77,7 @@ class Display {
 		int processKey(int input);
 		int processKeyInventory(int input);
 		int processKeyUseItem(int input);
+		void setUpSkillWindow(Item* item);
 		void toggleInventory(bool selectedSide);
 		void toggleAttributes();
 		void togglePopup();

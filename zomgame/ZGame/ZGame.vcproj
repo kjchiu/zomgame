@@ -237,6 +237,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\popupWin.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\prop.cpp"
 				>
 			</File>
@@ -336,6 +340,10 @@
 			</File>
 			<File
 				RelativePath=".\player.h"
+				>
+			</File>
+			<File
+				RelativePath=".\popupWin.h"
 				>
 			</File>
 			<File

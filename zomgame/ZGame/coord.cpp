@@ -38,6 +38,10 @@ bool Coord::operator==(const Coord& otherCoord) const {
 	return x == otherCoord.getX() && y == otherCoord.getY();
 }
 
+bool Coord::operator!=(const Coord& otherCoord) const {
+	return x != otherCoord.getX() || y != otherCoord.getY();
+}
+
 bool Coord::equals(Coord* coord) {
 	return this->x == coord->getX() && this->y == coord->getY();
 }

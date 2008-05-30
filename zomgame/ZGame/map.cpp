@@ -47,6 +47,14 @@ void Map::setBlockAt(MapBlock* mBlock, int x, int y){
 	 map[x + (y * getWidth())] = mBlock;	
 }
 
+bool Map::isWithinMap(Coord* checkCoord){
+	if (checkCoord->getX() < 0 || checkCoord->getY() < 0 || 
+		checkCoord->getX() >= getWidth() || checkCoord->getY() >= getHeight()){
+		return false; //can't move here, outside of map
+	}
+	return true;
+}
+
 void Map::draw(){
 
 }
