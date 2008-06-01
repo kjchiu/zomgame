@@ -14,7 +14,8 @@ void HuntingState::tick(Game* game) {
 	dx = (delta.getX() > 0) ? EAST : WEST;
 	dy = (delta.getY() > 0) ? SOUTH : NORTH;
 	Direction moveDir;
-	if (dx && dy && ((dx / dy < 0.7) || (dx / dy > 1.3))) {
+	double slope = (dx && dy) ? abs(delta.getX() / delta.getY()) : 0;
+	if (dx && dy && (( slope > 0.7) || (slope < 1.3))) {
 		int offset = (dx - EAST) ? 1 : -1;
 		moveDir = (Direction)(offset + dy);
 	} else {
