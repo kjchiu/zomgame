@@ -3,9 +3,12 @@
 
 #include "skills.h"
 #include "player.h"
+#include "coord.h"
 
 class SkillTable;
 
 extern SkillTable skill_list;
+extern Coord DIRECTION_OFFSETS[];
+
 
 #endif

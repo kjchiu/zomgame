@@ -1,12 +1,21 @@
 #include <curses.h>
 
 #include "game.h"
-//bool keepPlaying = true;
+#include "globals.h"
 
 
-//extern Game *game;
 
 SkillTable skill_list;
+Coord DIRECTION_OFFSETS[] = {
+	Coord(0,-1),
+	Coord(1,-1),
+	Coord(1,0),
+	Coord(1, 1),
+	Coord(0,1),
+	Coord(-1,1),
+	Coord(-1,0),
+	Coord(-1,-1)
+};
 
 
 int main() {
