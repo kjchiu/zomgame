@@ -159,7 +159,7 @@ void Display::draw(Inventory* inventory){
 		dState->invSide = false;
 	}
 	if (showItemDetail && (inventory->getSize() > 0 || groundInv.size() > 0 )){ //if the user wants to see the details of an item
-		if (dState->invIsHighlighted()) { //check the inventory selection
+		if (dState->invIsHighlighted() && dState->invSide) { //check the inventory selection
 			drawItemDetails(inventory->getItemAt(inventorySelection), height, width);	
 		} else { //check the ground selection
 			drawItemDetails(groundInv.at(groundSelection), height, width);
@@ -292,7 +292,14 @@ bool Display::popupIsToggled(){
 
 /* Decides what context to process the key in. Returns false if no context */
 int Display::processKey(int input){
-	if (popupIsToggled()){
+	if (input == WIN_KEY_ESC) {
+		if (dState->popupIsToggled()) {
+			togglePopup();
+			showItemDetail = false;
+		} else if (dState->invIsToggled()) {
+			toggleInventory(true);
+		}
+	} else if (popupIsToggled()){
 		return this->processKeyUseItem(input);
 	} else if (invIsToggled()){
 		return this->processKeyInventory(input);
@@ -302,6 +309,9 @@ int Display::processKey(int input){
 
 int Display::processKeyInventory(int input){
 	wclear(invWin);
+	//char buf[4];
+	//itoa(input, buf, 10);
+	//game->addMessage(new Message(new std::string(buf)));
 	if (input == 'i'){
 		inventorySelection = 0;
 		showItemDetail = false;
@@ -340,9 +350,11 @@ int Display::processKeyInventory(int input){
 			return 5;
 		} //pick up the item
 	} else if (input == WIN_KEY_ENTER) { //enter key
+		this->setUpSkillWindow(game->getPlayer()->getInventory()->getItemAt(inventorySelection));
+		togglePopup();
 		showItemDetail = !showItemDetail;
-		return 1;
 	} else if (input == 'u'){
+		
 		this->setUpSkillWindow(game->getPlayer()->getInventory()->getItemAt(inventorySelection));
 		togglePopup();	//show the abilities of the item
 	}
@@ -358,7 +370,9 @@ int Display::processKeyUseItem(int input){
 	} else if (input == WIN_KEY_UP) { 
 		popupWin->decrementSelection();
 	} else if (input == WIN_KEY_ENTER) {
-		dState->togglePopup();
+		//dState->togglePopup();
+		togglePopup();
+		showItemDetail = !showItemDetail;
 		Item* item = game->getPlayer()->getInventory()->getItemAt(inventorySelection);
 		//inventorySelection = 0;
 		//use the selected skill

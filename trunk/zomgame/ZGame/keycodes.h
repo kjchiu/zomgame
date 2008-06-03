@@ -1,6 +1,7 @@
 #ifndef _KEYCODES_H
 #define _KEYCODES_H
 
+#define WIN_KEY_ESC 27
 #define WIN_KEY_DOWN 2
 #define WIN_KEY_UP 3
 #define WIN_KEY_LEFT 4
