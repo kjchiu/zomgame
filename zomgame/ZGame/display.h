@@ -28,7 +28,7 @@ struct DisplayState {
 	void switchInvSelect() { invSide = !invSide; }
 	bool invIsToggled() {if (state != MAPDISP && state != ATTR){return true;} return false;}
 	bool popupIsToggled() {if (state == INVPOP){return true;} return false;}
-	bool invIsHighlighted() {if (state == INVDISP){ return invSide;} return false;}
+	bool invIsHighlighted() {if (state == INVDISP || state == INVPOP){ return invSide;} return false;}
 	
 };
 
@@ -43,10 +43,11 @@ class Display {
 		WINDOW* skillWin;
 		WINDOW* statWin;
 		PopupWin* popupWin;
-		bool showItemDetail; //invSelectControl = true if the player is manipulatin the left side of the inv
+		
 		Entity* center;
 		Coord* target;
 		Game* game;
+		bool showItemDetail; //invSelectControl = true if the player is manipulatin the left side of the inv
 		int inventorySelection, minIndex, maxIndex;
 		int groundSelection, minGIndex, maxGIndex;
 		int popupSelection, minPopupIndex, maxPopupIndex;
