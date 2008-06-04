@@ -37,6 +37,7 @@ class MapBlock {
 		bool hasEntities();
 		bool hasProps();
 		bool isPassable();
+		bool isObstacle();
 		void removeEntity(Entity* entity);
 		void removeItem(Item* item);
 		void removeProp(Prop* prop);

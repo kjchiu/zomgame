@@ -402,6 +402,14 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="Props"
+				>
+				<File
+					RelativePath=".\door.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Resource Files"

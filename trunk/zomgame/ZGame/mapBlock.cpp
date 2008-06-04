@@ -90,6 +90,14 @@ bool MapBlock::isPassable(){
 	return true;
 }
 
+bool MapBlock::isObstacle() {
+	for (unsigned int i=0; i<propList.size(); i++){
+		if (!propList.at(i)->isPassable()){
+			return true;
+		}
+	}
+	return false;
+}
 // @TODO WHEN HEIGHT IS IMPLEMENTED, ONLY CHECK AT THE HEIGHT
 /* Remove an entity from the list. Might take height later, if necessary */
 void MapBlock::removeEntity(Entity *entity){

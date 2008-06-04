@@ -67,6 +67,9 @@ void Game::init(int tWidth, int tHeight){
 	katana->setDescription("Damn, it's a ninja weapon!");
 	map->getBlockAt(7,5)->addItem(katana);
 
+	Door* door = new Door();
+	map->getBlockAt(9,10)->addProp(door);
+
 	Prop* chair = new Prop(true);
 	chair->setName("Chair");
 	chair->setDisplayChar('h');
@@ -79,7 +82,7 @@ void Game::init(int tWidth, int tHeight){
 	map->getBlockAt(7,9)->addProp(wall);
 	map->getBlockAt(7,10)->addProp(wall);
 	map->getBlockAt(8,10)->addProp(wall);
-	map->getBlockAt(9,10)->addProp(wall);
+	//map->getBlockAt(9,10)->addProp(wall);
 	map->getBlockAt(10,10)->addProp(wall);
 	map->getBlockAt(10,9)->addProp(wall);
 	map->getBlockAt(10,8)->addProp(wall);
@@ -125,29 +128,6 @@ bool Game::isPassable(Coord* nextLoc){
 	return false;
 }
 
-bool Game::moveEntity(Entity* ent, Direction dir){
-	Coord *moveLoc = new Coord((*directionOffsets[dir]) + (*ent->getLoc()));
-	if (moveLoc->getX() < 0 || moveLoc->getY() < 0 || moveLoc->getX() >= map->getWidth() || moveLoc->getY() >= map->getHeight()){
-		return false; //can't move here, outside of map
-	}
-	if (isPassable(moveLoc)){
-		map->getBlockAt(ent->getLoc())->removeEntity(ent);
-		ent->setLoc(moveLoc);
-		map->getBlockAt(ent->getLoc())->addEntity(ent);
-	} else { //why is it not passable?
-		MapBlock* checkBlock = map->getBlockAt(moveLoc->getX(), moveLoc->getY());
-		if (checkBlock->hasEntities()){  //resolve an attack (what about friendly NPCs?)	
-			Message msg;
-			if (ref->resolveAttack(ent, checkBlock->getTopEntity(), &msg)) { //true means the battle was won
-				checkBlock->removeEntity(checkBlock->getTopEntity());
-			}
-			//addMessage(&msg);
-		} else {
-			return false;
-		}
-	}
-}
-
 bool Game::move(Player* p, Direction dir){
 	Coord *moveLoc = new Coord((*directionOffsets[dir]) + (*p->getLoc()));
 	if (map->isWithinMap(moveLoc)){
@@ -157,8 +137,10 @@ bool Game::move(Player* p, Direction dir){
 			ref->resolveAttack(p, checkBlock->getTopEntity(), &msg); //does the removing 
 			addMessage(&msg);
 			return true;
-		} else if (checkBlock->hasProps()) {
-
+		} else if (checkBlock->hasProps() && !checkBlock->isPassable()) {
+			if (checkBlock->getTopProp()->getName() == "Door" && !checkBlock->getTopProp()->isPassable()) {
+				checkBlock->getTopProp()->interact(player);
+			}
 		} else {
 			map->getBlockAt(p->getLoc())->removeEntity(p);
 			p->setLoc(moveLoc);
@@ -182,14 +164,13 @@ bool Game::move(Zombie* zombie, Direction dir){
 			ref->resolveAttack(zombie, checkBlock->getTopEntity(), &msg); //does the removing 
 			addMessage(&msg);
 			return true;
-		} else if (checkBlock->hasProps()) {
+		} else if (checkBlock->hasProps() && !checkBlock->isPassable()) {
 
 		} else {
 			map->getBlockAt(zombie->getLoc())->removeEntity(zombie);
 			zombie->setLoc(moveLoc);
 			map->getBlockAt(zombie->getLoc())->addEntity(zombie);
-		} 
-		
+		} 	
 	}
 	return false;
 }

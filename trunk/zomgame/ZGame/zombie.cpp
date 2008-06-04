@@ -20,8 +20,8 @@ Zombie::Zombie() : Entity(){
 		addAttribute(new Attribute("Strength", 5));
 	}
 	curAction = WANDERING;
-	speed = 20;
-	siteRadius = 10;
+	speed = 10;
+	siteRadius = 20;
 	brains = new BrainState*[num_states];
 	brains[currentAction::NOTHING] = new BrainState(this);
 	brains[currentAction::WANDERING] = new WanderState(this);
@@ -78,8 +78,6 @@ void Zombie::tick(Game* game) { //eat_brains()
 		}
 	}
 
-	//Coord delta = *game->getPlayer()->getLoc() - this->getLoc();
-	//int distance = sqrt((double)(delta.getX() * delta.getX() + delta.getY() * delta.getY()));
 	if (this->getLoc()->getDistance(*game->getPlayer()->getLoc()) < getSiteRadius()) {
 		if (rand() % 100 < 10) {
 			curAction = currentAction::HUNTING;
