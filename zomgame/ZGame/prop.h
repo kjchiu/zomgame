@@ -6,8 +6,11 @@
 #include <string>
 #include "attribute.h"
 #include "renderable.h"
+//#include "player.h"
 
 using namespace std;
+
+class Player;
 
 class Prop : public Renderable {
 
@@ -19,6 +22,7 @@ class Prop : public Renderable {
 		Prop();
 		Prop(bool canPass);
 		Attribute* getDurability();
+		virtual void interact(Player* p);
 		bool isPassable();
 		void setPassable(bool canPass);
 };

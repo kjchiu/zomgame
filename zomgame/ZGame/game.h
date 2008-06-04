@@ -14,7 +14,7 @@
 #include "referee.h"
 #include "zombie.h"
 #include "weapon.h"
-
+#include "door.h"
 
 class Game;
 class Display;
@@ -28,7 +28,7 @@ class Game {
 	private:
 		deque<Message> messages;
 		Display* display;
-		Coord* directionOffsets[8];
+		
 		Referee* ref;
 		Map* map;
 		Player* player;
@@ -36,7 +36,8 @@ class Game {
 		vector<Zombie*> zombies;
 		unsigned int tickCount;
 
-	public:		
+	public:	
+		Coord* directionOffsets[8];
 		Game();
 		Game(int tWidth, int tHeight);
 		void init(int tWidth, int tHeight);
@@ -53,7 +54,6 @@ class Game {
 		void drawMenu();
 		int processKey(int input);
 
-		bool moveEntity(Entity* ent, Direction dir);
 		bool move(Zombie* z, Direction dir);
 		bool move(Player* p, Direction dir);
 		void moveTarget(Direction dir);

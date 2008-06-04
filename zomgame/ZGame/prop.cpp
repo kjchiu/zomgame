@@ -13,6 +13,10 @@ Attribute* Prop::getDurability(){
 	return durability;
 }
 
+void Prop::interact(Player *p){
+
+}
+
 bool Prop::isPassable(){
 	return passable;
 }
