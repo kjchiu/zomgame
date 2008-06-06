@@ -13,8 +13,8 @@ Attribute* Prop::getDurability(){
 	return durability;
 }
 
-void Prop::interact(Player *p){
-
+int Prop::interact(Player *p){
+	return 0;
 }
 
 bool Prop::isPassable(){
@@ -23,4 +23,9 @@ bool Prop::isPassable(){
 
 void Prop::setPassable(bool canPass){
 	passable = canPass;
+}
+
+void Prop::initDurability(int value, int maxValue) {
+	delete durability;
+	durability = new Attribute(std::string("Durability"), value, maxValue);
 }

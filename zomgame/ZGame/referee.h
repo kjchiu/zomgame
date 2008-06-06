@@ -11,6 +11,7 @@
 #include "messagefactory.h"
 #include "game.h"
 
+enum Direction;
 class Game;
 
 class Referee {
@@ -19,7 +20,9 @@ class Referee {
 	public:
 		Referee(Game*);
 		int attackLocation(Entity* attacker, MapBlock* loc, Message* msg);
+		int attackDirection(Entity* attacker, Direction dir);
 		bool doActionOnItem(Item* item, int skillIndex);
+		int interact(Player* player, Prop* prop);
 		bool dropItem(Entity* dropper, int index, Message* msg);
 		bool pickUpItem(Entity* picker, MapBlock* loc, int index, Message* msg);
 		bool resolveAttack(Entity* attacker, Entity* defender, Message* msg);

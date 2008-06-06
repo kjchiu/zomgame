@@ -10,5 +10,6 @@ public:
 	HuntingState(Zombie*);
 	virtual ~HuntingState() {}
 	virtual void tick(Game* game);
+	virtual void resolveObstacle(Game* game, Direction dir);
 };
 #endif

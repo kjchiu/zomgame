@@ -64,7 +64,10 @@ Entity* MapBlock::getTopEntity(){
 
 /* Simply get the prop that's on the top of the vector/stack. */
 Prop* MapBlock::getTopProp(){
-	return propList.back();	
+	if (propList.size() > 0)
+		return propList.back();	
+	else
+		return NULL;
 }
 
 /* Are there any creatures here? Take an int, change with hasEntitiesAt(int height) eventually */

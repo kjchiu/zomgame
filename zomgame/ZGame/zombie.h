@@ -25,6 +25,7 @@ public:
 	BrainState(Zombie* _zombie) {zombie = _zombie;}
 	virtual ~BrainState() {}
 	virtual void tick(Game* game) {};
+	virtual void resolveObstacle(Game* game, Direction dir) {}
 };
 
 
@@ -49,6 +50,7 @@ public:
 	void setCurrentAction(currentAction nAction);
 	void setTarget(Coord* nTarget);
 	void tick(Game* game); //implements AI
+	void resolveObstacle(Game* game, Direction dir);
 	void queueMove(int time, Direction dir);
 	virtual int getSiteRadius();
 	virtual short getColor();
