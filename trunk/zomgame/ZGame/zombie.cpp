@@ -85,6 +85,10 @@ void Zombie::tick(Game* game) { //eat_brains()
 	}
 }
 
+void Zombie::resolveObstacle(Game* game, Direction dir) {
+	brains[curAction]->resolveObstacle(game, dir);
+}
+
 void Zombie::respawn(Coord* c) {
 	getAttribute("Health")->changeCurValueBy(20);
 	curAction = WANDERING;

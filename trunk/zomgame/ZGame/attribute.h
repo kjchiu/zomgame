@@ -23,6 +23,7 @@ class Attribute {
 		int getCurValue();
 		int getMaxValue();
 		void setName(string nName);
+		void setValue(int value);
 		void changeCurValueBy(int change);
 		void changeMaxValueBy(int change);
 		//implement a function to raise the value

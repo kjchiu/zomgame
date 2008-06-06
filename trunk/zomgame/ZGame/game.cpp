@@ -77,18 +77,18 @@ void Game::init(int tWidth, int tHeight){
 
 	Prop* wall = new Prop(false);
 	wall->setName("Wall");
-	map->getBlockAt(7,7)->addProp(wall);
-	map->getBlockAt(7,8)->addProp(wall);
-	map->getBlockAt(7,9)->addProp(wall);
-	map->getBlockAt(7,10)->addProp(wall);
-	map->getBlockAt(8,10)->addProp(wall);
-	//map->getBlockAt(9,10)->addProp(wall);
-	map->getBlockAt(10,10)->addProp(wall);
-	map->getBlockAt(10,9)->addProp(wall);
-	map->getBlockAt(10,8)->addProp(wall);
-	map->getBlockAt(10,7)->addProp(wall);
-	map->getBlockAt(9,7)->addProp(wall);
-	map->getBlockAt(8,7)->addProp(wall);
+	map->getBlockAt(7,7)->addProp(PropFactory::createWall(1000));
+	map->getBlockAt(7,8)->addProp(PropFactory::createWall(1000));
+	map->getBlockAt(7,9)->addProp(PropFactory::createWall(1000));
+	map->getBlockAt(7,10)->addProp(PropFactory::createWall(1000));
+	map->getBlockAt(8,10)->addProp(PropFactory::createWall(1000));
+	//map->getBlockAt(9,10)->addProp(PropFactory::createWall(1000));
+	map->getBlockAt(10,10)->addProp(PropFactory::createWall(1000));
+	map->getBlockAt(10,9)->addProp(PropFactory::createWall(1000));
+	map->getBlockAt(10,8)->addProp(PropFactory::createWall(1000));
+	map->getBlockAt(10,7)->addProp(PropFactory::createWall(1000));
+	map->getBlockAt(9,7)->addProp(PropFactory::createWall(1000));
+	map->getBlockAt(8,7)->addProp(PropFactory::createWall(1000));
 }
 	
 /**
@@ -165,7 +165,7 @@ bool Game::move(Zombie* zombie, Direction dir){
 			addMessage(&msg);
 			return true;
 		} else if (checkBlock->hasProps() && !checkBlock->isPassable()) {
-
+			zombie->resolveObstacle(this, dir);
 		} else {
 			map->getBlockAt(zombie->getLoc())->removeEntity(zombie);
 			zombie->setLoc(moveLoc);
@@ -187,6 +187,9 @@ void Game::moveTarget(Direction dir) {
 }
 
 int Game::processKey(int key){
+	//char ikey[4];
+	//itoa(key, ikey, 10);
+	//addMessage(new Message(&ikey[0]));
 	if (PDC_get_key_modifiers() & PDC_KEY_MODIFIER_CONTROL){
 		if (key==WIN_KEY_CTRL_W){
 			Message message;
@@ -209,11 +212,11 @@ int Game::processKey(int key){
 			addMessage(&message);
 			return 5;
 		}
-	}
-	if (key=='~') {
+	} else if(key == WIN_KEY_DEL) {
+		quitGame();
+		return -1;
+	} else if (key=='~') {
 		
-	} else if (key=='c'){ 
-		display->toggleAttributes();
 	} else if (key=='g'){
 		if (!map->getBlockAt(player->getLoc())->getItems().empty()){
 			display->toggleInventory(false);
@@ -234,36 +237,57 @@ int Game::processKey(int key){
 	}
 #endif
 
-	else if (key=='w') {
-		move(player, NORTH);
-		return 10; //based on speed
+	else if (key=='q') {
+		move(player, NORTHWEST); return 10; //based on speed
+	} else if (key=='w') {
+		move(player, NORTH); return 10; //based on speed
+	} else if (key=='e') {
+		move(player, NORTHEAST); return 10; //based on speed
 	} else if (key=='a') {
-		move(player, WEST);
-		return 10; //based on speed
-	}  else if (key=='s') {
-		move(player, SOUTH);
-		return 10; //based on speed
+		move(player, WEST); return 10; //based on speed
+	} else if (key=='s') {
+		return 10; //wait
 	} else if (key=='d') {
-		move(player, EAST);
-		return 10; //based on speed
-	} else if (key=='.') {
-		return 10;
-	} else if (key=='q') {
-		//do some stuff, but for now quit
-		quitGame();
-		return -1;
+		move(player, EAST); return 10; //based on speed
+	} else if (key=='z') {
+		move(player, SOUTHWEST); return 10; //based on speed
+	} else if (key=='x') {
+		move(player, SOUTH); return 10; //based on speed
+	} else if (key=='c') {
+		move(player, SOUTHEAST); return 10; //based on speed
+	} else if (key=='Q') {
+		Coord focus = *player->getLoc() + *directionOffsets[NORTHWEST];
+		return ref->interact(player, map->getBlockAt(&focus)->getTopProp());
+	} else if (key=='W') {
+		Coord focus = *player->getLoc() + *directionOffsets[NORTH];
+		return ref->interact(player, map->getBlockAt(&focus)->getTopProp());
+	} else if (key=='E') {
+		Coord focus = *player->getLoc() + *directionOffsets[NORTHEAST];
+		return ref->interact(player, map->getBlockAt(&focus)->getTopProp());
+	} else if (key=='D') {
+		Coord focus = *player->getLoc() + *directionOffsets[EAST];
+		return ref->interact(player, map->getBlockAt(&focus)->getTopProp());
+	} else if (key=='C') {
+		Coord focus = *player->getLoc() + *directionOffsets[SOUTHEAST];
+		return ref->interact(player, map->getBlockAt(&focus)->getTopProp());
+	} else if (key=='X') {
+		Coord focus = *player->getLoc() + *directionOffsets[SOUTH];
+		return ref->interact(player, map->getBlockAt(&focus)->getTopProp());
+	} else if (key=='Z') {
+		Coord focus = *player->getLoc() + *directionOffsets[SOUTHWEST];
+		return ref->interact(player, map->getBlockAt(&focus)->getTopProp());
+	} else if (key=='A') {
+		Coord focus = *player->getLoc() + *directionOffsets[WEST];
+		return ref->interact(player, map->getBlockAt(&focus)->getTopProp());
+	} else if (key=='.') { return 10;
 	} else if (key=='i') {
 		addMessage(new Message("Inventory toggled"));
 		display->toggleInventory(true);
 		return 5;
-	} else if (key == 'o') {
-		moveTarget(NORTH);
-	} else if (key == 'k') {
-		moveTarget(WEST);
-	} else if (key == 'l') {
-		moveTarget(SOUTH);
-	} else if (key == ';') {
-		moveTarget(EAST);
+	} else if (key == 'o') { moveTarget(NORTH);
+	} else if (key == 'k') { moveTarget(WEST);
+	} else if (key == 'l') { moveTarget(SOUTH);
+	} else if (key == ';') { moveTarget(EAST);
 	} else if (key == 'p') {
 		display->togglePopup();
 	}

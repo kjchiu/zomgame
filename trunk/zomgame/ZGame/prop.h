@@ -6,6 +6,7 @@
 #include <string>
 #include "attribute.h"
 #include "renderable.h"
+#include "propfactory.h"
 //#include "player.h"
 
 using namespace std;
@@ -17,13 +18,17 @@ class Prop : public Renderable {
 	private:
 		bool passable; //passed in, dependent on the prop
 		Attribute* durability;
+		friend class PropFactory;
 
+	protected:
+		void initDurability(int value, int maxValue);
 	public:
 		Prop();
 		Prop(bool canPass);
 		Attribute* getDurability();
-		virtual void interact(Player* p);
-		bool isPassable();
+		
+		virtual int interact(Player* p);
+		virtual bool isPassable();
 		void setPassable(bool canPass);
 };
 

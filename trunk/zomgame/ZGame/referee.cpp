@@ -5,6 +5,14 @@ Referee::Referee(Game* game){
 	srand(0);
 }
 
+int Referee::attackDirection(Entity* attacker, Direction dir) {
+	Message* m = new Message();
+	Coord focus = *attacker->getLoc() + *game->directionOffsets[dir];
+	int time = attackLocation(attacker, game->getMap()->getBlockAt(&focus), m);
+	game->addMessage(m);
+	return time;
+}
+
 int Referee::attackLocation(Entity* attacker, MapBlock* loc, Message* msg){
 	string retString = "";
 	int maxDmg = attacker->getAttribute("Strength")->getCurValue() + attacker->getEquippedWeapon()->getDamage();
@@ -109,4 +117,12 @@ bool Referee::resolve(Player* player, void* target, int (*action)(Player*, void*
 	}
 	//delete log;
 	return result == 0;
+}
+
+int Referee::interact(Player* player, Prop* prop) {
+	if (prop) {
+		return prop->interact(player);
+	} else {
+		return 0;
+	}
 }

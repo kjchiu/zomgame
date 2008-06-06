@@ -54,3 +54,9 @@ int offset;
 
 		zombie->queueMove(game->getTime() + zombie->getSpeed(), moveDir);
 }
+
+void HuntingState::resolveObstacle(Game* game, Direction dir) {
+	if (rand() % 2) {
+		game->getReferee()->attackDirection(zombie, dir);	
+	}
+}

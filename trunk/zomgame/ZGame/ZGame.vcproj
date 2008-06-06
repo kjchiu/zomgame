@@ -245,6 +245,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\propfactory.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\referee.cpp"
 				>
 			</File>
@@ -407,6 +411,10 @@
 				>
 				<File
 					RelativePath=".\door.h"
+					>
+				</File>
+				<File
+					RelativePath=".\propfactory.h"
 					>
 				</File>
 			</Filter>

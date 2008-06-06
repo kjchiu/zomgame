@@ -59,3 +59,7 @@ void Attribute::changeMaxValueBy(int change){
 	maxValue += change;
 	changeCurValueBy(change);
 }
+
+void Attribute::setValue(int value) {
+	curValue = min(maxValue, value);
+}
