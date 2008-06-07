@@ -1,15 +1,16 @@
 #summary List of effects
-#labels effecst
+#labels effects
 
-= Usage =
+*Usage*
 
-Effects are timed 'effects' on an Entity (most likely just the player). They have a start time and an end time, an attribute that they're attached to such as [Strength], and a value (positive or negative) that they add/subtract from that attribute.
+Effects are timed 'effects' on an Entity (most likely just the player). They have a start time and an end time, an attribute that they're attached to such as strength, and a value (positive or negative) that they add/subtract from that attribute.
 
 *Duplicating Effects on an Entity:* If an Effect is added twice, the length of the second divided by 2 is added to the length of the first.
 
 _Example:_ Drunk, start=500, end=1500, attribute="Dodge", value=-5
 
-= List =
+*List*
 
-Drunk: Negatively affects movement, perception, attacking ability, generally for an hour or so. Raises strength.
-Tired: Negatively affects a wide variety of attributes such as strength, endurance, defensive abilities, and attacking abilities. Is indefinite until rest or caffeine is ingested.
+_Drunk:_ Negatively affects movement, perception, attacking ability, generally for an hour or so. Raises strength.
+
+_Tired:_ Negatively affects a wide variety of attributes such as strength, endurance, defensive abilities, and attacking abilities. Is indefinite until rest or caffeine is ingested.
