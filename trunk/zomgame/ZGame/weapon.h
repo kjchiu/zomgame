@@ -11,8 +11,11 @@ using namespace std;
 
 class Weapon : public Item {
 	
+	public:
+		enum WeaponClass {MELEE, RANGED};
+
 	private:
-		string wClass; //relates to what skill is associated with the weapon
+		WeaponClass wClass; //relates to what skill is associated with the weapon
 		int damage;
 		Attribute* durability; //likely always going to have 100, maybe this can be modified?
 
@@ -20,11 +23,13 @@ class Weapon : public Item {
 		Weapon();
 		Weapon(string nName, int damage);
 		void init(string nName, int damage);
+		bool isMelee();
 		Attribute* getDurability();
 		string getWClass();
 		int getDamage();
-		void setWClass(string nClass);
+		void setWClass(WeaponClass nClass);
 		void setDamage(int nDamage);
+	
 };
 
 #endif

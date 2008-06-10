@@ -14,6 +14,7 @@ void Weapon::init(string nName, int damage){
 	setDamage(damage);
 	setDisplayChar('/');
 	setType(Item::WEAPON);
+	setWClass(Weapon::MELEE);
 	durability = new Attribute("Durability", 100);
 }
 
@@ -26,12 +27,19 @@ Attribute* Weapon::getDurability(){
 }
 
 string Weapon::getWClass(){
-	return wClass;
+	return "Weapon"; //will return a string represenation of the weapon's class
+}
+
+bool Weapon::isMelee(){
+	if (wClass == Weapon::MELEE){
+		return true;
+	}
+	return false;
 }
 
 void Weapon::setDamage(int nDmg){
 	damage = nDmg;
 }
-void Weapon::setWClass(string nClass){
+void Weapon::setWClass(WeaponClass nClass){
 	wClass = nClass;
 }
