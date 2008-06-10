@@ -245,7 +245,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\propfactory.cpp"
+				RelativePath=".\propFactory.cpp"
 				>
 			</File>
 			<File
@@ -355,6 +355,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\propFactory.h"
+				>
+			</File>
+			<File
 				RelativePath=".\referee.h"
 				>
 			</File>
@@ -411,10 +415,6 @@
 				>
 				<File
 					RelativePath=".\door.h"
-					>
-				</File>
-				<File
-					RelativePath=".\propfactory.h"
 					>
 				</File>
 			</Filter>
