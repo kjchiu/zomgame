@@ -6,8 +6,6 @@
 #include "door.h"
 #include "prop.h"
 
-class Prop;
-
 class PropFactory {
 
 	public:
