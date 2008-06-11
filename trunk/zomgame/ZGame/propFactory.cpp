@@ -20,6 +20,6 @@ Prop* PropFactory::createWall(int durability){
 	wall->setName("Wall");
 	wall->getDurability()->changeMaxValueBy(durability - 100);
 	wall->getDurability()->changeCurValueBy(durability - 100);
-	return door;
+	return wall;
 
 }

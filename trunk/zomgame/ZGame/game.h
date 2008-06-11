@@ -15,6 +15,7 @@
 #include "zombie.h"
 #include "weapon.h"
 #include "door.h"
+#include "propfactory.h"
 
 class Game;
 class Display;
