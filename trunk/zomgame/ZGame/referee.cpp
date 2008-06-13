@@ -37,12 +37,28 @@ int Referee::attackLocation(Entity* attacker, MapBlock* loc, Message* msg){
 	return 0;
 }
 
+int Referee::attackRngLocation(Player* player, MapBlock* loc, Message* msg){
+	if (loc->hasEntities()){
+		if (player->getEqRngWeapon() != NULL){
+			//do stuff
+		}
+	}
+	msg->setMsg("BANG");
+	return 10;
+}
+
 bool Referee::doActionOnItem(Item* item, int skillIndex){
 	return true;
 }
 
 bool Referee::dropItem(Entity* dropper, int index, Message* msg){
 	Item* item = dropper->getInventory()->getItemAt(index);
+	if (item->getType() == "Weapon"){	//unequip the item if the user drops it
+		Weapon* weapon = (Weapon*)item;
+		if (weapon == game->getPlayer()->getEqRngWeapon() || weapon == game->getPlayer()->getEquippedWeapon()){
+			game->getPlayer()->unequip(weapon);
+		}
+	}
 	dropper->getInventory()->removeItem(item);
 	game->getMap()->getBlockAt(dropper->getLoc())->addItem(item);
 	string message = "You dropped " + item->getListName();

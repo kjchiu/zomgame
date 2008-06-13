@@ -9,8 +9,8 @@
 class PropFactory {
 
 	public:
-		static Prop* createDoor();
-		static Prop* createDoor(int durability);
+		static Door* createDoor();
+		static Door* createDoor(int durability);
 		static Prop* createWall();
 		static Prop* createWall(int durability);
 

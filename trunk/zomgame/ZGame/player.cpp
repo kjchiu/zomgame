@@ -9,7 +9,19 @@ Player::Player() : Entity(){
 	skills.push_back(1);
 	skills.push_back(2);
 	skills.push_back(3);
-	
+
+	eqRngWeapon = NULL;
+}
+void Player::equip(Weapon* weapon){
+	if (weapon->isMelee()){
+		equippedWeapon = weapon;
+		return;
+	} 
+	eqRngWeapon = weapon;
+}
+
+Weapon* Player::getEqRngWeapon(){
+	return eqRngWeapon;
 }
 
 Coord* Player::getLoc(){
@@ -26,4 +38,12 @@ vector<int>* Player::getSkills() {
 		skill_list->push_back(skills.at(i));
 	}
 	return skill_list;
+}
+
+void Player::unequip(Weapon* weapon){
+	if (weapon->isMelee()){
+		equippedWeapon = NULL;
+		return;
+	} 
+	eqRngWeapon = NULL;
 }

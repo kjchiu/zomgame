@@ -16,6 +16,7 @@
 
 using namespace std;
 
+
 class MapBlock {
 	private:
 		Terrain* terrain;

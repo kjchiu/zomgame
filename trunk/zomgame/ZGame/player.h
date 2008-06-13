@@ -9,18 +9,22 @@
 #include "weapon.h"
 
 struct Skill;
-class SkillTable;
 
 class Player : public Entity {
 	protected:
 		Coord* location;
 		vector<int> skills;
+		Weapon* eqRngWeapon;
 		
 	public:
 		Player();
+		void equip(Weapon* weapon);
 		Coord* getLoc();
+		Weapon* getEqRngWeapon();
 		void setLoc(Coord* nLocation);
 		vector<int>* getSkills();
+		void unequip(Weapon* weapon);
+
 		void draw(Map *map);
 };
 #endif

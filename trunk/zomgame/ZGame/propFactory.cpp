@@ -1,11 +1,11 @@
 #include "propFactory.h"
 
-Prop* PropFactory::createDoor(){
+Door* PropFactory::createDoor(){
 	return createDoor(100);
 }
 
-Prop* PropFactory::createDoor(int durability){
-	Prop* door = new Door();
+Door* PropFactory::createDoor(int durability){
+	Door* door = new Door();
 	door->getDurability()->changeMaxValueBy(durability - 100);
 	door->getDurability()->changeCurValueBy(durability - 100);
 	return door;

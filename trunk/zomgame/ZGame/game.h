@@ -11,6 +11,7 @@
 #include "entity.h"
 #include "player.h"
 #include "messagefactory.h"
+#include "itemFactory.h"
 #include "referee.h"
 #include "zombie.h"
 #include "weapon.h"

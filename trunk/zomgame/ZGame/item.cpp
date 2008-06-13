@@ -50,8 +50,10 @@ void Item::removeSkill(int skillNum){
 		if (associatedSkills->at(i) == skillNum){
 			if (i==arraySize - 1){
 				associatedSkills->pop_back();
+				return;
 			} else {
 				associatedSkills->erase(associatedSkills->begin()+i, associatedSkills->begin()+i+1); 
+				return;
 			} 
 		}
 	}

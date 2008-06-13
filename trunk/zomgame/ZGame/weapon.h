@@ -7,15 +7,17 @@
 #include "attribute.h"
 #include <string>
 
+
 using namespace std;
+class Player;
 
 class Weapon : public Item {
 	
 	public:
-		enum WeaponClass {MELEE, RANGED};
+		enum WeaponType {MELEE, RANGED};
 
 	private:
-		WeaponClass wClass; //relates to what skill is associated with the weapon
+		WeaponType wType; //relates to what skill is associated with the weapon
 		int damage;
 		Attribute* durability; //likely always going to have 100, maybe this can be modified?
 
@@ -25,9 +27,10 @@ class Weapon : public Item {
 		void init(string nName, int damage);
 		bool isMelee();
 		Attribute* getDurability();
-		string getWClass();
+		WeaponType getWType();
+		string getWTypeString();
 		int getDamage();
-		void setWClass(WeaponClass nClass);
+		void setWType(WeaponType nType);
 		void setDamage(int nDamage);
 	
 };

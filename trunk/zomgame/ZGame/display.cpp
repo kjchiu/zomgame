@@ -15,8 +15,6 @@ void Display::init() {
 	msgWin = newwin(15,80,35,0); 
 	menuWin = newwin(35,25,0,55); 
 	invWin = newwin(11,80,35,0); //displays the inventory
-//	popupWin = newwin(20, 20, 10, 30); //displays what skills can be used on an item
-//	statWin;
 	popupWin = new PopupWin(10, 30, 20, 20);
 
 	inventorySelection = -1;
@@ -218,7 +216,7 @@ void Display::drawInventoryList(vector<Item*> items, int xLoc, int selection, bo
 	for (unsigned int i=minIndex; i<items.size() && i<=maxIndex; i++){
 		string itemName = "  ";
 		Item* item = items.at(i);
-		if (item == game->getPlayer()->getEquippedWeapon()){
+		if (item == game->getPlayer()->getEquippedWeapon() || item == game->getPlayer()->getEqRngWeapon()){
 			itemName = "E ";
 		}
 		if (i == selection && highlight){
@@ -246,33 +244,11 @@ void Display::drawItemDetails(Item* item, int height, int width){
 	mvwprintw(invWin, height-2, 40, "Type: %s", item->getType().c_str());
 	if (item->getType().compare("Weapon") == 0) { //display weapon stats if its a weapon
 		Weapon* weapon = (Weapon*)item;
-		mvwprintw(invWin, 2, width-30, "Weapon Class: %s", weapon->getWClass().c_str());
+		mvwprintw(invWin, 2, width-30, "Weapon Class: %s", weapon->getWTypeString().c_str());
 		mvwprintw(invWin, 3, width-30, "Durability: %d/%d", weapon->getDurability()->getCurValue(), weapon->getDurability()->getMaxValue());
 		mvwprintw(invWin, 4, width-30, "Base Damage: %d", weapon->getDamage());
 	}
 }
-/*
-void Display::drawPopup(Item* item){
-	wclear(popupWin);
-	vector<int>* skills = item->getSkills();
-
-	if (popupSelection < 0) {popupSelection = 0;}
-	if (popupSelection > skills->size()-1) {popupSelection = skills->size()-1;}
-	mvwprintw(popupWin, 1,2, "%s", item->getName().c_str());
-	for (int i=0; i<skills->size(); i++){
-		if (i==popupSelection){
-			wattron(popupWin, COLOR_PAIR(YELLOW_BLACK));
-			
-			mvwprintw(popupWin, i+2, 2, "-%s-", skill_list.getSkill(skills->at(i))->name.data());
-			wattroff(popupWin, COLOR_PAIR(YELLOW_BLACK));
-		} else {
-			mvwprintw(popupWin, i+2, 3, "%s", skill_list.getSkill(skills->at(i))->name.data());
-		}
-	}
-	box(popupWin, 0,0);
-	mvwprintw(popupWin, 0, 1, "USE ITEM");
-	wrefresh(popupWin);	
-}*/
 
 void Display::drawPopup(Item* item){
 	popupWin->draw();
@@ -309,9 +285,6 @@ int Display::processKey(int input){
 
 int Display::processKeyInventory(int input){
 	wclear(invWin);
-	//char buf[4];
-	//itoa(input, buf, 10);
-	//game->addMessage(new Message(new std::string(buf)));
 	if (input == 'i'){
 		inventorySelection = 0;
 		showItemDetail = false;
@@ -393,8 +366,7 @@ void Display::setTarget(Coord* newTarget) {
 
 
 void Display::setUpSkillWindow(Item* item){
-	wclear(popupWin->getWindow());
-	
+	popupWin->clear();
 	vector<string>* skillNames = new vector<string>();
 	
 	for (int i=0; i<item->getSkills()->size(); i++){

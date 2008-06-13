@@ -31,6 +31,8 @@ class PopupWin {
 	
 		void draw();
 
+		void clear();
+
 		void decrementSelection();
 		void incrementSelection();
 

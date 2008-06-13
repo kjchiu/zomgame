@@ -63,17 +63,20 @@ void Game::init(int tWidth, int tHeight){
 	player->addAttribute(new Attribute("Strength", 10));
 
 	Weapon* katana = new Weapon("Katana", 1000);
-	katana->addSkill(skill_list.getSkillID("Equip"));
 	katana->setDescription("Damn, it's a ninja weapon!");
 	map->getBlockAt(7,5)->addItem(katana);
 
-	Door* door = new Door();
+	Door* door = PropFactory::createDoor(100000);
 	map->getBlockAt(9,10)->addProp(door);
 
 	Prop* chair = new Prop(true);
 	chair->setName("Chair");
 	chair->setDisplayChar('h');
 	map->getBlockAt(8,8)->addProp(chair);
+
+	Weapon* gun = new Weapon("Gun", 10);
+	gun->setWType(Weapon::RANGED);
+	map->getBlockAt(12,12)->addItem(gun);
 
 	Prop* wall = new Prop(false);
 	wall->setName("Wall");
@@ -82,7 +85,6 @@ void Game::init(int tWidth, int tHeight){
 	map->getBlockAt(7,9)->addProp(PropFactory::createWall(1000));
 	map->getBlockAt(7,10)->addProp(PropFactory::createWall(1000));
 	map->getBlockAt(8,10)->addProp(PropFactory::createWall(1000));
-	//map->getBlockAt(9,10)->addProp(PropFactory::createWall(1000));
 	map->getBlockAt(10,10)->addProp(PropFactory::createWall(1000));
 	map->getBlockAt(10,9)->addProp(PropFactory::createWall(1000));
 	map->getBlockAt(10,8)->addProp(PropFactory::createWall(1000));
@@ -90,11 +92,7 @@ void Game::init(int tWidth, int tHeight){
 	map->getBlockAt(9,7)->addProp(PropFactory::createWall(1000));
 	map->getBlockAt(8,7)->addProp(PropFactory::createWall(1000));
 }
-	
-/**
- *	Force the redraw otherwise message isnt drawn 
- *	until the next tick.
- */
+
 void Game::addMessage(Message *msg){
 	messages.push_front(*msg->formatMsg(75));
 	display->draw(getMessages());
@@ -222,7 +220,13 @@ int Game::processKey(int key){
 			display->toggleInventory(false);
 			return 5;
 		}
-	}	
+	} else if (key=='f'){
+		//check for line of sight first, then
+		Message* message = new Message();
+		ref->attackRngLocation(player, map->getBlockAt(getTarget()), message);	
+		addMessage(message);
+		
+	}
 #if DEBUG 
 	else if (key=='m'){
 		/*player->getAttribute("Strength")->changeCurValueBy(-1);

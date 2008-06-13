@@ -20,6 +20,7 @@ class Referee {
 	public:
 		Referee(Game*);
 		int attackLocation(Entity* attacker, MapBlock* loc, Message* msg);
+		int attackRngLocation(Player* player, MapBlock* loc, Message* msg);
 		int attackDirection(Entity* attacker, Direction dir);
 		bool doActionOnItem(Item* item, int skillIndex);
 		int interact(Player* player, Prop* prop);
