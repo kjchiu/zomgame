@@ -97,7 +97,7 @@ int equip(Player* p, void* target, vector<Message*>* log) {
 
 int unequip(Player* p, void* target, vector<Message*>* log) {
 	Weapon* weapon = static_cast<Weapon*>(target);
-	p->equip(NULL);
+	p->unequip(weapon);
 	weapon->removeSkill(skill_list.getSkillID("Unequip"));
 	weapon->addSkill(skill_list.getSkillID("Equip"));
 	std::string* msg = new std::string("You unequipped " + weapon->getListName());

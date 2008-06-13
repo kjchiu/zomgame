@@ -1,4 +1,5 @@
 #include "weapon.h"
+#include "globals.h"
 
 Weapon::Weapon(){
 	setDescription("Your bare hands. Not very damaging.");
@@ -14,8 +15,9 @@ void Weapon::init(string nName, int damage){
 	setDamage(damage);
 	setDisplayChar('/');
 	setType(Item::WEAPON);
-	setWClass(Weapon::MELEE);
+	setWType(Weapon::MELEE);
 	durability = new Attribute("Durability", 100);
+	this->addSkill(skill_list.getSkillID("Equip"));
 }
 
 int Weapon::getDamage(){
@@ -26,12 +28,16 @@ Attribute* Weapon::getDurability(){
 	return durability;
 }
 
-string Weapon::getWClass(){
+//WeaponType Weapon::getWType(){
+//	return wType;
+//}
+
+string Weapon::getWTypeString(){
 	return "Weapon"; //will return a string represenation of the weapon's class
 }
 
 bool Weapon::isMelee(){
-	if (wClass == Weapon::MELEE){
+	if (wType == Weapon::MELEE){
 		return true;
 	}
 	return false;
@@ -40,6 +46,6 @@ bool Weapon::isMelee(){
 void Weapon::setDamage(int nDmg){
 	damage = nDmg;
 }
-void Weapon::setWClass(WeaponClass nClass){
-	wClass = nClass;
+void Weapon::setWType(WeaponType nType){
+	wType = nType;
 }

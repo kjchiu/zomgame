@@ -24,7 +24,7 @@ class Entity : public Renderable {
 		Entity(string name);
 		void init();
 		virtual void addAttribute(Attribute* att);
-		void equip(Weapon* weapon);
+		virtual void equip(Weapon* weapon);
 		vector<Attribute*>* getAttributes();
 		int getAttributeValue(string attName);
 		Attribute* getAttribute(string attName);

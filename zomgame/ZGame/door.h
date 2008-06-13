@@ -19,6 +19,10 @@ class Door : public Prop {
 				return 0;
 			}
 		}
+
+		void destroy() {
+			//create some materials here
+		}
 };
 
 #endif DOOR_H

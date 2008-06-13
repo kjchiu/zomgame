@@ -213,6 +213,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\itemFactory.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\main.cpp"
 				>
 			</File>
@@ -320,6 +324,10 @@
 			</File>
 			<File
 				RelativePath=".\item.h"
+				>
+			</File>
+			<File
+				RelativePath=".\itemFactory.h"
 				>
 			</File>
 			<File

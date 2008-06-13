@@ -16,9 +16,9 @@ class Player;
 class Prop : public Renderable {
 
 	private:
+		bool seeThrough;
 		bool passable; //passed in, dependent on the prop
 		Attribute* durability;
-		//friend class PropFactory;
 
 	protected:
 		void initDurability(int value, int maxValue);
@@ -27,8 +27,13 @@ class Prop : public Renderable {
 		Prop(bool canPass);
 		Attribute* getDurability();
 		
-		virtual int interact(Player* p);
 		virtual bool isPassable();
+		virtual bool isSeeThrough();
+		
+		virtual void destroy();
+		virtual int interact(Player* p);
+		
+		void setSeeThrough(bool nSeeThrough);
 		void setPassable(bool canPass);
 };
 

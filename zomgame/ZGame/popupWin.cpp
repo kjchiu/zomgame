@@ -19,7 +19,16 @@ void PopupWin::init(int nXPos, int nYPos, int nHeight, int nWidth) {
 	selectedIndex = 0;
 }
 
+/* Clears all the data */
+void PopupWin::clear(){
+	setHeader("");
+	setList(new vector<string>());
+	setSelectedIndex(0);
+	wclear(getWindow());
+}
+
 void PopupWin::draw(){
+	wclear(getWindow());
 	mvwprintw(getWindow(), 1, 1, "%s", header.data());
 	for (int i=0; i<list->size(); i++){
 		if (i==selectedIndex){
