@@ -85,7 +85,8 @@ void Display::draw() {
 	} else if (attToggle) {
 	} 
 
-	draw(game->getPlayer());
+	draw(game->getPlayer(), game->getMap()->getBlockAt(game->getTarget()));
+	
 	
 }
 
@@ -182,7 +183,7 @@ void Display::draw(Inventory* inventory){
 	wrefresh(invWin);		
 }
 
-void Display::draw(Player* player){
+void Display::draw(Player* player, MapBlock* block){
 	wclear(menuWin); //first clear the window
 
 	string condition = "Healthy";
@@ -202,9 +203,35 @@ void Display::draw(Player* player){
 	mvwprintw(menuWin, 5, 2, "WeapDur: %d/%d", player->getEquippedWeapon()->getDurability()->getCurValue(), 
 									player->getEquippedWeapon()->getDurability()->getMaxValue());
 	mvwprintw(menuWin, 6, 2, "TickCount: %d", game->getTime());
+	//draw the mapblock info
 
+	int halfway = getmaxy(menuWin)/2;
+	if (block->hasEntities()){
+		mvwprintw(menuWin, halfway+1, 2, "Entity: %s", block->getTopEntity()->getName().c_str());
+		mvwprintw(menuWin, halfway+2, 3,  "Health: %d", block->getTopEntity()->getAttribute("Health")->getCurValue());
+	}
+	if (block->hasProps()){
+		mvwprintw(menuWin, halfway+4, 2, "Prop: %s", block->getTopProp()->getName().c_str());
+		mvwprintw(menuWin, halfway+5, 3,  "Durability: %d", block->getTopProp()->getDurability()->getCurValue());
+	}
+	if (block->getItems().size() > 0){
+		mvwprintw(menuWin, halfway+7, 2, "Items");
+		for (int i=0; i<block->getItems().size(); i++){
+			mvwprintw(menuWin, i+halfway+8, 3, "%s", block->getItemAt(i)->getListName().c_str());
+		}
+	}
+
+	
+
+	//draw the box + dividing line
 	box(menuWin, 0,0);
 	mvwprintw(menuWin, 0, 3, "PLAYER");
+	mvwaddch(menuWin, halfway, 0, ACS_LTEE);
+	for (unsigned int i = 1; i<getmaxx(menuWin)-1; i++){
+		mvwaddch(menuWin, halfway, i, ACS_HLINE);
+	}
+	mvwaddch(menuWin, halfway, getmaxx(menuWin)-1, ACS_RTEE);
+	mvwprintw(menuWin, halfway, 2, "INFO");
 	wrefresh(menuWin);
 }
 
