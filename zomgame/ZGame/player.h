@@ -24,7 +24,7 @@ class Player : public Entity {
 		void setLoc(Coord* nLocation);
 		vector<int>* getSkills();
 		void unequip(Weapon* weapon);
-
+		void respawn(Coord* loc);
 		void draw(Map *map);
 };
 #endif

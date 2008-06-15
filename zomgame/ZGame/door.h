@@ -4,7 +4,7 @@
 #define DOOR_H
 
 #include "prop.h"
-
+#include "itemFactory.h"
 class Door : public Prop {
 	public:
 		Door() {setName("Door"); setDisplayChar(0x2666); setPassable(false);}
@@ -20,8 +20,10 @@ class Door : public Prop {
 			}
 		}
 
-		void destroy() {
-			//create some materials here
+		vector<Item*> destroy() {
+			vector<Item*> debris;
+			debris.push_back(ItemFactory::createWoodPlank());
+			return debris;
 		}
 };
 

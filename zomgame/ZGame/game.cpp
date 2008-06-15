@@ -66,7 +66,7 @@ void Game::init(int tWidth, int tHeight){
 	katana->setDescription("Damn, it's a ninja weapon!");
 	map->getBlockAt(7,5)->addItem(katana);
 
-	Door* door = PropFactory::createDoor(100000);
+	Door* door = PropFactory::createDoor(1000);
 	map->getBlockAt(9,10)->addProp(door);
 
 	Prop* chair = new Prop(true);
@@ -91,6 +91,7 @@ void Game::init(int tWidth, int tHeight){
 	map->getBlockAt(10,7)->addProp(PropFactory::createWall(1000));
 	map->getBlockAt(9,7)->addProp(PropFactory::createWall(1000));
 	map->getBlockAt(8,7)->addProp(PropFactory::createWall(1000));
+	map->getBlockAt(8,9)->addItem(WeaponFactory::createPistol());
 }
 
 void Game::addMessage(Message *msg){
@@ -188,27 +189,28 @@ int Game::processKey(int key){
 	//char ikey[4];
 	//itoa(key, ikey, 10);
 	//addMessage(new Message(&ikey[0]));
+	int time;
 	if (PDC_get_key_modifiers() & PDC_KEY_MODIFIER_CONTROL){
 		if (key==WIN_KEY_CTRL_W){
 			Message message;
-			ref->attackLocation(getPlayer(), getMap()->getBlockAt(&((*directionOffsets[NORTH])+(*player->getLoc()))), &message); 	
+			time = ref->attackLocation(getPlayer(), getMap()->getBlockAt(&((*directionOffsets[NORTH])+(*player->getLoc()))), &message); 	
 			addMessage(&message);
-			return 5;
+			return time;
 		} else if (key==WIN_KEY_CTRL_A){
 			Message message;
-			ref->attackLocation(getPlayer(), getMap()->getBlockAt(&((*directionOffsets[WEST])+(*player->getLoc()))), &message); 	
+			time = ref->attackLocation(getPlayer(), getMap()->getBlockAt(&((*directionOffsets[WEST])+(*player->getLoc()))), &message); 	
 			addMessage(&message);
-			return 5;
+			return time;
 		} else if (key==WIN_KEY_CTRL_S){
 			Message message;
-			ref->attackLocation(getPlayer(), getMap()->getBlockAt(&((*directionOffsets[SOUTH])+(*player->getLoc()))), &message); 	
+			time = ref->attackLocation(getPlayer(), getMap()->getBlockAt(&((*directionOffsets[SOUTH])+(*player->getLoc()))), &message); 	
 			addMessage(&message);
-			return 5;
+			return time;
 		} else if (key==WIN_KEY_CTRL_D){
 			Message message;
-			ref->attackLocation(getPlayer(), getMap()->getBlockAt(&((*directionOffsets[EAST])+(*player->getLoc()))), &message); 	
+			time = ref->attackLocation(getPlayer(), getMap()->getBlockAt(&((*directionOffsets[EAST])+(*player->getLoc()))), &message); 	
 			addMessage(&message);
-			return 5;
+			return time;
 		}
 	} else if(key == WIN_KEY_DEL) {
 		quitGame();
@@ -223,9 +225,9 @@ int Game::processKey(int key){
 	} else if (key=='f'){
 		//check for line of sight first, then
 		Message* message = new Message();
-		ref->attackRngLocation(player, getTarget(), message);	
+		time = ref->attackRngLocation(player, getTarget(), message);	
 		addMessage(message);
-		
+		return time;		
 	}
 #if DEBUG 
 	else if (key=='m'){

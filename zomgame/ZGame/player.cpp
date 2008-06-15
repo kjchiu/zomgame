@@ -16,8 +16,9 @@ void Player::equip(Weapon* weapon){
 	if (weapon->isMelee()){
 		equippedWeapon = weapon;
 		return;
-	} 
-	eqRngWeapon = weapon;
+	} else {
+		eqRngWeapon = weapon;
+	}
 }
 
 Weapon* Player::getEqRngWeapon(){
@@ -46,4 +47,8 @@ void Player::unequip(Weapon* weapon){
 		return;
 	} 
 	eqRngWeapon = NULL;
+}
+
+void Player::respawn(Coord *loc) {
+	
 }

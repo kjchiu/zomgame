@@ -35,6 +35,7 @@ class Entity : public Renderable {
 		virtual void setLoc(Coord* nLocation);	
 		virtual int getSpeed() { return speed; }
 		virtual int getSiteRadius() { return siteRadius; }
+		virtual void respawn(Coord* loc) { }
 };
 
 #endif

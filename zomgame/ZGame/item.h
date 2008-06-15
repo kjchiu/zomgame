@@ -11,7 +11,7 @@ using namespace std;
 class Item : public Renderable {
 
 	public:
-		enum ItemType {NOTYPE, FOOD, WEAPON, CONTAINER};	
+		enum ItemType {NOTYPE, FOOD, WEAPON, CONTAINER, MATERIAL};	
 		
 	private:
 		int bulk; //might use this

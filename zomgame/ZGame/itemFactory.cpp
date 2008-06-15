@@ -27,3 +27,12 @@ Weapon* ItemFactory::createWeapon(std::string name, Weapon::WeaponType wType, in
 	weapon->setDescription(description);
 	return weapon;
 }
+
+Item* ItemFactory::createWoodPlank() {
+	Item* item = new Item();
+	item->setName("Wood Plank");
+	item->setType(Item::MATERIAL);
+	item->setDescription("Piece of wood o.O?");
+	item->setDisplayChar('%');
+	return item;
+}
