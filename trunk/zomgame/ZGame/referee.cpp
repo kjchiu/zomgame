@@ -37,13 +37,35 @@ int Referee::attackLocation(Entity* attacker, MapBlock* loc, Message* msg){
 	return 0;
 }
 
-int Referee::attackRngLocation(Player* player, MapBlock* loc, Message* msg){
-	if (loc->hasEntities()){
-		if (player->getEqRngWeapon() != NULL){
+int Referee::attackRngLocation(Player* player, Coord* loc, Message* msg){
+	//if (loc->hasEntities()){
+//		if (player->getEqRngWeapon() != NULL){
 			//do stuff
+//		}
+//	}
+
+	vector<Coord>* ray = game->getRay(player->getLoc(), loc);
+	int i = 1;
+	char buf[128];
+	Renderable* r = NULL;
+	MapBlock* block;
+	do {
+		block =	game->getMap()->getBlockAt(&(ray->at(i)));
+		if (block->hasEntities()) {
+			r = block->getTopEntity();
+			break;
+		} else if (block->hasProps()) {
+			r = block->getTopProp();
+			break;
 		}
+		i++;
+	} while (i < ray->size());
+	if (r) {
+		sprintf(&buf[0], "You shot a %s", r->getName().c_str());
+	} else {
+		sprintf(&buf[0], "You attack the darkness?");
 	}
-	msg->setMsg("BANG");
+	msg->setMsg(&buf[0]);
 	return 10;
 }
 
