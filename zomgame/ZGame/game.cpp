@@ -223,7 +223,7 @@ int Game::processKey(int key){
 	} else if (key=='f'){
 		//check for line of sight first, then
 		Message* message = new Message();
-		ref->attackRngLocation(player, map->getBlockAt(getTarget()), message);	
+		ref->attackRngLocation(player, getTarget(), message);	
 		addMessage(message);
 		
 	}
@@ -421,6 +421,6 @@ vector<Coord>* Game::getRay(Coord *start, Coord *target) {
 	}
 	
 	
-
+	ray->push_back(Coord(target->getX(), target->getY()));
 	return ray;
 }
