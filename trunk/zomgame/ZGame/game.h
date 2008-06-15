@@ -17,6 +17,7 @@
 #include "weapon.h"
 #include "door.h"
 #include "propfactory.h"
+#include "weaponFactory.h"
 
 class Game;
 class Display;

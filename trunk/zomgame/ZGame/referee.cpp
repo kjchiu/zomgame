@@ -34,21 +34,15 @@ int Referee::attackLocation(Entity* attacker, MapBlock* loc, Message* msg){
 	}
 			
 	msg->setMsg(retString.c_str());
-	return 0;
+	return 5;
 }
 
 int Referee::attackRngLocation(Player* player, Coord* loc, Message* msg){
-	//if (loc->hasEntities()){
-//		if (player->getEqRngWeapon() != NULL){
-			//do stuff
-//		}
-//	}
-
-	vector<Coord>* ray = game->getRay(player->getLoc(), loc);
-	int i = 1;
 	char buf[128];
 	Renderable* r = NULL;
 	MapBlock* block;
+	vector<Coord>* ray = game->getRay(player->getLoc(), loc);
+	int i = 1;						
 	do {
 		block =	game->getMap()->getBlockAt(&(ray->at(i)));
 		if (block->hasEntities()) {
@@ -59,11 +53,36 @@ int Referee::attackRngLocation(Player* player, Coord* loc, Message* msg){
 			break;
 		}
 		i++;
-	} while (i < ray->size());
-	if (r) {
-		sprintf(&buf[0], "You shot a %s", r->getName().c_str());
+	} while (i < ray->size());		
+
+	int dur;
+
+	if (r) {	
+		if (player->getEqRngWeapon()) {
+			if (block->hasEntities()) {
+				// dmg prop
+				static_cast<Entity*>(r)->getAttribute("Health")->changeCurValueBy(0 - player->getEqRngWeapon()->getDamage());
+				// destory entity
+				if (!(dur = static_cast<Entity*>(r)->getAttribute("Health")->getCurValue())) {
+					destroy(block->getTopEntity(), &ray->at(i));
+				}
+			} else if (block->hasProps()) {
+				static_cast<Prop*>(r)->getDurability()->changeCurValueBy(0 - player->getEqRngWeapon()->getDamage());
+				if (!(dur = static_cast<Prop*>(r)->getDurability()->getCurValue())){
+					destroy(block->getTopProp(), &ray->at(i));
+				}
+			}
+			sprintf(&buf[0], "You shot a %s with your %s. It has %d health left.", 
+							r->getName().c_str(), player->getEqRngWeapon()->getName().c_str(), dur);			
+		} else {
+			sprintf(&buf[0], "You point at the %s with your finger and say bang?", r->getName().c_str());
+		}
 	} else {
-		sprintf(&buf[0], "You attack the darkness?");
+		if (player->getEqRngWeapon()) {
+			sprintf(&buf[0], "You attack the darkness?");		
+		} else {
+			sprintf(&buf[0], "You point at the darkness with your finger and say bang?");
+		}
 	}
 	msg->setMsg(&buf[0]);
 	return 10;
@@ -163,4 +182,29 @@ int Referee::interact(Player* player, Prop* prop) {
 	} else {
 		return 0;
 	}
+}
+
+int Referee::destroy(Prop* prop, Coord* loc) {
+	char msg[64];
+	vector<Item*> debris = prop->destroy();
+	for (int i = 0; i < debris.size(); i++) {
+		sprintf(&msg[0], "added %s debris", debris.at(i)->getName().c_str());
+		game->addMessage(new Message(new std::string(msg)));
+		game->getMap()->getBlockAt(loc)->addItem(debris.at(i));
+	}
+	sprintf(&msg[0], "%s has been destroyed.", prop->getName().c_str());
+	game->addMessage(new Message(new std::string(msg)));
+	game->getMap()->getBlockAt(loc)->removeProp(prop);
+	return 0;
+}
+
+
+int Referee::destroy(Entity* ent, Coord* loc) {
+	Coord* newLoc = new Coord(rand() % game->getMap()->getWidth(), rand() % game->getMap()->getHeight());
+	
+	game->getMap()->getBlockAt(loc)->removeEntity(ent);
+	ent->respawn(newLoc);
+	
+
+	return 0;
 }

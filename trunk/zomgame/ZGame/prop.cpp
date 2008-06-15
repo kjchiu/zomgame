@@ -16,8 +16,8 @@ Attribute* Prop::getDurability(){
 	return durability;
 }
 
-void Prop::destroy(){
-
+vector<Item*> Prop::destroy(){
+	return debris;
 }
 
 int Prop::interact(Player *p){
@@ -38,6 +38,10 @@ void Prop::setPassable(bool canPass){
 
 void Prop::setSeeThrough(bool nSeeThrough){
 	seeThrough = nSeeThrough;
+}
+
+void Prop::setDebris(vector<Item*> &_debris) {
+	debris = _debris;
 }
 
 void Prop::initDurability(int value, int maxValue) {

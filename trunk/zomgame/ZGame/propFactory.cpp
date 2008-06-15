@@ -6,8 +6,10 @@ Door* PropFactory::createDoor(){
 
 Door* PropFactory::createDoor(int durability){
 	Door* door = new Door();
-	door->getDurability()->changeMaxValueBy(durability - 100);
-	door->getDurability()->changeCurValueBy(durability - 100);
+	door->getDurability()->init(door->getDurability()->getName(), durability, durability);
+	vector<Item*> debris;
+	debris.push_back(ItemFactory::createWoodPlank());
+	door->setDebris(debris);
 	return door;
 }
 
@@ -18,8 +20,10 @@ Prop* PropFactory::createWall(){
 Prop* PropFactory::createWall(int durability){
 	Prop* wall = new Prop(false);
 	wall->setName("Wall");
-	wall->getDurability()->changeMaxValueBy(durability - 100);
-	wall->getDurability()->changeCurValueBy(durability - 100);
+	wall->getDurability()->init(wall->getDurability()->getName(), durability, durability);
+	vector<Item*> debris;
+	debris.push_back(ItemFactory::createWoodPlank());
+	debris.push_back(ItemFactory::createWoodPlank());
+	wall->setDebris(debris);
 	return wall;
-
 }

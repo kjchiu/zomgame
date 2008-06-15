@@ -20,7 +20,7 @@ class Weapon : public Item {
 		WeaponType wType; //relates to what skill is associated with the weapon
 		int damage;
 		Attribute* durability; //likely always going to have 100, maybe this can be modified?
-
+		int range;
 	public:
 		Weapon();
 		Weapon(string nName, int damage);
@@ -30,8 +30,10 @@ class Weapon : public Item {
 		WeaponType getWType();
 		string getWTypeString();
 		int getDamage();
+		int getRange();
 		void setWType(WeaponType nType);
 		void setDamage(int nDamage);
+		void setRange(int _range);
 	
 };
 

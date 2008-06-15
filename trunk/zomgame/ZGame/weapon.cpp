@@ -33,7 +33,12 @@ Attribute* Weapon::getDurability(){
 //}
 
 string Weapon::getWTypeString(){
-	return "Weapon"; //will return a string represenation of the weapon's class
+	//return "Weapon"; //will return a string represenation of the weapon's class
+	return isMelee() ? "Melee" : "Ranged";
+}
+
+int Weapon::getRange() {
+	return range;
 }
 
 bool Weapon::isMelee(){
@@ -48,4 +53,8 @@ void Weapon::setDamage(int nDmg){
 }
 void Weapon::setWType(WeaponType nType){
 	wType = nType;
+}
+
+void Weapon::setRange(int _range) {
+	range = _range;
 }

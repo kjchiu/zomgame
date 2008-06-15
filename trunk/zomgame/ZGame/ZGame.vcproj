@@ -273,6 +273,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\weaponFactory.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\zombie.cpp"
 				>
 			</File>
@@ -388,6 +392,10 @@
 			</File>
 			<File
 				RelativePath=".\weapon.h"
+				>
+			</File>
+			<File
+				RelativePath=".\weaponFactory.h"
 				>
 			</File>
 			<File

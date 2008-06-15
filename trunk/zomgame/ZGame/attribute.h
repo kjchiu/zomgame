@@ -4,7 +4,6 @@
 #define _ATTRIBUTE_H
 
 #include <string>
-
 using namespace std;
 
 class Attribute {
@@ -12,7 +11,6 @@ class Attribute {
 	private: 
 		string name;
 		int curValue, maxValue;
-		
 	public:
 		Attribute();
 		Attribute(string nName);
