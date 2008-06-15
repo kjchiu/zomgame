@@ -23,6 +23,7 @@ class MapBlock {
 		vector<Item*> itemList;
 		vector<Entity*> entityList;
 		vector<Prop*> propList;
+		bool isTarget;
 		
 	public:
 		MapBlock();

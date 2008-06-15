@@ -295,7 +295,9 @@ int Game::processKey(int key){
 	} else if (key == 'p') {
 		display->togglePopup();
 	}
-	display->draw();
+
+	// i hope this is redundant -.-
+	//display->draw();
 	return 0;
 }
 
@@ -357,4 +359,68 @@ void Game::run(){
 		}
 		tickCount += frameTime;
 	}
+}
+
+vector<Coord>* Game::getRay(Coord *start, Coord *target) {
+	int dir;
+	// check for redundant ray
+	if (*target == *player->getLoc()) {
+		return NULL;
+	}
+
+	vector<Coord> *ray = new vector<Coord>();
+	float slope;	
+	
+	if (target->getX() - start->getX()) {
+		
+		// a = slope = (y2 - y1) / (x2 - x1)
+		// y2 - y1 = a(x2 - x1)
+
+		float dx, dy;		
+		dy = (target->getY() - start->getY());
+		dx = (target->getX() - start->getX());
+		slope =  dy / dx ;
+
+		// check which is the dominant axis, (i.e. dx > dy?)
+		// iterate over the longer one to ensure no gaps in ray
+		// theres gotta be a better way to do a general version of this =[
+		if (abs(slope) < 1) {
+			float y;
+			dir = (start->getX() > target->getX()) ? -1 : 1;
+			
+
+			for (int x = start->getX(); x != target->getX(); x+=dir) {
+				y = slope * (x - start->getX()) + start->getY();
+				float flor = floor(y);
+				if (y - flor > 0.5) {
+					ray->push_back(Coord(x, ceil(y)));
+				} else {
+					ray->push_back(Coord(x,flor));
+				}
+			}
+		} else {
+			float x;
+			dir =  (start->getY() > target->getY()) ? -1 : 1;
+			
+			for (int y = start->getY(); y != target->getY(); y+=dir) {
+				x = ((y - start->getY()) / slope) + start->getX();
+				float flor = floor(x);
+				if (x - flor > 0.5) {
+					ray->push_back(Coord(ceil(x), y));
+				} else {
+					ray->push_back(Coord(flor,y));
+				}
+			}
+		}
+	} else { // vertical line, simple case
+		
+		dir =  (start->getY() > target->getY()) ? -1 : 1;
+		for (int y = start->getY(); y != target->getY(); y+=dir) {
+			ray->push_back(Coord(start->getX(), y));
+		}
+	}
+	
+	
+
+	return ray;
 }

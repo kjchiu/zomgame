@@ -100,6 +100,7 @@ void Display::draw(Map* map) {
 	width -= 2;
 	chtype* view = camera->getViewableArea(map, getCenter());
 	Coord transTarget = camera->getLocalCoordinates(target, getCenter());
+	Coord p = camera->getLocalCoordinates(game->getPlayer()->getLoc(), getCenter());
 	for (int x=0; x<width; x++){
 		for (int y=0; y<height; y++){
 			int index = x + (y * width);	
@@ -117,8 +118,30 @@ void Display::draw(Map* map) {
 				mvwaddch(playWin, y+1, x+1, (char)view[index]);
 				wattroff(playWin, COLOR_PAIR(TARGET_PAIR));
 			} else {			
-				mvwaddch(playWin, y+1, x+1, view[index]);
+				mvwaddch(playWin, y+1, x+1, view[index]);	
 			}			
+		}
+	}
+
+	vector<Coord>* ray = NULL;
+	ray = game->getRay(game->getPlayer()->getLoc(), game->getTarget());
+	
+	if (ray) {
+		//char msg[255];
+		//sprintf(&msg[0], "Ray length: %d", ray->size());
+		//game->addMessage(new Message(new std::string(msg)));
+		Coord c;
+		for (int i = 0; i < ray->size(); i++) {
+			c = ray->at(i);
+			c = camera->getLocalCoordinates(&c, getCenter());
+			short fg, bg;
+			// grab foreground colour of block
+			pair_content(map->getBlockAt(&c)->getColor(), &fg, &bg);
+			// generate new pair using block fg + red bg
+			init_pair(TARGET_PAIR, fg, TARGET_COLOR);
+			wattron(playWin, COLOR_PAIR(TARGET_PAIR));
+			mvwaddch(playWin, c.getY()+1, c.getX()+1, (char)view[c.getX() + c.getY() * width]);
+			wattroff(playWin, COLOR_PAIR(TARGET_PAIR));
 		}
 	}
 	//now display it in the play window (playWin)

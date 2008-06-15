@@ -44,6 +44,8 @@ class Game {
 		Game(int tWidth, int tHeight);
 		void init(int tWidth, int tHeight);
 		
+
+		vector<Coord>* getRay(Coord *start, Coord *target);
 		Map* getMap() {return this->map;}
 		Referee* getReferee() {return this->ref;}
 		void addMessage(Message* msg);
