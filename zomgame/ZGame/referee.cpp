@@ -42,6 +42,11 @@ int Referee::attackRngLocation(Player* player, Coord* loc, Message* msg){
 	Renderable* r = NULL;
 	MapBlock* block;
 	vector<Coord>* ray = game->getRay(player->getLoc(), loc);
+	if (!ray) {
+		sprintf(&buf[0], "Stop shooting yourself.");
+		msg->setMsg(buf);
+		return 0;
+	}
 	int i = 1;						
 	do {
 		block =	game->getMap()->getBlockAt(&(ray->at(i)));
@@ -57,6 +62,7 @@ int Referee::attackRngLocation(Player* player, Coord* loc, Message* msg){
 
 	int dur;
 
+	// if we hit something
 	if (r) {	
 		if (player->getEqRngWeapon()) {
 			if (block->hasEntities()) {
