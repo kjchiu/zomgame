@@ -6,6 +6,7 @@ MapBlock::MapBlock(){
 	propList = vector<Prop*>();
 	itemList = vector<Item*>();
 	terrain = new Grass();
+	isTarget = false;
 }
 
 /* Adds an entity to the entities on the mapBlock, takes an int as well for height */

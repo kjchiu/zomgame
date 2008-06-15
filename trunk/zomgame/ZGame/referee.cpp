@@ -9,7 +9,7 @@ int Referee::attackDirection(Entity* attacker, Direction dir) {
 	Message* m = new Message();
 	Coord focus = *attacker->getLoc() + *game->directionOffsets[dir];
 	int time = attackLocation(attacker, game->getMap()->getBlockAt(&focus), m);
-	game->addMessage(m);
+	//game->addMessage(m);
 	return time;
 }
 
