@@ -14,6 +14,4 @@
 #define WIN_KEY_CTRL_S 19
 #define WIN_KEY_CTRL_D 4
 
-
-
 #endif

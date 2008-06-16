@@ -30,13 +30,23 @@ vector<int>* Item::getSkills(){
 	return associatedSkills;
 }
 
-string Item::getType(){
-	switch (type) {
-		case 0: return "NoType"; break;
-		case 1: return "Food"; break;
-		case 2: return "Weapon"; break;
-		case 3: return "Container"; break;
-	}
+int Item::getType(){
+	return type;
+}
+
+string Item::getTypeString(){
+	ItemType thisType = type;
+	if (type == Item::AMMO){
+		return "Ammo";
+	} else if (type == Item::CONTAINER){
+		return "Container";
+	} else if (type == Item::FOOD){
+		return "Food";
+	} else if (type == Item::MATERIAL){
+		return "Material";
+	} else if (type == Item::WEAPON){
+		return "Weapon";
+	} 
 	return "NoType";
 }
 
@@ -65,10 +75,6 @@ void Item::setBulk(int nBulk){
 
 void Item::setType(ItemType nType){
 	type = nType;
-	//set up skills
-	if (getType() == "Food") {
-		int i;
-	}
 }
 
 void Item::setWeight(int nWeight){

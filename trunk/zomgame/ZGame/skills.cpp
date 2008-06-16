@@ -60,6 +60,15 @@ void SkillTable::load(std::string filename) {
 	s.action = &eat;
 	insert(s);
 
+
+
+	//not sure about this, requires two targets (item and mapblock)
+	s.id = skill_count++;
+	s.name = "Drop";
+	s.description = "Drop the item onto the ground.";
+//	s.action = &drop;
+//	insert(s);
+
 }
 
 void SkillTable::insert(Skill skill) {
@@ -104,3 +113,21 @@ int unequip(Player* p, void* target, vector<Message*>* log) {
 	log->push_back(new Message(msg));
 	return 0;
 }
+
+/*
+//same problem, need the item and a mapblock
+int drop(Player* p, void* target, vector<Message*>* log) {
+	Item* item = static_cast<Item*>(target);
+	if (item->getType() == "Weapon"){	//unequip the item if the user drops it
+		Weapon* weapon = (Weapon*)item;
+		if (weapon == p->getEqRngWeapon() || weapon == p->getEquippedWeapon()){
+			p->unequip(weapon);
+		}
+	}
+	p->getInventory()->removeItem(item);
+	game->getMap()->getBlockAt(dropper->getLoc())->addItem(item);
+	string message = "You dropped " + item->getListName();
+	msg->setMsg(message.c_str());
+	return 0;
+}
+*/

@@ -100,7 +100,7 @@ bool Referee::doActionOnItem(Item* item, int skillIndex){
 
 bool Referee::dropItem(Entity* dropper, int index, Message* msg){
 	Item* item = dropper->getInventory()->getItemAt(index);
-	if (item->getType() == "Weapon"){	//unequip the item if the user drops it
+	if (item->getType() == Item::WEAPON){	//unequip the item if the user drops it
 		Weapon* weapon = (Weapon*)item;
 		if (weapon == game->getPlayer()->getEqRngWeapon() || weapon == game->getPlayer()->getEquippedWeapon()){
 			game->getPlayer()->unequip(weapon);
@@ -109,7 +109,7 @@ bool Referee::dropItem(Entity* dropper, int index, Message* msg){
 	dropper->getInventory()->removeItem(item);
 	game->getMap()->getBlockAt(dropper->getLoc())->addItem(item);
 	string message = "You dropped " + item->getListName();
-	msg->setMsg(message.c_str());
+	game->addMessage(new Message(&message));//msg->setMsg(message.c_str());
 	return true;
 }
 

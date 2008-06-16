@@ -27,7 +27,7 @@ class Weapon : public Item {
 		void init(string nName, int damage);
 		bool isMelee();
 		Attribute* getDurability();
-		WeaponType getWType();
+		int getWType();
 		string getWTypeString();
 		int getDamage();
 		int getRange();
