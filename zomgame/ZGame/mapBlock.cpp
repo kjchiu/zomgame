@@ -102,6 +102,7 @@ bool MapBlock::isObstacle() {
 	}
 	return false;
 }
+
 // @TODO WHEN HEIGHT IS IMPLEMENTED, ONLY CHECK AT THE HEIGHT
 /* Remove an entity from the list. Might take height later, if necessary */
 void MapBlock::removeEntity(Entity *entity){

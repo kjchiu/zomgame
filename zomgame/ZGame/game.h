@@ -27,6 +27,12 @@ using namespace std;
 
 enum Direction {NORTH, NORTHEAST, EAST, SOUTHEAST, SOUTH, SOUTHWEST, WEST, NORTHWEST};
 
+struct Time {
+	int hour;
+	int minute;
+	double second;
+};
+
 class Game {
 	private:
 		deque<Message> messages;
@@ -55,6 +61,7 @@ class Game {
 		char* getView();
 		Player* getPlayer();
 		Coord* getTarget();
+		Time getTime();
 		void draw();
 		void drawMenu();
 		int processKey(int input);
@@ -64,7 +71,7 @@ class Game {
 		void moveTarget(Direction dir);
 		void setCharAt(char setChar, int x, int y);
 		bool isPassable(Coord* nextLoc);
-		unsigned int getTime();
+		unsigned int getTickcount();
 
 		void quitGame();
 		void tick();

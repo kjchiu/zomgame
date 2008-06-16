@@ -25,6 +25,6 @@ void WanderState::tick(Game* game) {
 		}
 	}
 	if (chance > 10)
-		zombie->queueMove(game->getTime() + 20, dir);
+		zombie->queueMove(game->getTickcount() + 20, dir);
 
 }
