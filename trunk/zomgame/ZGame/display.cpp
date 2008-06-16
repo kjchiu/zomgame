@@ -76,16 +76,20 @@ void Display::cleanSelections(){
 
 // pulls down necessary data from game to draw
 void Display::draw() {
-	if (!popupIsToggled()) {
+	if (dState->mapIsToggled()) {
 		this->draw(game->getMap());
-	} 
+	} else if (dState->attrIsToggled()){
+		drawCharacterInfo();
+	}
+
+
 	this->draw(game->getMessages());
 	if (invIsToggled()){
 		this->draw(game->getPlayer()->getInventory());
-	} else if (attToggle) {
-	} 
+	}
 
 	draw(game->getPlayer(), game->getMap()->getBlockAt(game->getTarget()));
+
 	
 	
 }
@@ -243,9 +247,6 @@ void Display::draw(Player* player, MapBlock* block){
 			mvwprintw(menuWin, i+halfway+8, 3, "%s", block->getItemAt(i)->getListName().c_str());
 		}
 	}
-
-	
-
 	//draw the box + dividing line
 	box(menuWin, 0,0);
 	mvwprintw(menuWin, 0, 3, "PLAYER");
@@ -256,6 +257,26 @@ void Display::draw(Player* player, MapBlock* block){
 	mvwaddch(menuWin, halfway, getmaxx(menuWin)-1, ACS_RTEE);
 	mvwprintw(menuWin, halfway, 2, "INFO");
 	wrefresh(menuWin);
+}
+
+void Display::drawCharacterInfo(){
+	wclear(playWin);
+	int height, width;
+	getmaxyx(playWin, height, width);
+	Player* p = game->getPlayer();
+	//character name, equipped weapons, skills
+	mvwprintw(playWin, 2,2, "Name: %s", p->getName().c_str());
+
+
+
+	mvwprintw(playWin, 1, width-10, "SKILLS");
+	
+
+
+	
+	box(playWin, 0,0);
+	mvwprintw(playWin, 0, 3, "CHARACTER INFO");
+	wrefresh(playWin);
 }
 
 void Display::drawInventoryList(vector<Item*> items, int xLoc, int selection, bool highlight){
@@ -329,8 +350,18 @@ int Display::processKey(int input){
 		return this->processKeyUseItem(input);
 	} else if (invIsToggled()){
 		return this->processKeyInventory(input);
+	} else if (dState->attrIsToggled()){
+		return processKeyAttributes(input);
 	}
 	return -1;
+}
+
+int Display::processKeyAttributes(int input){
+	if (input == 'u'){
+		dState->toggleAttr();
+	}
+
+	return 0;
 }
 
 int Display::processKeyInventory(int input){
@@ -435,14 +466,7 @@ void Display::toggleInventory(bool selectedSide){
 }
 
 void Display::toggleAttributes(){
-	attToggle = !attToggle;
-	if (attToggle){
-		wresize(msgWin, 4, 80);
-		mvwin(msgWin, 46,0);
-	} else {
-		wresize(msgWin, 15, 80);
-		mvwin(msgWin, 35,0);
-	}
+	dState->toggleAttr();
 }
 
 void Display::togglePopup(){
