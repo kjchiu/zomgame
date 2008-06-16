@@ -123,13 +123,10 @@ void Display::draw(Map* map) {
 		}
 	}
 
-	vector<Coord>* ray = NULL;
-	ray = game->getRay(game->getPlayer()->getLoc(), game->getTarget());
+	//the line of aiming if 'target' has been moved
+	vector<Coord>* ray = game->getRay(game->getPlayer()->getLoc(), game->getTarget());
 	
 	if (ray) {
-		//char msg[255];
-		//sprintf(&msg[0], "Ray length: %d", ray->size());
-		//game->addMessage(new Message(new std::string(msg)));
 		Coord c;
 		for (int i = 0; i < ray->size(); i++) {
 			c = ray->at(i);
@@ -294,8 +291,8 @@ void Display::drawItemDetails(Item* item, int height, int width){
 	mvwprintw(invWin, 4, 5, item->getDescription().c_str());
 	mvwprintw(invWin, height-2, 4, "Weight: %d lbs", item->getWeight());
 	mvwprintw(invWin, height-2, width-20, "Bulk: %d", item->getBulk()); 
-	mvwprintw(invWin, height-2, 40, "Type: %s", item->getType().c_str());
-	if (item->getType().compare("Weapon") == 0) { //display weapon stats if its a weapon
+	mvwprintw(invWin, height-2, 40, "Type: %s", item->getTypeString().c_str());
+	if (item->getTypeString().compare("Weapon") == 0) { //display weapon stats if its a weapon
 		Weapon* weapon = (Weapon*)item;
 		mvwprintw(invWin, 2, width-30, "Weapon Class: %s", weapon->getWTypeString().c_str());
 		mvwprintw(invWin, 3, width-30, "Durability: %d/%d", weapon->getDurability()->getCurValue(), weapon->getDurability()->getMaxValue());
@@ -359,14 +356,6 @@ int Display::processKeyInventory(int input){
 		dState->switchInvSelect();
 	} else if (input == WIN_KEY_RIGHT) { //right
 		dState->switchInvSelect();
-	} else if (input == 'd'){ //drop the item
-		if (dState->invIsHighlighted()){
-			Message msg;
-			game->getReferee()->dropItem(game->getPlayer(), inventorySelection, &msg);
-			game->addMessage(&msg);
-			cleanSelections();
-			return 5;
-		}
 	} else if (input == 'g'){
 		if (!dState->invIsHighlighted()){
 			Message msg;
@@ -379,10 +368,6 @@ int Display::processKeyInventory(int input){
 		this->setUpSkillWindow(game->getPlayer()->getInventory()->getItemAt(inventorySelection));
 		togglePopup();
 		showItemDetail = !showItemDetail;
-	} else if (input == 'u'){
-		
-		this->setUpSkillWindow(game->getPlayer()->getInventory()->getItemAt(inventorySelection));
-		togglePopup();	//show the abilities of the item
 	}
 
 	return 0;
@@ -401,6 +386,10 @@ int Display::processKeyUseItem(int input){
 		showItemDetail = !showItemDetail;
 		Item* item = game->getPlayer()->getInventory()->getItemAt(inventorySelection);
 		//inventorySelection = 0;
+		if (popupWin->getListItemAt(popupWin->getSelectedIndex()) == "Drop"){
+			game->getReferee()->dropItem(game->getPlayer(), inventorySelection, new Message());
+			return 5;
+		}
 		//use the selected skill
 		return game->getReferee()->resolve(game->getPlayer(), 
 								item, 
@@ -425,7 +414,7 @@ void Display::setUpSkillWindow(Item* item){
 	for (int i=0; i<item->getSkills()->size(); i++){
 		skillNames->push_back(skill_list.getSkill(item->getSkills()->at(i))->name);
 	}
-
+	skillNames->push_back("Drop"); //every item can be dropped
 	popupWin->setHeader(item->getName());
 	popupWin->setList(skillNames);
 }

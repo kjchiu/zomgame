@@ -11,13 +11,12 @@ using namespace std;
 class Item : public Renderable {
 
 	public:
-		enum ItemType {NOTYPE, FOOD, WEAPON, CONTAINER, MATERIAL};	
+		enum ItemType {NOTYPE, FOOD, WEAPON, CONTAINER, AMMO, MATERIAL};	
 		
 	private:
 		int bulk; //might use this
 		int weight;
 		ItemType type; //determines what type of item this is
-		string typeNames[4];
 		vector<int>* associatedSkills;
 		static int id;
 		int thisID;
@@ -27,7 +26,8 @@ class Item : public Renderable {
 		void addSkill(int skillNum);
 		int getBulk();
 		int getID() const;
-		string getType();
+		int getType();
+		string getTypeString();
 		int getWeight();	
 		vector<int>* getSkills();
 		void removeSkill(int skillNum);

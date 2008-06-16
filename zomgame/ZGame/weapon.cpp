@@ -28,9 +28,9 @@ Attribute* Weapon::getDurability(){
 	return durability;
 }
 
-//WeaponType Weapon::getWType(){
-//	return wType;
-//}
+int Weapon::getWType(){
+	return wType;
+}
 
 string Weapon::getWTypeString(){
 	//return "Weapon"; //will return a string represenation of the weapon's class

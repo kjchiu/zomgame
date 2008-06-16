@@ -190,8 +190,10 @@ bool Game::move(Zombie* zombie, Direction dir){
 
 void Game::moveTarget(Direction dir) {
 	Coord moveLoc = (*directionOffsets[dir]) + (*getTarget());
-	if (moveLoc.getX() < 0 || moveLoc.getY() < 0 || 
-		moveLoc.getX() >= map->getWidth() || moveLoc.getY() >= map->getHeight()){
+	int deltaX = moveLoc.getX() - player->getLoc()->getX();
+	int deltaY = moveLoc.getY() - player->getLoc()->getY();
+	if (!map->isWithinMap(&moveLoc) || abs(deltaY) >= 17 || abs(deltaX) >= 27){
+
 		return; //can't move here, outside of map
 	}
 	target->setCoord(&moveLoc);
@@ -379,12 +381,12 @@ void Game::run(){
 
 vector<Coord>* Game::getRay(Coord *start, Coord *target) {
 	int dir;
+	vector<Coord> *ray = new vector<Coord>();
 	// check for redundant ray
-	if (*target == *player->getLoc()) {
+	if (*target == *(player->getLoc())) {
 		return NULL;
 	}
 
-	vector<Coord> *ray = new vector<Coord>();
 	float slope;	
 	
 	if (target->getX() - start->getX()) {
