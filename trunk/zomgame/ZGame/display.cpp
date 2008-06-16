@@ -226,7 +226,9 @@ void Display::draw(Player* player, MapBlock* block){
 	mvwprintw(menuWin, 5, 2, "Strength: %d", player->getAttribute("Strength")->getCurValue());
 	mvwprintw(menuWin, 6, 2, "WeapDur: %d/%d", player->getEquippedWeapon()->getDurability()->getCurValue(), 
 									player->getEquippedWeapon()->getDurability()->getMaxValue());
-	mvwprintw(menuWin, getmaxy(menuWin) / 2 - 1, 2, "TickCount: %d", game->getTime());
+	Time t = game->getTime();
+	mvwprintw(menuWin, getmaxy(menuWin) / 2 - 2, 2, "Time: %d:%d:%2.1f", t.hour, t.minute, t.second);
+	mvwprintw(menuWin, getmaxy(menuWin) / 2 - 1, 2, "TickCount: %d", game->getTickcount());
 	//draw the mapblock info
 
 	int halfway = getmaxy(menuWin)/2;

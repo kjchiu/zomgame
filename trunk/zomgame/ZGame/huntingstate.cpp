@@ -52,7 +52,7 @@ int offset;
 	}
 
 
-		zombie->queueMove(game->getTime() + zombie->getSpeed(), moveDir);
+	zombie->queueMove(game->getTickcount() + zombie->getSpeed(), moveDir);
 }
 
 void HuntingState::resolveObstacle(Game* game, Direction dir) {

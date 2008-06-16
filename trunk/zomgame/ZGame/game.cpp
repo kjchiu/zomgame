@@ -1,4 +1,3 @@
-
 #include <curses.h>
 #include "game.h"
 #include "referee.h"
@@ -112,13 +111,28 @@ Coord* Game::getTarget() {
 	return target;
 }
 
-unsigned int Game::getTime(){
+unsigned int Game::getTickcount(){
 	return tickCount;
+}
+
+Time Game::getTime() {
+	// 10ticks = 1s
+	// 1minute = 600 ticks
+	// 1 hr = 36000 ticks
+	int ticks;
+	Time t;	
+	t.hour = tickCount / 36000;
+	t.hour = t.hour % 24;
+	ticks = tickCount % 36000;
+	t.minute = ticks / 600;
+	ticks = ticks % 600;
+	t.second = ticks / 10;
+	return t;
 }
 
 bool Game::isPassable(Coord* nextLoc){
 	MapBlock* checkBlock = map->getBlockAt(nextLoc->getX(), nextLoc->getY());
-	if (!map->isWithinMap(nextLoc)){
+	if (!map->isWithinMap(nextLoc)) {
 		return false;
 	}
 	if (checkBlock->isPassable()){

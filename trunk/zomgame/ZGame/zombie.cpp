@@ -70,7 +70,7 @@ void Zombie::tick(Game* game) { //eat_brains()
 	}
 	
 	while (!moveQueue.empty()) {
-		if (moveQueue.front().first > game->getTime()) {
+		if (moveQueue.front().first > game->getTickcount()) {
 			break;
 		} else {
 			game->move(this, moveQueue.front().second);
