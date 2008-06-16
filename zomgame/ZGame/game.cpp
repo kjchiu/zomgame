@@ -190,8 +190,8 @@ bool Game::move(Zombie* zombie, Direction dir){
 
 void Game::moveTarget(Direction dir) {
 	Coord moveLoc = (*directionOffsets[dir]) + (*getTarget());
-	int deltaX = moveLoc.getX() - player->getLoc()->getX();
-	int deltaY = moveLoc.getY() - player->getLoc()->getY();
+	int deltaX = moveLoc.getX() - display->getCenter()->getLoc()->getX();
+	int deltaY = moveLoc.getY() - display->getCenter()->getLoc()->getY();
 	if (!map->isWithinMap(&moveLoc) || abs(deltaY) >= 17 || abs(deltaX) >= 27){
 
 		return; //can't move here, outside of map
@@ -243,23 +243,12 @@ int Game::processKey(int key){
 		Message* message = new Message();
 		time = ref->attackRngLocation(player, getTarget(), message);	
 		addMessage(message);
-		return time;		
-	}
-#if DEBUG 
-	else if (key=='m'){
-		/*player->getAttribute("Strength")->changeCurValueBy(-1);
-		Message* test = new Message("Strength reduced by 1");
-		addMessage(test);
-		*/
-		char buf[128];
-		sprintf(&buf[0], "Querying (%d,%d)", target->getX(), target->getY());
-		addMessage(map->getBlockAt(this->getTarget())->getBlockInfo());
-		addMessage(new Message(new std::string(buf)));
-		
-	}
-#endif
-
-	else if (key=='q') {
+		return time;	
+	} else if (key=='u'){ //i don't know, some random key
+		display->toggleAttributes();
+		string* str = new string(); *str = "Attr toggled";
+		addMessage(new Message(str));
+	} else if (key=='q') {
 		move(player, NORTHWEST); return 10; //based on speed
 	} else if (key=='w') {
 		move(player, NORTH); return 10; //based on speed
@@ -386,27 +375,19 @@ vector<Coord>* Game::getRay(Coord *start, Coord *target) {
 	if (*target == *(player->getLoc())) {
 		return NULL;
 	}
-
 	float slope;	
-	
-	if (target->getX() - start->getX()) {
-		
+	if (target->getX() - start->getX()) {	
 		// a = slope = (y2 - y1) / (x2 - x1)
 		// y2 - y1 = a(x2 - x1)
-
 		float dx, dy;		
 		dy = (target->getY() - start->getY());
 		dx = (target->getX() - start->getX());
 		slope =  dy / dx ;
-
 		// check which is the dominant axis, (i.e. dx > dy?)
 		// iterate over the longer one to ensure no gaps in ray
-		// theres gotta be a better way to do a general version of this =[
 		if (abs(slope) < 1) {
 			float y;
 			dir = (start->getX() > target->getX()) ? -1 : 1;
-			
-
 			for (int x = start->getX(); x != target->getX(); x+=dir) {
 				y = slope * (x - start->getX()) + start->getY();
 				float flor = floor(y);

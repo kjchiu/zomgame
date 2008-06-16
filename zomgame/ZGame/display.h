@@ -23,20 +23,21 @@ struct DisplayState {
 	State state;
 	bool invSide; //true means that the player is in their inventory, false means the selection is on the ground
 	void init() { state = MAPDISP; invSide = true;}
+	void toggleAttr() {if (state == MAPDISP){state = ATTR;} else {state = MAPDISP;}}
 	void toggleInv() {if (state == MAPDISP){state = INVDISP; invSide=true;} else {state = MAPDISP;}}
 	void togglePopup() {if (state == INVDISP && invSide == true){state = INVPOP;} else if (state == INVPOP){state = INVDISP;}}
 	void switchInvSelect() { invSide = !invSide; }
+	bool attrIsToggled() {if (state == ATTR){return true;} return false;}
 	bool invIsToggled() {if (state != MAPDISP && state != ATTR){return true;} return false;}
+	bool mapIsToggled() {if (state == MAPDISP){ return true;} return false;}
 	bool popupIsToggled() {if (state == INVPOP){return true;} return false;}
 	bool invIsHighlighted() {if (state == INVDISP || state == INVPOP){ return invSide;} return false;}
-	
 };
 
 class Display {
 	private:
 		Camera* camera;
 		WINDOW* playWin;
-		//WINDOW* popWin;
 		WINDOW* msgWin;
 		WINDOW* menuWin;
 		WINDOW* invWin;
@@ -70,6 +71,7 @@ class Display {
 		void draw(Map* map);	
 		void draw(deque<Message> msgs);
 		void draw(Player* player, MapBlock* block);
+		void drawCharacterInfo();
 		void drawInventoryList(vector<Item*> items, int yLoc, int selection, bool highlight);
 		void drawItemDetails(Item* item, int height, int width);
 		void drawPopup(Item* item);	//draw the skills an item can utilize 
@@ -78,6 +80,7 @@ class Display {
 		int processKey(int input);
 		int processKeyInventory(int input);
 		int processKeyUseItem(int input);
+		int processKeyAttributes(int input);
 		void setUpSkillWindow(Item* item);
 		void toggleInventory(bool selectedSide);
 		void toggleAttributes();
