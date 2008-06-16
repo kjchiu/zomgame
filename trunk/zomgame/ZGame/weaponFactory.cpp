@@ -5,6 +5,7 @@ Weapon* WeaponFactory::createPistol() {
 	pistol->setRange(20);
 	pistol->setWType(Weapon::RANGED);
 	pistol->setDisplayChar(0xAC);
+	pistol->getDurability()->init(pistol->getDurability()->getName(), 1000,1000);
 	return pistol;
 }
 
