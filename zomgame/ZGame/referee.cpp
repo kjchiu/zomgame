@@ -54,8 +54,10 @@ int Referee::attackRngLocation(Player* player, Coord* loc, Message* msg){
 			r = block->getTopEntity();
 			break;
 		} else if (block->hasProps()) {
-			r = block->getTopProp();
-			break;
+			if (!block->getTopProp()->isPassable()) {
+				r = block->getTopProp();
+				break;
+			}
 		}
 		i++;
 	} while (i < ray->size());		
