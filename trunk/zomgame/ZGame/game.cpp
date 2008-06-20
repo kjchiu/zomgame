@@ -1,21 +1,24 @@
 #include <curses.h>
+#include <sstream>
+#include <math.h>
+
 #include "game.h"
 #include "referee.h"
 #include "globals.h"
 #include "keycodes.h"
-#include <sstream>
+
 
 Game::Game(){
 	init(100,100);
 }
 
 /* tWidth and tHeight represent the size of the world */
-Game::Game(int tWidth, int tHeight){ 
+Game::Game(int tWidth, int tHeight){
 	init(tWidth, tHeight);
 }
 
 void Game::init(int tWidth, int tHeight){
-	tickCount = 0;	
+	tickCount = 0;
 	skill_list.load(std::string("."));
 	map = new Map();
 	player = new Player();
@@ -29,7 +32,7 @@ void Game::init(int tWidth, int tHeight){
 	display = new Display(this);
 	display->setCenter(player);
 	display->setTarget(target);
-	
+
 	//set up the offsets
 	directionOffsets[0] = new Coord(0,-1);
 	directionOffsets[1] = new Coord(1,-1);
@@ -51,7 +54,7 @@ void Game::init(int tWidth, int tHeight){
 		map->getBlockAt(zombones->getLoc())->addEntity(zombones);
 		zombies.push_back(zombones);
 	}
-	
+
 	Item* foodItem = new Item();
 	foodItem->setName("Chocolate Bar");
 	foodItem->setType(Item::FOOD);
@@ -120,7 +123,7 @@ Time Game::getTime() {
 	// 1minute = 600 ticks
 	// 1 hr = 36000 ticks
 	int ticks;
-	Time t;	
+	Time t;
 	t.hour = tickCount / 36000;
 	t.hour = t.hour % 24;
 	ticks = tickCount % 36000;
@@ -147,7 +150,7 @@ bool Game::move(Player* p, Direction dir){
 		MapBlock* checkBlock = map->getBlockAt(moveLoc->getX(), moveLoc->getY());
 		if (checkBlock->hasEntities()){
 			Message msg;
-			ref->resolveAttack(p, checkBlock->getTopEntity(), &msg); //does the removing 
+			ref->resolveAttack(p, checkBlock->getTopEntity(), &msg); //does the removing
 			addMessage(&msg);
 			return true;
 		} else if (checkBlock->hasProps() && !checkBlock->isPassable()) {
@@ -161,8 +164,8 @@ bool Game::move(Player* p, Direction dir){
 			Message *msg = MessageFactory::getItems(map->getBlockAt(moveLoc)->getItems());
 			if (msg) {addMessage(msg);}
 			this->target->setCoord(getPlayer()->getLoc());
-		} 
-		
+		}
+
 	}
 	return false;
 }
@@ -174,7 +177,7 @@ bool Game::move(Zombie* zombie, Direction dir){
 		if (checkBlock->hasEntities()){
 			if (*player->getLoc() != *moveLoc) { return false;} //don't attack or move onto other zombies
 			Message msg;
-			ref->resolveAttack(zombie, checkBlock->getTopEntity(), &msg); //does the removing 
+			ref->resolveAttack(zombie, checkBlock->getTopEntity(), &msg); //does the removing
 			addMessage(&msg);
 			return true;
 		} else if (checkBlock->hasProps() && !checkBlock->isPassable()) {
@@ -183,7 +186,7 @@ bool Game::move(Zombie* zombie, Direction dir){
 			map->getBlockAt(zombie->getLoc())->removeEntity(zombie);
 			zombie->setLoc(moveLoc);
 			map->getBlockAt(zombie->getLoc())->addEntity(zombie);
-		} 	
+		}
 	}
 	return false;
 }
@@ -209,22 +212,22 @@ int Game::processKey(int key){
 	if (PDC_get_key_modifiers() & PDC_KEY_MODIFIER_CONTROL){
 		if (key==WIN_KEY_CTRL_W){
 			Message message;
-			time = ref->attackLocation(getPlayer(), getMap()->getBlockAt(&((*directionOffsets[NORTH])+(*player->getLoc()))), &message); 	
+			time = ref->attackLocation(getPlayer(), getMap()->getBlockAt(&((*directionOffsets[NORTH])+(*player->getLoc()))), &message);
 			addMessage(&message);
 			return time;
 		} else if (key==WIN_KEY_CTRL_A){
 			Message message;
-			time = ref->attackLocation(getPlayer(), getMap()->getBlockAt(&((*directionOffsets[WEST])+(*player->getLoc()))), &message); 	
+			time = ref->attackLocation(getPlayer(), getMap()->getBlockAt(&((*directionOffsets[WEST])+(*player->getLoc()))), &message);
 			addMessage(&message);
 			return time;
 		} else if (key==WIN_KEY_CTRL_S){
 			Message message;
-			time = ref->attackLocation(getPlayer(), getMap()->getBlockAt(&((*directionOffsets[SOUTH])+(*player->getLoc()))), &message); 	
+			time = ref->attackLocation(getPlayer(), getMap()->getBlockAt(&((*directionOffsets[SOUTH])+(*player->getLoc()))), &message);
 			addMessage(&message);
 			return time;
 		} else if (key==WIN_KEY_CTRL_D){
 			Message message;
-			time = ref->attackLocation(getPlayer(), getMap()->getBlockAt(&((*directionOffsets[EAST])+(*player->getLoc()))), &message); 	
+			time = ref->attackLocation(getPlayer(), getMap()->getBlockAt(&((*directionOffsets[EAST])+(*player->getLoc()))), &message);
 			addMessage(&message);
 			return time;
 		}
@@ -232,7 +235,7 @@ int Game::processKey(int key){
 		quitGame();
 		return -1;
 	} else if (key=='~') {
-		
+
 	} else if (key=='g'){
 		if (!map->getBlockAt(player->getLoc())->getItems().empty()){
 			display->toggleInventory(false);
@@ -241,9 +244,9 @@ int Game::processKey(int key){
 	} else if (key=='f'){
 		//check for line of sight first, then
 		Message* message = new Message();
-		time = ref->attackRngLocation(player, getTarget(), message);	
+		time = ref->attackRngLocation(player, getTarget(), message);
 		addMessage(message);
-		return time;	
+		return time;
 	} else if (key=='u'){ //i don't know, some random key
 		display->toggleAttributes();
 		string* str = new string(); *str = "Attr toggled";
@@ -309,25 +312,25 @@ int Game::processKey(int key){
 }
 
 void Game::quitGame(){
-	
+
 }
 
 void Game::tick(){
 	for (unsigned int i=0; i<zombies.size(); i++){
 		Zombie* z = zombies.at(i);
 		if (z->getAttribute("Health")->getCurValue()) {
-			z->tick(this); 
+			z->tick(this);
 		} else {
 			// respawn the zombie
 			Coord c;
 			do {
 				c = Coord(rand() % map->getWidth(), rand() % map->getHeight());
 			} while(!map->getBlockAt(c.getX(), c.getY())->isPassable() && !map->getBlockAt(c.getX(), c.getY())->hasEntities());
-			
+
 			char bufA[128];
 			char bufB[128];
-			sprintf(&bufA[0],"Respawn zombie @ (%d,%d)", z->getLoc()->getX(), z->getLoc()->getY());			
-			
+			sprintf(&bufA[0],"Respawn zombie @ (%d,%d)", z->getLoc()->getX(), z->getLoc()->getY());
+
 			//map->getBlockAt(z->getLoc())->removeEntity(z);
 			z->respawn(new Coord(c));
 			sprintf(&bufB[0],"Zombie moved to (%d,%d)", z->getLoc()->getX(), z->getLoc()->getY());
@@ -347,19 +350,19 @@ void Game::run(){
 	char input;
 	int frameTime = 0;
 	addMessage(MessageFactory::getMessage(skill_list.getSkill(0)->description));
-#ifdef _GCC 
-	addMessage(new Message("yay ming gcc")); 
+#ifdef _GCC
+	addMessage(new Message("yay ming gcc"));
 #endif
 	while (frameTime >= 0){
 		frameTime = 0;
 		//tick, draw, until something results in quitting
-		
+
 		this->draw();
 		refresh();
 		input = getch();
 		frameTime = display->processKey(input);
-		if (frameTime <= -1){ //if display does not need to process the key 
-			frameTime = this->processKey(input);	//if no windows are open, process in the game				
+		if (frameTime <= -1){ //if display does not need to process the key
+			frameTime = this->processKey(input);	//if no windows are open, process in the game
 		}
 		if (frameTime > 0) {
 			this->tick();
@@ -375,17 +378,18 @@ vector<Coord>* Game::getRay(Coord *start, Coord *target) {
 	if (*target == *(player->getLoc())) {
 		return NULL;
 	}
-	float slope;	
-	if (target->getX() - start->getX()) {	
+	float slope;
+	if (target->getX() - start->getX()) {
 		// a = slope = (y2 - y1) / (x2 - x1)
 		// y2 - y1 = a(x2 - x1)
-		float dx, dy;		
+		float dx, dy;
 		dy = (target->getY() - start->getY());
 		dx = (target->getX() - start->getX());
 		slope =  dy / dx ;
 		// check which is the dominant axis, (i.e. dx > dy?)
 		// iterate over the longer one to ensure no gaps in ray
-		if (abs(slope) < 1) {
+
+		if (slope > -1 && slope < 1) {
 			float y;
 			dir = (start->getX() > target->getX()) ? -1 : 1;
 			for (int x = start->getX(); x != target->getX(); x+=dir) {
@@ -400,7 +404,7 @@ vector<Coord>* Game::getRay(Coord *start, Coord *target) {
 		} else {
 			float x;
 			dir =  (start->getY() > target->getY()) ? -1 : 1;
-			
+
 			for (int y = start->getY(); y != target->getY(); y+=dir) {
 				x = ((y - start->getY()) / slope) + start->getX();
 				float flor = floor(x);
@@ -412,14 +416,14 @@ vector<Coord>* Game::getRay(Coord *start, Coord *target) {
 			}
 		}
 	} else { // vertical line, simple case
-		
+
 		dir =  (start->getY() > target->getY()) ? -1 : 1;
 		for (int y = start->getY(); y != target->getY(); y+=dir) {
 			ray->push_back(Coord(start->getX(), y));
 		}
 	}
-	
-	
+
+
 	ray->push_back(Coord(target->getX(), target->getY()));
 	return ray;
 }

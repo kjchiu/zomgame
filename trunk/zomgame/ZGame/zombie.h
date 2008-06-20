@@ -34,14 +34,14 @@ enum currentAction {NOTHING, WANDERING, INVESTIGATING, HUNTING};
 class Zombie : public Entity {
 private:
 	friend class BrainState;
-	
+
 protected:
-	Coord* target; 
+	Coord* target;
 	currentAction curAction;
 	BrainState** brains;
 	short* colors;
 	static const int num_states = 4;
-	std::deque<std::pair<int,Direction>> moveQueue;
+	std::deque<std::pair<int,Direction> > moveQueue;
 
 public:
 	Zombie();

@@ -3,15 +3,17 @@
 #ifndef _REFEREE_H
 #define _REFEREE_H
 
+#include "direction.h"
+#include "game.h"
 #include "message.h"
 #include "entity.h"
 #include "item.h"
 #include "globals.h"
 #include <vector>
 #include "messagefactory.h"
-#include "game.h"
 
-enum Direction;
+
+
 class Game;
 
 class Referee {
