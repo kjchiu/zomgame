@@ -9,11 +9,12 @@
 #include "weapon.h"
 
 struct Skill;
+struct SkillValue;
 
 class Player : public Entity {
 	protected:
 		Coord* location;
-		vector<int> skills;
+		vector<SkillValue>* skills;
 		Weapon* eqRngWeapon;
 		
 	public:
@@ -22,7 +23,8 @@ class Player : public Entity {
 		Coord* getLoc();
 		Weapon* getEqRngWeapon();
 		void setLoc(Coord* nLocation);
-		vector<int>* getSkills();
+		vector<SkillValue>* getSkills();
+		int getSkillValue(int skill);
 		void unequip(Weapon* weapon);
 		void respawn(Coord* loc);
 		void draw(Map *map);

@@ -5,13 +5,19 @@ Player::Player() : Entity(){
 	name = "NameHere";
 	location = new Coord();
 	displayChar = '@';
-	skills.push_back(0);
-	skills.push_back(1);
-	skills.push_back(2);
-	skills.push_back(3);
-
+	int i = 0;
+	skills = new vector<SkillValue>();
+	SkillValue sValue;
+	while (Skill* skill = skill_list.getSkill(i)){
+		sValue.skill = i;
+		sValue.level = 0;
+		sValue.tagged = false;
+		skills->push_back(sValue);
+		i++;
+	}
 	eqRngWeapon = NULL;
 }
+
 void Player::equip(Weapon* weapon){
 	if (weapon->isMelee()){
 		equippedWeapon = weapon;
@@ -33,12 +39,17 @@ void Player::setLoc(Coord* nLocation){
 	*location = *nLocation;
 }
 
-vector<int>* Player::getSkills() {
-	vector<int>* skill_list = new vector<int>();
-	for (int i = 0; i < skills.size(); i ++) {
-		skill_list->push_back(skills.at(i));
+vector<SkillValue>* Player::getSkills() {
+	return skills;
+}
+
+int Player::getSkillValue(int skill){
+	for (unsigned int i = 0; i<skills->size(); i++){
+		if (skills->at(i).skill == skill){
+			return skills->at(i).level;
+		}
 	}
-	return skill_list;
+	return -1;
 }
 
 void Player::unequip(Weapon* weapon){

@@ -269,8 +269,10 @@ void Display::drawCharacterInfo(){
 
 
 
-	mvwprintw(playWin, 1, width-10, "SKILLS");
-	
+	mvwprintw(playWin, 1, width-20, "SKILLS");
+	for (int i=0; i<p->getSkills()->size(); i++){
+		mvwprintw(playWin, i+2, width-20, "%d: %s - %d", i, skill_list.getSkill(i)->name.c_str(), p->getSkillValue(i));
+	}
 
 
 	

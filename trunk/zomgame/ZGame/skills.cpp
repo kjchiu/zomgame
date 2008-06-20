@@ -4,7 +4,10 @@ SkillTable::SkillTable() {
 	skill_count = 0;
 }	
 
-Skill* SkillTable::getSkill(int id) {	
+Skill* SkillTable::getSkill(int id) {
+	if (table.find(id) == table.end()){
+		return NULL;
+	}
 	return &(table.find(id)->second);
 }
 
