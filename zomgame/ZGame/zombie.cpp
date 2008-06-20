@@ -23,9 +23,9 @@ Zombie::Zombie() : Entity(){
 	speed = 10;
 	siteRadius = 20;
 	brains = new BrainState*[num_states];
-	brains[currentAction::NOTHING] = new BrainState(this);
-	brains[currentAction::WANDERING] = new WanderState(this);
-	brains[currentAction::HUNTING] = new HuntingState(this);
+	brains[NOTHING] = new BrainState(this);
+	brains[WANDERING] = new WanderState(this);
+	brains[HUNTING] = new HuntingState(this);
 
 	colors = new short[num_states];
 	colors[NOTHING] = color;
@@ -53,7 +53,7 @@ int Zombie::getSiteRadius() {
 
 void Zombie::setCurrentAction(currentAction nAction){
 	curAction = nAction;
-	
+
 }
 
 void Zombie::setTarget(Coord* nTarget){
@@ -68,7 +68,7 @@ void Zombie::tick(Game* game) { //eat_brains()
 	if (moveQueue.empty()) {
 		brains[curAction]->tick(game);
 	}
-	
+
 	while (!moveQueue.empty()) {
 		if (moveQueue.front().first > game->getTickcount()) {
 			break;
@@ -80,7 +80,7 @@ void Zombie::tick(Game* game) { //eat_brains()
 
 	if (this->getLoc()->getDistance(*game->getPlayer()->getLoc()) < getSiteRadius()) {
 		if (rand() % 100 < 10) {
-			curAction = currentAction::HUNTING;
+			curAction = HUNTING;
 		}
 	}
 }
