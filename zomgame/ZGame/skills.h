@@ -20,7 +20,7 @@ enum SkillType {PASSIVE, ACTIVE};
 
 class Player; // fucking forward declarations :(
 
-struct  Skill{
+struct Skill{
 	int id;
 	std::string name;
 	std::string description;
@@ -33,6 +33,13 @@ struct  Skill{
 	int (*action)(Player* p, void* target, vector<Message*>* log);
 };
 
+
+struct SkillValue{
+	int skill;
+	int level;
+	bool tagged;
+
+};
 
 class SkillTable {
 private:
