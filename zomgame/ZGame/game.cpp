@@ -249,8 +249,8 @@ int Game::processKey(int key){
 		return time;
 	} else if (key=='u'){ //i don't know, some random key
 		display->toggleAttributes();
-		string* str = new string(); *str = "Attr toggled";
-		addMessage(new Message(str));
+		//string* str = new string(); *str = "Attr toggled";
+		//addMessage(new Message(str));
 	} else if (key=='q') {
 		move(player, NORTHWEST); return 10; //based on speed
 	} else if (key=='w') {

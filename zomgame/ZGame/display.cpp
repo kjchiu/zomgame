@@ -347,6 +347,8 @@ int Display::processKey(int input){
 			showItemDetail = false;
 		} else if (dState->invIsToggled()) {
 			toggleInventory(true);
+		} else if (dState->attrIsToggled()) {
+			toggleAttributes();
 		}
 	} else if (popupIsToggled()){
 		return this->processKeyUseItem(input);
