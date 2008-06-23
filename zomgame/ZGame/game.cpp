@@ -335,7 +335,7 @@ void Game::draw(){
 void Game::run(){
 	char input;
 	int frameTime = 0;
-	addMessage(MessageFactory::getMessage(skill_list.getSkill(0)->description));
+	addMessage(MessageFactory::getMessage(skill_list.getSkill(0)->getDescription()));
 #ifdef _GCC
 	addMessage(new Message("yay ming gcc"));
 #endif

@@ -2,12 +2,8 @@
 #define _SKILLS_H
 
 #include <string>
-#ifdef _GCC
-	#include <ext/hash_map>
-	#define stdext __gnu_cxx
-#else
-	#include <hash_map>
-#endif
+
+#include "skilltable.h"
 #include "player.h"
 #include "message.h"
 #include "messagefactory.h"
@@ -20,15 +16,19 @@ enum SkillType {PASSIVE, ACTIVE};
 
 class Player; // fucking forward declarations :(
 
+
 struct Skill{
+protected:
+	friend class SkillTable;
 	int id;
 	std::string name;
 	std::string description;
-	//TODO: change success/failure to string formatters
-	//		to be arguments for sprintf
-	std::string success;
-	std::string failure;
 	SkillType type;
+public:
+	int getId();
+	std::string getName();
+	std::string getDescription();
+	SkillType getType();
 	unsigned char targetable;
 	int (*action)(Player* p, void* target, vector<Message*>* log);
 };
@@ -42,18 +42,6 @@ struct SkillValue{
 	bool raiseExperience(int amount);
 };
 
-class SkillTable {
-private:
-	void insert(Skill skill);
-protected:
-	stdext::hash_map<int, Skill> table;
-	int skill_count;
-public:
-	SkillTable();
-	void load(std::string filename);
-	Skill* getSkill(int id);
-	int getSkillID(std::string skillName);
-};
 
 //SKILL FUNCTIONS
 int repair(Player* p, void* target, vector<Message*>* log);

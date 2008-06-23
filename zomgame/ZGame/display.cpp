@@ -271,7 +271,7 @@ void Display::drawCharacterInfo(){
 
 	mvwprintw(playWin, 1, width-20, "SKILLS");
 	for (int i=0; i<p->getSkills()->size(); i++){
-		mvwprintw(playWin, i+2, width-20, "%d: %s - %d", i, skill_list.getSkill(i)->name.c_str(), p->getSkillValue(i));
+		mvwprintw(playWin, i+2, width-20, "%d: %s - %d", i, skill_list.getSkill(i)->getName().c_str(), p->getSkillValue(i));
 	}
 
 
@@ -447,7 +447,7 @@ void Display::setUpSkillWindow(Item* item){
 	vector<string>* skillNames = new vector<string>();
 	
 	for (int i=0; i<item->getSkills()->size(); i++){
-		skillNames->push_back(skill_list.getSkill(item->getSkills()->at(i))->name);
+		skillNames->push_back(skill_list.getSkill(item->getSkills()->at(i))->getName());
 	}
 	skillNames->push_back("Drop"); //every item can be dropped
 	popupWin->setHeader(item->getName());
