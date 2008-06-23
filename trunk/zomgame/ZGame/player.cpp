@@ -5,12 +5,16 @@ Player::Player() : Entity(){
 	name = "NameHere";
 	location = new Coord();
 	displayChar = '@';
-	int i = 0;
+	addAttribute(new Attribute("Hunger", 1000));
+	addAttribute(new Attribute("Thirst", 1000));
+	addAttribute(new Attribute("Stamina", 1000));
 	skills = new vector<SkillValue>();
 	SkillValue sValue;
+	int i = 0;
 	while (Skill* skill = skill_list.getSkill(i)){
 		sValue.skill = i;
-		sValue.level = 0;
+		sValue.level = 1;
+		sValue.experience = 0;
 		sValue.tagged = false;
 		skills->push_back(sValue);
 		i++;

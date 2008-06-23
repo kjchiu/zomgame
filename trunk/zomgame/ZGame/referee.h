@@ -21,7 +21,7 @@ class Referee {
 		Game* game;
 	public:
 		Referee(Game*);
-		int attackLocation(Entity* attacker, MapBlock* loc, Message* msg);
+		int attackLocation(Entity* attacker, Coord* loc, Message* msg);
 		int attackRngLocation(Player* player, Coord* loc, Message* msg);
 		int attackDirection(Entity* attacker, Direction dir);
 		bool doActionOnItem(Item* item, int skillIndex);

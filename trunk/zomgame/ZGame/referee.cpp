@@ -8,26 +8,28 @@ Referee::Referee(Game* game){
 int Referee::attackDirection(Entity* attacker, Direction dir) {
 	Message* m = new Message();
 	Coord focus = *attacker->getLoc() + *game->directionOffsets[dir];
-	int time = attackLocation(attacker, game->getMap()->getBlockAt(&focus), m);
+	int time = attackLocation(attacker, &focus, m);
 	//game->addMessage(m);
 	return time;
 }
 
-int Referee::attackLocation(Entity* attacker, MapBlock* loc, Message* msg){
+int Referee::attackLocation(Entity* attacker, Coord* loc, Message* msg){
 	string retString = "";
+	MapBlock* mBlock = game->getMap()->getBlockAt(loc);
 	int maxDmg = attacker->getAttribute("Strength")->getCurValue() + attacker->getEquippedWeapon()->getDamage();
 	int dmg = rand() % maxDmg; 
-	if (loc->hasEntities()){ //first, check for entities	
-		loc->getTopEntity()->getAttribute("Health")->changeCurValueBy(-dmg);
-		retString = "Attacked " + loc->getTopEntity()->getName();
-		if (loc->getTopEntity()->getAttribute("Health")->getCurValue() <= 0){
-			loc->removeEntity(loc->getTopEntity());	
+	if (mBlock->hasEntities()){ //first, check for entities	
+		mBlock->getTopEntity()->getAttribute("Health")->changeCurValueBy(-dmg);
+		retString = "Attacked " + mBlock->getTopEntity()->getName();
+		if (mBlock->getTopEntity()->getAttribute("Health")->getCurValue() <= 0){
+			mBlock->removeEntity(mBlock->getTopEntity());	
 		}
-	} else if (loc->hasProps()){ //then, for props
-		loc->getTopProp()->getDurability()->changeCurValueBy(-dmg); //maybe some damage resistance?
-		retString = "Attacked " + loc->getTopProp()->getListName();
-		if (loc->getTopProp()->getDurability()->getCurValue() <= 0){
-			loc->removeProp(loc->getTopProp());	
+	} else if (mBlock->hasProps()){ //then, for props
+		mBlock->getTopProp()->getDurability()->changeCurValueBy(-dmg); //maybe some damage resistance?
+		retString = "Attacked " + mBlock->getTopProp()->getListName();
+		if (mBlock->getTopProp()->getDurability()->getCurValue() <= 0){
+			//loc->removeProp(loc->getTopProp());	
+			destroy(mBlock->getTopProp(), loc);
 		}
 	} else { 
 		retString = "There is nothing to attack.";

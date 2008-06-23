@@ -1,5 +1,17 @@
 #include "skills.h"
 
+/* Experience to next level = (level * 100) + ((level - 1) * 100) */
+bool SkillValue::raiseExperience(int amount){
+	if (level < 100){
+		experience += amount;
+		if (experience >= (level * 100) + ((level-1) * 100)){
+			level++;
+			return true;		
+		}
+	}
+	return false;
+}
+
 SkillTable::SkillTable() {
 	skill_count = 0;
 }	

@@ -20,6 +20,7 @@ class Player : public Entity {
 	public:
 		Player();
 		void equip(Weapon* weapon);
+		void exert(int exertion); //lowers thirst, hunger, and stamina
 		Coord* getLoc();
 		Weapon* getEqRngWeapon();
 		void setLoc(Coord* nLocation);
