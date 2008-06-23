@@ -400,9 +400,13 @@ int Display::processKeyInventory(int input){
 			return 5;
 		} //pick up the item
 	} else if (input == WIN_KEY_ENTER) { //enter key
-		this->setUpSkillWindow(game->getPlayer()->getInventory()->getItemAt(inventorySelection));
-		togglePopup();
-		showItemDetail = !showItemDetail;
+		Item* item = NULL;
+		item = game->getPlayer()->getInventory()->getItemAt(inventorySelection);
+		if (item) {
+			this->setUpSkillWindow(item);
+			togglePopup();
+			showItemDetail = !showItemDetail;
+		}
 	}
 
 	return 0;
@@ -426,6 +430,7 @@ int Display::processKeyUseItem(int input){
 			return 5;
 		}
 		//use the selected skill
+		togglePopup();
 		return game->getReferee()->resolve(game->getPlayer(), 
 								item, 
 								skill_list.getSkill(item->getSkills()->at(popupWin->getSelectedIndex()))->action);
