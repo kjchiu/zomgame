@@ -37,8 +37,9 @@ struct Skill{
 struct SkillValue{
 	int skill;
 	int level;
+	int experience;
 	bool tagged;
-
+	bool raiseExperience(int amount);
 };
 
 class SkillTable {

@@ -76,25 +76,9 @@ void Game::init(int tWidth, int tHeight){
 	chair->setDisplayChar('h');
 	map->getBlockAt(8,8)->addProp(chair);
 
-	Weapon* gun = new Weapon("Gun", 10);
-	gun->setWType(Weapon::RANGED);
-	map->getBlockAt(12,12)->addItem(gun);
-
-	Prop* wall = new Prop(false);
-	wall->setName("Wall");
-	map->getBlockAt(7,7)->addProp(PropFactory::createWall(1000));
-	map->getBlockAt(7,8)->addProp(PropFactory::createWall(1000));
-	map->getBlockAt(7,9)->addProp(PropFactory::createWall(1000));
-	map->getBlockAt(7,10)->addProp(PropFactory::createWall(1000));
-	map->getBlockAt(8,10)->addProp(PropFactory::createWall(1000));
-	map->getBlockAt(10,10)->addProp(PropFactory::createWall(1000));
-	map->getBlockAt(10,9)->addProp(PropFactory::createWall(1000));
-	map->getBlockAt(10,8)->addProp(PropFactory::createWall(1000));
-	map->getBlockAt(10,7)->addProp(PropFactory::createWall(1000));
-	map->getBlockAt(9,7)->addProp(PropFactory::createWall(1000));
-	map->getBlockAt(8,7)->addProp(PropFactory::createWall(1000));
 	map->getBlockAt(8,9)->addItem(WeaponFactory::createPistol());
 
+	map->makeRoomAt(new Coord(7,7), 4,4);
 	map->makeRoomAt(new Coord(15,15), 6, 8);
 }
 
@@ -214,22 +198,22 @@ int Game::processKey(int key){
 	if (PDC_get_key_modifiers() & PDC_KEY_MODIFIER_CONTROL){
 		if (key==WIN_KEY_CTRL_W){
 			Message message;
-			time = ref->attackLocation(getPlayer(), getMap()->getBlockAt(&((*directionOffsets[NORTH])+(*player->getLoc()))), &message);
+			time = ref->attackLocation(getPlayer(), &((*directionOffsets[NORTH])+(*player->getLoc())), &message);
 			addMessage(&message);
 			return time;
 		} else if (key==WIN_KEY_CTRL_A){
 			Message message;
-			time = ref->attackLocation(getPlayer(), getMap()->getBlockAt(&((*directionOffsets[WEST])+(*player->getLoc()))), &message);
+			time = ref->attackLocation(getPlayer(), &((*directionOffsets[WEST])+(*player->getLoc())), &message);
 			addMessage(&message);
 			return time;
 		} else if (key==WIN_KEY_CTRL_S){
 			Message message;
-			time = ref->attackLocation(getPlayer(), getMap()->getBlockAt(&((*directionOffsets[SOUTH])+(*player->getLoc()))), &message);
+			time = ref->attackLocation(getPlayer(), &((*directionOffsets[SOUTH])+(*player->getLoc())), &message);
 			addMessage(&message);
 			return time;
 		} else if (key==WIN_KEY_CTRL_D){
 			Message message;
-			time = ref->attackLocation(getPlayer(), getMap()->getBlockAt(&((*directionOffsets[EAST])+(*player->getLoc()))), &message);
+			time = ref->attackLocation(getPlayer(), &((*directionOffsets[EAST])+(*player->getLoc())), &message);
 			addMessage(&message);
 			return time;
 		}
