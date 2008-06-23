@@ -21,6 +21,8 @@ class Coord {
 		bool operator!=(const Coord&) const;
 		int getDistance(const Coord &coord) const;
 		void setCoord(const Coord* coord);
+		void setX(int nX);
+		void setY(int nY);
 		bool equals(Coord* coord);
 		string* toString();
 

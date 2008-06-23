@@ -43,6 +43,26 @@ MapBlock* Map::getMap() {
 	return *map;
 }
 
+void Map::makeRoomAt(Coord* topLeft, int width, int height){
+	Coord* newCoord = new Coord();
+	for (int x=topLeft->getX(); x<topLeft->getX()+width;x++){
+		for (int y=topLeft->getY(); y<topLeft->getY()+height;y++){
+			if ((x == topLeft->getX() || x == topLeft->getX() + width-1) ||
+				(y == topLeft->getY() || y == topLeft->getY() + height-1)){
+				newCoord->setX(x);
+				newCoord->setY(y);
+				if (isWithinMap(newCoord)){
+					getBlockAt(newCoord)->addProp(PropFactory::createWall());
+				}
+			} 
+			getBlockAt(x, y)->setTerrain(new IndoorTile());
+		}
+	}
+	getBlockAt(topLeft->getX(), topLeft->getY() + height/2)->removeProp(getBlockAt(topLeft->getX(), topLeft->getY() + height/2)->getTopProp());
+	getBlockAt(topLeft->getX(), topLeft->getY() + height/2)->addProp(PropFactory::createDoor());
+
+}
+
 void Map::setBlockAt(MapBlock* mBlock, int x, int y){
 	 map[x + (y * getWidth())] = mBlock;	
 }

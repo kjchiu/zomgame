@@ -51,6 +51,14 @@ void Coord::setCoord(const Coord* coord) {
 	this->y = coord->getY();
 }
 
+void Coord::setX(int nX){
+	x = nX;
+}
+
+void Coord::setY(int nY){
+	y = nY;
+}
+
 int Coord::getDistance(const Coord &coord) const {
 	Coord delta = Coord(x - coord.getX(), y - coord.getY());
 	return sqrt((double)(delta.getX() * delta.getX() + delta.getY() * delta.getY()));
