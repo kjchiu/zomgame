@@ -16,7 +16,10 @@ bool Inventory::addItem(Item* item){
 }
 
 Item* Inventory::getItemAt(int index){
-	return items.at(index);
+	if (index < items.size() && index >= 0)
+		return items.at(index);
+	else 
+		return NULL;
 }
 
 vector<Item*> Inventory::getItems(){
