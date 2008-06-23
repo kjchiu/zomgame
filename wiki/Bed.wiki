@@ -1,12 +1,9 @@
-#summary Description of the Bed Prop
+#summary A bed, in the context of the game, is any prop that the player can initiate sleep on.
 #labels prop
 
 _Display Char:_ =
 
 _Description:_ A place to rest your eyes
-
-
-A bed, in the context of the game, is any prop that the player can initiate sleep on.
 
 *Gameplay*
 
