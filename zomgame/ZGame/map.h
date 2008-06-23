@@ -27,6 +27,7 @@ class Map{
 		MapBlock* getMap();
 		int getHeight();
 		int getWidth();
+		void makeRoomAt(Coord* topLeft, int width, int height); //makes a room. I'm bored.
 		void setBlockAt(MapBlock *mBlock, int x, int y);
 		bool isWithinMap(Coord* checkCoord);
 		

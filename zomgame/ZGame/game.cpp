@@ -94,6 +94,8 @@ void Game::init(int tWidth, int tHeight){
 	map->getBlockAt(9,7)->addProp(PropFactory::createWall(1000));
 	map->getBlockAt(8,7)->addProp(PropFactory::createWall(1000));
 	map->getBlockAt(8,9)->addItem(WeaponFactory::createPistol());
+
+	map->makeRoomAt(new Coord(15,15), 6, 8);
 }
 
 void Game::addMessage(Message *msg){
