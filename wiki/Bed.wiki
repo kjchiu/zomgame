@@ -1,0 +1,13 @@
+#summary Description of the Bed Prop
+#labels prop
+
+_Display Char:_ =
+
+_Description:_ A place to rest your eyes
+
+
+A bed, in the context of the game, is any prop that the player can initiate sleep on.
+
+*Gameplay*
+
+The player can recover stamina by resting in place, but he can recover it much quicker by finding a bed to rest on. This, of course, comes at the cost of security. While resting, there is a chance that the player will wake up when a zombie is nearby, and if attacked will wake up immediately.
