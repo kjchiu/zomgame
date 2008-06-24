@@ -364,7 +364,6 @@ int Display::processKeyAttributes(int input){
 	if (input == 'u'){
 		dState->toggleAttr();
 	}
-
 	return 0;
 }
 
@@ -430,7 +429,7 @@ int Display::processKeyUseItem(int input){
 			return 5;
 		}
 		//use the selected skill
-		togglePopup();
+		
 		return game->getReferee()->resolve(game->getPlayer(), 
 								item, 
 								skill_list.getSkill(item->getSkills()->at(popupWin->getSelectedIndex()))->action);

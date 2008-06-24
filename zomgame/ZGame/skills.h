@@ -17,7 +17,7 @@ enum SkillType {PASSIVE, ACTIVE};
 class Player; // fucking forward declarations :(
 
 
-struct Skill{
+class Skill{
 protected:
 	friend class SkillTable;
 	int id;

@@ -5,6 +5,7 @@
 
 #include "dq_node.h"
 
+
 class Deque {
 	private:
 		DQNode* firstNode;
@@ -14,7 +15,7 @@ class Deque {
 	public:
 		Deque();
 		Deque(DQNode* firstNode);
-		init(DQNode* firstNode);
+		void init(DQNode* firstNode);
 		void addNode(DQNode* newNode); //appends a node (auto-sort?)
 		void addNodeAt(DQNode* newNode); //places a node at a specific location
 		DQNode* getFirstNode();
