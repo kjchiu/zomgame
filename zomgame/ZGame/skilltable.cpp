@@ -81,8 +81,6 @@ void SkillTable::insert(Skill skill) {
 }
 
 
-
-
 int repair(Player* p, void* target, vector<Message*>* log) {
 	Item* item = static_cast<Item*>(target);
 	item->setBulk(item->getBulk() - 1);

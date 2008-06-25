@@ -4,24 +4,27 @@
 #define _DQNODE_H
 
 #include <stdio.h>
+#include "event.h"
 
 class DQNode {
 	private:
 		DQNode* nextNode;
 		DQNode* prevNode;
-		//put data here
+		Event* eventData;
 
 	public:
 		DQNode();
 		DQNode(DQNode* nPrevNode);
 		DQNode(DQNode* nPrevNode, DQNode* nNextNode);
 		void init(DQNode* nPrevNode, DQNode* nNextNode);
-		//add a constructor taking data, too
+		Event* getEventData();
+		int getEventTick();
 		DQNode* getNextNode();
 		DQNode* getPrevNode();
+		void setEventData(Event* nEventData);
 		void setNextNode(DQNode* nNextNode);
 		void setPrevNode(DQNode* nPrevNode);
-		//getData()
+		
 };
 
 #endif

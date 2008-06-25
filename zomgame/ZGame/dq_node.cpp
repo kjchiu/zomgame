@@ -18,12 +18,24 @@ void DQNode::init(DQNode* nPrevNode, DQNode* nNextNode){
 	//set the data here
 }
 
+Event* DQNode::getEventData(){
+	return eventData;
+}
+
+int DQNode::getEventTick(){
+	return eventData->getTick();
+}
+
 DQNode* DQNode::getNextNode(){
 	return nextNode;
 }
 
 DQNode* DQNode::getPrevNode(){
 	return prevNode;
+}
+
+void DQNode::setEventData(Event* nEventData){
+	eventData = nEventData;
 }
 
 void DQNode::setNextNode(DQNode* nNextNode){

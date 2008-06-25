@@ -18,6 +18,8 @@
 #include "door.h"
 #include "propfactory.h"
 #include "weaponFactory.h"
+#include "deque.h" 
+#include "dq_node.h"
 
 class Game;
 class Display;
