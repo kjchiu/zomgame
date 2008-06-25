@@ -11,8 +11,8 @@
 #include "globals.h"
 #include <vector>
 #include "messagefactory.h"
-
-
+#include "event_factory.h"
+#include "event_dq.h"
 
 class Game;
 
@@ -30,6 +30,7 @@ class Referee {
 		bool pickUpItem(Entity* picker, MapBlock* loc, int index, Message* msg);
 		bool resolveAttack(Entity* attacker, Entity* defender, Message* msg);
 		bool resolve(Player* player, void* target, int (*action)(Player*, void*, vector<Message*>*) );
+		int resolveEvent(DQNode* firstEvent);
 		int destroy(Prop* prop, Coord* loc);
 		int destroy(Entity* ent, Coord* loc);
 };

@@ -4,7 +4,8 @@
 #define _ATTACK_E_H
 
 #include "event.h"
-#include "entity.h"
+
+class Event;
 
 class AttackEvent : public Event {
 	private:
@@ -12,13 +13,13 @@ class AttackEvent : public Event {
 		Entity* defender;
 
 	public:
-		AttackEvent(Entity* nAttacker, Entity* nDefender);
+		AttackEvent(Entity* nAttacker, Entity* nDefender, int tick);
 		Entity* getAttacker();
 		Entity* getDefender();
 		void setAttacker(Entity* nAttacker);
 		void setDefender(Entity* nDefender);
 
-		int resolve();
+		Message* resolve();
 
 };
 
