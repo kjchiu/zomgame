@@ -22,9 +22,7 @@ class Deque {
 		DQNode* getLastNode();
 		DQNode* getNodeAtTick(int tick);
 		int getSize();
-		Deque* sort();
-		
-
+		void removeNode(DQNode* remNode);	
 };
 
 #endif

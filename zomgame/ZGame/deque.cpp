@@ -54,3 +54,27 @@ DQNode* Deque::getNodeAtTick(int tick){
 	} 
 	return tickIndex.find(tick)->second;	
 }
+
+//hmm
+void Deque::removeNode(DQNode *remNode){
+	//manage the hash map
+	if (getNodeAtTick(remNode->getEventTick()) == remNode){ //if remNode is the one in the hash, remove it
+		tickIndex.erase(remNode->getEventTick());
+		if (remNode->getNextNode()->getEventTick() == remNode->getEventTick()){ 
+			//and if the next node also equals remNode, add that node to the hash
+			tickIndex.insert(std::pair<int, DQNode*>(remNode->getEventTick(), remNode->getNextNode()));
+		}
+	}
+	//take care of the deque
+	if (remNode == getFirstNode()){
+		firstNode = remNode->getNextNode();
+	}
+	if (remNode == getLastNode()){
+		lastNode = remNode->getPrevNode();
+	}
+	if (size > 1){
+		if (remNode != getLastNode()) {remNode->getNextNode()->setPrevNode(remNode->getPrevNode());}
+		if (remNode != getFirstNode()){remNode->getPrevNode()->setNextNode(remNode->getNextNode());}
+	}
+	size--;
+}

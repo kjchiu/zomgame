@@ -33,23 +33,8 @@ void Game::init(int tWidth, int tHeight){
 	display->setCenter(player);
 	display->setTarget(target);
 
-	Deque* d = new Deque();
-	DQNode* dn = new DQNode();
-	DQNode* dn2 = new DQNode();
-	DQNode* dn3 = new DQNode();
-	Event* e = new Event();
-	Event* e2 = new Event();
-	Event* e3 = new Event();
-	e->setTick(5);
-	e2->setTick(10);
-	e3->setTick(6);
-	dn->setEventData(e);
-	dn2->setEventData(e2);
-	dn3->setEventData(e3);
-	d->addNode(dn);
-	d->addNode(dn2);
-	d->addNode(dn3);
-
+	Event* e3 = NULL;
+	
 	//set up the offsets
 	directionOffsets[0] = new Coord(0,-1);
 	directionOffsets[1] = new Coord(1,-1);
