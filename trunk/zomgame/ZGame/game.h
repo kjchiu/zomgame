@@ -16,6 +16,7 @@
 #include "zombie.h"
 #include "weapon.h"
 #include "door.h"
+#include "event_factory.h"
 #include "propfactory.h"
 #include "weaponFactory.h"
 #include "deque.h" 
