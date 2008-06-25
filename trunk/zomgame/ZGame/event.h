@@ -4,6 +4,10 @@
 #define _EVENT_H
 
 #include "entity.h"
+#include "messagefactory.h"
+#include "event_factory.h"
+
+class EventFactory;
 
 class Event {
 	public:
@@ -12,6 +16,8 @@ class Event {
 	private:
 		int tick;
 		EventType eventType;
+		int thisID;
+		static int id;
 
 	public:
 		Event();
@@ -20,7 +26,7 @@ class Event {
 		void setTick(int nTick);
 		void setType(EventType nEventType);
 		
-		virtual int resolve() = 0; //note: returns amount of time passed
+		virtual Message* resolve() = 0;
 };
 
 #endif

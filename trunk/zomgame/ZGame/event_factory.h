@@ -4,7 +4,8 @@
 #define _EVENT_FAC_H
 
 #include "event_types.h"
-#include "entity.h"
+
+class Event;
 
 class EventFactory {
 	private:

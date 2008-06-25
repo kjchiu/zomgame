@@ -20,6 +20,7 @@ Game::Game(int tWidth, int tHeight){
 void Game::init(int tWidth, int tHeight){
 	tickCount = 0;
 	skill_list.load(std::string("."));
+	events = new EventDeque();
 	map = new Map();
 	player = new Player();
 	player->setName("PlayerMan");
@@ -33,8 +34,18 @@ void Game::init(int tWidth, int tHeight){
 	display->setCenter(player);
 	display->setTarget(target);
 
-	Event* e3 = NULL;
-	
+	/*Deque* dq = new Deque();
+	DQNode* dn = new DQNode();
+	AttackEvent* ae = EventFactory::createAttackEvent(new Entity(), new Entity(), 10);
+	dn->setEventData(ae);
+	dq->addNode(dn);
+	DQNode* dn2 = new DQNode();
+	AttackEvent* ae2 = EventFactory::createAttackEvent(new Entity(), new Entity(), 10);
+	dn2->setEventData(ae2);
+	dq->addNode(dn2);
+	dq->removeNode(dn2);
+	dq->removeNode(dn);*/
+
 	//set up the offsets
 	directionOffsets[0] = new Coord(0,-1);
 	directionOffsets[1] = new Coord(1,-1);
@@ -82,6 +93,10 @@ void Game::init(int tWidth, int tHeight){
 
 	map->makeRoomAt(new Coord(7,7), 4,4);
 	map->makeRoomAt(new Coord(15,15), 6, 8);
+}
+
+void Game::addEvent(Event* e){
+	events->addNode(e);
 }
 
 void Game::addMessage(Message *msg){
@@ -138,6 +153,7 @@ bool Game::move(Player* p, Direction dir){
 		MapBlock* checkBlock = map->getBlockAt(moveLoc->getX(), moveLoc->getY());
 		if (checkBlock->hasEntities()){
 			Message msg;
+			addEvent(new AttackEvent(p, checkBlock->getTopEntity(), this->getTickcount()));
 			ref->resolveAttack(p, checkBlock->getTopEntity(), &msg); //does the removing
 			addMessage(&msg);
 			return true;
@@ -304,6 +320,8 @@ void Game::quitGame(){
 }
 
 void Game::tick(){
+	//check events here
+	ref->resolveEvent(events->getFirstNodeAtTick(getTickcount()));
 	for (unsigned int i=0; i<zombies.size(); i++){
 		Zombie* z = zombies.at(i);
 		if (z->getAttribute("Health")->getCurValue()) {

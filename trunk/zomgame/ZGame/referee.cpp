@@ -134,9 +134,10 @@ bool Referee::pickUpItem(Entity* picker, MapBlock* loc, int index, Message* msg)
 }
 
 bool Referee::resolveAttack(Entity* attacker, Entity* defender, Message* msg) {
-	char loc[10];
+	/*char loc[10];
 	int maxDmg, dmg;
 	sprintf(&loc[0], "(%d,%d)", attacker->getLoc()->getX(), attacker->getLoc()->getY());
+	
 
 	string message = attacker->getName() + std::string(loc) + " attacks ";
 	if (attacker->getName() == game->getPlayer()->getName()){message = "You attack ";}
@@ -171,7 +172,7 @@ bool Referee::resolveAttack(Entity* attacker, Entity* defender, Message* msg) {
 		defenderSpace->removeEntity(defender); //get rid of it
 		defender->setLoc(new Coord(-2,-2));
 		return true;
-	}
+	}*/
 	return false;
 }
 
@@ -184,6 +185,14 @@ bool Referee::resolve(Player* player, void* target, int (*action)(Player*, void*
 	}
 	//delete log;
 	return result == 0;
+}
+
+int Referee::resolveEvent(DQNode* firstEvent){
+	if (firstEvent != NULL){
+		Message* msg = firstEvent->getEventData()->resolve();
+		game->addMessage(msg);
+	}
+	return 5;
 }
 
 int Referee::interact(Player* player, Prop* prop) {

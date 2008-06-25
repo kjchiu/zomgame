@@ -1,7 +1,10 @@
 #include "event.h"
 
+int Event::id = 0;
+
 Event::Event(){
 	tick = 0;
+	thisID = id++;
 }
 
 int Event::getType(){
