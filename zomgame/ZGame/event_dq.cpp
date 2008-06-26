@@ -55,7 +55,7 @@ DQNode* EventDeque::getLastNode(){
 }
 
 DQNode* EventDeque::getFirstNodeAtTick(int tick){
-	if (size<=0 || tickIndex.find(tick) == tickIndex.end()){
+	if (size == 0 || tickIndex.find(tick) == tickIndex.end() || tickIndex.find(tick)->second == NULL){
 		return NULL;
 	} 
 	return tickIndex.find(tick)->second;	
@@ -86,7 +86,10 @@ EventDeque* EventDeque::getNodesBetween(int start, int end){
 	return returnED;
 }
 
-//hmm
+int EventDeque::getSize(){
+	return size;
+}
+
 void EventDeque::removeNode(DQNode *remNode){
 	//manage the hash map
 	if (getFirstNodeAtTick(remNode->getEventTick()) == remNode){ //if remNode is the one in the hash, remove it

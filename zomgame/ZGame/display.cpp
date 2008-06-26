@@ -230,8 +230,10 @@ void Display::draw(Player* player, MapBlock* block){
 	Time t = game->getTime();
 	mvwprintw(menuWin, getmaxy(menuWin) / 2 - 2, 2, "Time: %d:%d:%2.1f", t.hour, t.minute, t.second);
 	mvwprintw(menuWin, getmaxy(menuWin) / 2 - 1, 2, "TickCount: %d", game->getTickcount());
+	
+	mvwprintw(menuWin, 8, 2, "EventListSize: %d", game->getEventList()->getSize());
+	
 	//draw the mapblock info
-
 	int halfway = getmaxy(menuWin)/2;
 	if (block->hasEntities()){
 		mvwprintw(menuWin, halfway+1, 2, "Entity: %s", block->getTopEntity()->getName().c_str());

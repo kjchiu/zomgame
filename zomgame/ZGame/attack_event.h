@@ -5,15 +5,13 @@
 
 #include "event.h"
 
-class Event;
-
 class AttackEvent : public Event {
 	private:
 		Entity* attacker;
 		Entity* defender;
 
 	public:
-		AttackEvent(Entity* nAttacker, Entity* nDefender, int tick);
+		AttackEvent(Entity* nAttacker, Entity* nDefender);
 		Entity* getAttacker();
 		Entity* getDefender();
 		void setAttacker(Entity* nAttacker);

@@ -187,10 +187,15 @@ bool Referee::resolve(Player* player, void* target, int (*action)(Player*, void*
 	return result == 0;
 }
 
-int Referee::resolveEvent(DQNode* firstEvent){
-	if (firstEvent != NULL){
-		Message* msg = firstEvent->getEventData()->resolve();
+int Referee::resolveEvents(DQNode* currentEvent, EventDeque* eventDeque){
+	DQNode* resolvedEvent;
+	while (currentEvent != NULL){
+		Message* msg = currentEvent->getEventData()->resolve();
 		game->addMessage(msg);
+		resolvedEvent = currentEvent;
+		currentEvent = currentEvent->getNextNode();
+		eventDeque->removeNode(resolvedEvent);
+		delete resolvedEvent;
 	}
 	return 5;
 }

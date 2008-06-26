@@ -5,12 +5,15 @@
 
 #include "event_types.h"
 
+class EventFactory;
 class Event;
+
 
 class EventFactory {
 	private:
 	public:
 		static AttackEvent* createAttackEvent(Entity* nAttacker, Entity* nDefender, int tick);
+		static MoveEvent* createMoveEvent(Entity* mover, MapBlock* curLoc, MapBlock* destLoc, int tick);
 };
 
 #endif

@@ -1,10 +1,9 @@
 #include "attack_event.h"
 
-AttackEvent::AttackEvent(Entity* nAttacker, Entity* nDefender, int tick){
+AttackEvent::AttackEvent(Entity* nAttacker, Entity* nDefender){
 	setType(Event::ATTACK);
 	setAttacker(nAttacker);
 	setDefender(nDefender);
-	setTick(tick);
 }
 
 Entity* AttackEvent::getAttacker(){
@@ -58,6 +57,7 @@ Message* AttackEvent::resolve(){
 	//eliminate the defender
 	if (defender->getAttribute("Health")->getCurValue() <= 0) {
 		//create a REMOVE_ENT event
+		
 	}
 	returnMessage->setMsg(message);
 	return returnMessage;
