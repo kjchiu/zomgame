@@ -1,13 +1,16 @@
 /* An Event in the game, any variety of things like explosions, attacks, or effects */
 
+#pragma once
+
 #ifndef _EVENT_H
 #define _EVENT_H
+
+class Event;
 
 #include "entity.h"
 #include "messagefactory.h"
 #include "event_factory.h"
 
-class EventFactory;
 
 class Event {
 	public:

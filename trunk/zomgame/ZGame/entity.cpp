@@ -4,7 +4,16 @@ Entity::Entity(){
 	init();
 }
 
-Entity::Entity(string newName){
+Entity::Entity(bool isPlayer){
+	if (isPlayer){
+		eType = Entity::PLAYER;
+	}
+}
+
+Entity::Entity(bool isPlayer, string newName){
+	if (isPlayer){
+		eType = Entity::PLAYER;
+	}
 	setName(newName);
 	init();
 }
@@ -78,6 +87,10 @@ int Entity::getValueOf(string attName){
 			return attributes->at(i)->getCurValue();
 		}
 	}
+}
+
+bool Entity::isPlayer(){
+	return (eType == Entity::PLAYER);
 }
 
 void Entity::setLoc(Coord* newLoc){

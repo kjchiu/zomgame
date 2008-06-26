@@ -5,21 +5,20 @@
 
 
 #include <deque>
-#include "direction.h"
-#include "renderable.h"
+
+#include "event_factory.h"
+#include "propfactory.h"
+#include "messagefactory.h"
+#include "itemFactory.h"
+#include "event_dq.h" 
 #include "display.h"
 #include "entity.h"
 #include "player.h"
-#include "messagefactory.h"
-#include "itemFactory.h"
 #include "referee.h"
 #include "zombie.h"
-#include "weapon.h"
-#include "door.h"
-#include "event_factory.h"
-#include "propfactory.h"
+
 #include "weaponFactory.h"
-#include "event_dq.h" 
+
 
 class Game;
 class Display;
@@ -38,7 +37,7 @@ class Game {
 	private:
 		deque<Message> messages;
 		Display* display;
-		EventDeque* events; 
+		static EventDeque* events; 
 
 		Referee* ref;
 		Map* map;
@@ -53,7 +52,7 @@ class Game {
 		Game(int tWidth, int tHeight);
 		void init(int tWidth, int tHeight);
 
-
+		static EventDeque* getEventList();
 		vector<Coord>* getRay(Coord *start, Coord *target);
 		Map* getMap() {return this->map;}
 		Referee* getReferee() {return this->ref;}
@@ -68,7 +67,6 @@ class Game {
 		void drawMenu();
 		int processKey(int input);
 
-		void addEvent(Event* e);
 		bool move(Zombie* z, Direction dir);
 		bool move(Player* p, Direction dir);
 		void moveTarget(Direction dir);

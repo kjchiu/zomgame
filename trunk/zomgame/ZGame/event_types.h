@@ -3,8 +3,7 @@
 #ifndef _EVENT_TYPES_H
 #define _EVENT_TYPES_H
 
-#include "event.h"
 #include "attack_event.h"
-
+#include "move_event.h"
 
 #endif

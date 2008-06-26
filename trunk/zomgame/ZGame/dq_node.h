@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include "event.h"
 
+
 class DQNode {
 	private:
 		DQNode* nextNode;
@@ -16,6 +17,7 @@ class DQNode {
 		DQNode();
 		DQNode(DQNode* nPrevNode);
 		DQNode(DQNode* nPrevNode, DQNode* nNextNode);
+		~DQNode();
 		void init(DQNode* nPrevNode, DQNode* nNextNode);
 		Event* getEventData();
 		int getEventTick();

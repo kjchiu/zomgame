@@ -7,6 +7,10 @@
 #include "globals.h"
 #include "keycodes.h"
 
+EventDeque* Game::events = new EventDeque();
+void addEvent(Event* e){
+	Game::getEventList()->addNode(e);
+}
 
 Game::Game(){
 	init(100,100);
@@ -20,7 +24,6 @@ Game::Game(int tWidth, int tHeight){
 void Game::init(int tWidth, int tHeight){
 	tickCount = 0;
 	skill_list.load(std::string("."));
-	events = new EventDeque();
 	map = new Map();
 	player = new Player();
 	player->setName("PlayerMan");
@@ -95,13 +98,12 @@ void Game::init(int tWidth, int tHeight){
 	map->makeRoomAt(new Coord(15,15), 6, 8);
 }
 
-void Game::addEvent(Event* e){
-	events->addNode(e);
-}
-
 void Game::addMessage(Message *msg){
 	messages.push_front(*msg->formatMsg(75));
-	display->draw(getMessages());
+}
+
+EventDeque* Game::getEventList(){
+	return events;
 }
 
 /* returns an array of messages */
@@ -151,13 +153,8 @@ bool Game::move(Player* p, Direction dir){
 	Coord *moveLoc = new Coord((*directionOffsets[dir]) + (*p->getLoc()));
 	if (map->isWithinMap(moveLoc)){
 		MapBlock* checkBlock = map->getBlockAt(moveLoc->getX(), moveLoc->getY());
-		if (checkBlock->hasEntities()){
-			Message msg;
-			addEvent(new AttackEvent(p, checkBlock->getTopEntity(), this->getTickcount()));
-			ref->resolveAttack(p, checkBlock->getTopEntity(), &msg); //does the removing
-			addMessage(&msg);
-			return true;
-		} else if (checkBlock->hasProps() && !checkBlock->isPassable()) {
+		addEvent(EventFactory::createMoveEvent(p, map->getBlockAt(p->getLoc()), checkBlock, getTickcount()));
+		if (checkBlock->hasProps() && !checkBlock->isPassable()) {
 			if (checkBlock->getTopProp()->getName() == "Door" && !checkBlock->getTopProp()->isPassable()) {
 				checkBlock->getTopProp()->interact(player);
 			}
@@ -179,10 +176,8 @@ bool Game::move(Zombie* zombie, Direction dir){
 	if (map->isWithinMap(moveLoc)){
 		MapBlock* checkBlock = map->getBlockAt(moveLoc->getX(), moveLoc->getY());
 		if (checkBlock->hasEntities()){
-			if (*player->getLoc() != *moveLoc) { return false;} //don't attack or move onto other zombies
-			Message msg;
-			ref->resolveAttack(zombie, checkBlock->getTopEntity(), &msg); //does the removing
-			addMessage(&msg);
+			if (!checkBlock->getTopEntity()->isPlayer()) { return false;} //don't attack or move onto other zombies
+			addEvent(EventFactory::createAttackEvent(zombie, player, getTickcount()));
 			return true;
 		} else if (checkBlock->hasProps() && !checkBlock->isPassable()) {
 			zombie->resolveObstacle(this, dir);
@@ -311,6 +306,7 @@ int Game::processKey(int key){
 	}
 
 	// i hope this is redundant -.-
+	// so do I. things haven't broken yet though.
 	//display->draw();
 	return 0;
 }
@@ -320,8 +316,6 @@ void Game::quitGame(){
 }
 
 void Game::tick(){
-	//check events here
-	ref->resolveEvent(events->getFirstNodeAtTick(getTickcount()));
 	for (unsigned int i=0; i<zombies.size(); i++){
 		Zombie* z = zombies.at(i);
 		if (z->getAttribute("Health")->getCurValue()) {
@@ -346,6 +340,9 @@ void Game::tick(){
 			z->tick(this);
 		}
 	}
+	//check events here
+	ref->resolveEvents(events->getFirstNodeAtTick(getTickcount()), getEventList());
+	
 }
 
 void Game::draw(){

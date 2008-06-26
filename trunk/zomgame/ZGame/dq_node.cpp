@@ -12,6 +12,10 @@ DQNode::DQNode(DQNode *nPrevNode, DQNode *nNextNode){
 	init(nPrevNode, nNextNode);
 }
 
+DQNode::~DQNode(){
+	delete eventData;
+}
+
 void DQNode::init(DQNode* nPrevNode, DQNode* nNextNode){
 	setPrevNode(nPrevNode);
 	setNextNode(nNextNode);
