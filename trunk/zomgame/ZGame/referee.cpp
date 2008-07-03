@@ -25,9 +25,9 @@ int Referee::attackLocation(Entity* attacker, Coord* loc, Message* msg){
 			mBlock->removeEntity(mBlock->getTopEntity());	
 		}
 	} else if (mBlock->hasProps()){ //then, for props
-		mBlock->getTopProp()->getDurability()->changeCurValueBy(-dmg); //maybe some damage resistance?
+		mBlock->getTopProp()->getHealth()->changeCurValueBy(-dmg); //maybe some damage resistance?
 		retString = "Attacked " + mBlock->getTopProp()->getListName();
-		if (mBlock->getTopProp()->getDurability()->getCurValue() <= 0){
+		if (mBlock->getTopProp()->getHealth()->getCurValue() <= 0){
 			//loc->removeProp(loc->getTopProp());	
 			destroy(mBlock->getTopProp(), loc);
 		}
@@ -77,8 +77,8 @@ int Referee::attackRngLocation(Player* player, Coord* loc, Message* msg){
 					destroy(block->getTopEntity(), &ray->at(i));
 				}
 			} else if (block->hasProps()) {
-				static_cast<Prop*>(r)->getDurability()->changeCurValueBy(0 - player->getEqRngWeapon()->getDamage());
-				if (!(dur = static_cast<Prop*>(r)->getDurability()->getCurValue())){
+				static_cast<Prop*>(r)->getHealth()->changeCurValueBy(0 - player->getEqRngWeapon()->getDamage());
+				if (!(dur = static_cast<Prop*>(r)->getHealth()->getCurValue())){
 					destroy(block->getTopProp(), &ray->at(i));
 				}
 			}
@@ -191,7 +191,8 @@ int Referee::resolveEvents(DQNode* currentEvent, EventDeque* eventDeque){
 	DQNode* resolvedEvent;
 	while (currentEvent != NULL){
 		Message* msg = currentEvent->getEventData()->resolve();
-		game->addMessage(msg);
+		if (msg)
+			game->addMessage(msg);
 		resolvedEvent = currentEvent;
 		currentEvent = currentEvent->getNextNode();
 		eventDeque->removeNode(resolvedEvent);

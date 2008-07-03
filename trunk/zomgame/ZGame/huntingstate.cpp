@@ -57,6 +57,7 @@ int offset;
 
 void HuntingState::resolveObstacle(Game* game, Direction dir) {
 	if (rand() % 2) {
-		game->getReferee()->attackDirection(zombie, dir);	
+		//game->getReferee()->attackDirection(zombie, dir);
+		Game::getInstance()->addEvent(EventFactory::createAttackEvent(zombie, dir, 0));
 	}
 }

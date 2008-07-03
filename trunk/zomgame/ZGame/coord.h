@@ -5,6 +5,11 @@
 
 #include <string>
 #include "math.h"
+#include "direction.h"
+
+class Coord;
+extern Coord DIRECTION_OFFSETS[];
+
 using namespace std;
 
 class Coord {
@@ -16,6 +21,7 @@ class Coord {
 		int getX() const;
 		int getY() const;
 		Coord operator+(const Coord&) const;
+		Coord operator+(const Direction&) const;
 		Coord operator-(const Coord&) const;
 		bool operator==(const Coord&) const;
 		bool operator!=(const Coord&) const;

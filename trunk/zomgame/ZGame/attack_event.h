@@ -8,15 +8,12 @@
 class AttackEvent : public Event {
 	private:
 		Entity* attacker;
-		Entity* defender;
+		Coord* targetLoc;
 
 	public:
-		AttackEvent(Entity* nAttacker, Entity* nDefender);
+		AttackEvent(Entity* nAttacker, Coord* targetLoc);
 		Entity* getAttacker();
-		Entity* getDefender();
-		void setAttacker(Entity* nAttacker);
-		void setDefender(Entity* nDefender);
-
+		Coord* getTarget();
 		Message* resolve();
 
 };

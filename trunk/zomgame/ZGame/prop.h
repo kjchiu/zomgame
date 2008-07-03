@@ -6,6 +6,7 @@
 #include <string>
 #include <vector>
 
+#include "attackable.h"
 #include "attribute.h"
 #include "renderable.h"
 #include "item.h"
@@ -16,20 +17,20 @@ using namespace std;
 
 class Player;
 
-class Prop : public Renderable {
+class Prop : public Renderable, public Attackable {
 
 	private:
 		bool seeThrough;
 		bool passable; //passed in, dependent on the prop
-		Attribute* durability;
+		Attribute* health;
 
 	protected:
-		void initDurability(int value, int maxValue);
+		void initHealth(int value, int maxValue);
 		vector<Item*> debris;
 	public:
 		Prop();
 		Prop(bool canPass);
-		Attribute* getDurability();
+		Attribute* getHealth();
 		
 		virtual bool isPassable();
 		virtual bool isSeeThrough();

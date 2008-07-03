@@ -11,6 +11,5 @@ class SkillTable;
 extern SkillTable skill_list;
 extern Coord DIRECTION_OFFSETS[];
 
-void addEvent(Event* e);
 
 #endif

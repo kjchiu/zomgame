@@ -9,14 +9,15 @@ class Zombie;
 #include "game.h"
 #include "entity.h"
 #include "coord.h"
-
+#include "direction.h"
+#include "item.h"
 
 #include <string>
 #include <deque>
 
 using namespace std;
 
-enum Direction;
+
 
 class BrainState {
 protected:
@@ -55,6 +56,9 @@ public:
 	virtual int getSiteRadius();
 	virtual short getColor();
 	virtual void respawn(Coord* c);
+
+	// implements Attackable
+	virtual std::vector<Item*> destroy();
 };
 
 

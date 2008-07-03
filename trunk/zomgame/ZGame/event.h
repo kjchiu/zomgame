@@ -22,10 +22,8 @@ class Event {
 		EventType eventType;
 		int thisID;
 		static int id;
-	protected:
-		static Game* game;
 	public:
-		Event();
+		Event(EventType _type);
 		int getTick();
 		int getType();
 		void setTick(int nTick);

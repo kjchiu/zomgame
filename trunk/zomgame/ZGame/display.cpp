@@ -241,7 +241,7 @@ void Display::draw(Player* player, MapBlock* block){
 	}
 	if (block->hasProps()){
 		mvwprintw(menuWin, halfway+4, 2, "Prop: %s", block->getTopProp()->getName().c_str());
-		mvwprintw(menuWin, halfway+5, 3,  "Durability: %d", block->getTopProp()->getDurability()->getCurValue());
+		mvwprintw(menuWin, halfway+5, 3,  "Durability: %d", block->getTopProp()->getHealth()->getCurValue());
 	}
 	if (block->getItems().size() > 0){
 		mvwprintw(menuWin, halfway+7, 2, "Items");

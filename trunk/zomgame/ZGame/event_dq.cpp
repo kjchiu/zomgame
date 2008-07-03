@@ -25,15 +25,39 @@ void EventDeque::addNode(DQNode *newNode){
 		size++;
 		return;
 	}
+
 	DQNode* checkNode = getFirstNodeAtTick(newNode->getEventTick());
-	 //where to begin the search for sorting purposes
+	int i = 0;
+	// does the keyframe exist?
 	if (checkNode == NULL){
+		
 		tickIndex.insert(std::pair<int, DQNode*>(newNode->getEventTick(), newNode));
-		checkNode = getFirstNode();
+		while(i < keyframes.size()) {
+			if (newNode->getEventTick() < keyframes.at(i)) {
+				keyframes.insert(keyframes.begin() + i, newNode->getEventTick());
+				break;
+			}
+			i++;
+		}
+	} else {
+		// find last node in that queue;
+		while(i < keyframes.size()) {
+			if (newNode->getEventTick() < keyframes.at(i)) {
+				break;
+			} else {
+				i++;
+			}
+		}
 	}
-	while (checkNode->getNextNode() != NULL && checkNode->getNextNode()->getEventTick() <= newNode->getEventTick()){
-		checkNode = checkNode->getNextNode();
+	
+	// i now holds the index of the current keyframe
+
+	if (i + 1 >= keyframes.size()) {
+		checkNode = lastNode;
+	} else {
+		checkNode = getFirstNodeAtTick(keyframes.at(i+1));
 	}
+
 	
 	newNode->setPrevNode(checkNode);
 	if (checkNode->getNextNode() != NULL){
@@ -55,22 +79,26 @@ DQNode* EventDeque::getLastNode(){
 }
 
 DQNode* EventDeque::getFirstNodeAtTick(int tick){
-	if (size == 0 || tickIndex.find(tick) == tickIndex.end() || tickIndex.find(tick)->second == NULL){
+	if (size == 0 || tickIndex.find(tick) == tickIndex.end()){
 		return NULL;
 	} 
 	return tickIndex.find(tick)->second;	
 }
 
 DQNode* EventDeque::getLastNodeAtTick(int tick){
-	if (size<=0 || tickIndex.find(tick) == tickIndex.end()){
-		return NULL;
+	int i;
+	while(i < keyframes.size()) {
+		if (tick < keyframes.at(i)) {
+			break;
+		}
+		i++;
 	}
-	DQNode* startNode = tickIndex.find(tick)->second;
-	while (startNode->getNextNode()->getEventTick() == tick){
-		startNode = startNode->getNextNode();
+	
+	if (i + 1 > keyframes.size()) {
+		return lastNode;
+	} else {
+		return getFirstNodeAtTick(keyframes.at(i+1))->getPrevNode();
 	}
-
-	return startNode;
 }
 
 EventDeque* EventDeque::getNodesBetween(int start, int end){
@@ -94,20 +122,22 @@ void EventDeque::removeNode(DQNode *remNode){
 	//manage the hash map
 	if (getFirstNodeAtTick(remNode->getEventTick()) == remNode){ //if remNode is the one in the hash, remove it
 		tickIndex.erase(remNode->getEventTick());
-		if (size > 1 && remNode->getNextNode() != NULL && remNode->getNextNode()->getEventTick() == remNode->getEventTick()){ 
-			//and if the next node also equals remNode, add that node to the hash
-			tickIndex.insert(std::pair<int, DQNode*>(remNode->getEventTick(), remNode->getNextNode()));
+		// if more events exist in that tick
+		if (remNode->getNextNode() &&
+			remNode->getNextNode()->getEventTick() == remNode->getEventTick()) {
+			tickIndex.insert(std::pair<int,DQNode*>(remNode->getEventTick(), remNode->getNextNode()));
 		}
 	}
+
 	//take care of the deque
 	if (size > 1){
 		if (remNode->getNextNode() != NULL) {remNode->getNextNode()->setPrevNode(remNode->getPrevNode());}
 		if (remNode->getPrevNode() != NULL){remNode->getPrevNode()->setNextNode(remNode->getNextNode());}
 	}
-	if (remNode == getFirstNode()){
+	if (remNode == getFirstNode()) {
 		firstNode = remNode->getNextNode();
 	}
-	if (remNode == getLastNode()){
+	if (remNode == getLastNode()) {
 		lastNode = remNode->getPrevNode();
 	}
 	size--;
