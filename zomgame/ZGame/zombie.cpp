@@ -6,6 +6,7 @@
 
 
 Zombie::Zombie() : Entity(){
+	
 	if (rand() % 3 > 1) {
 		color = 4;
 		displayChar = 'z';
@@ -32,6 +33,8 @@ Zombie::Zombie() : Entity(){
 	colors[WANDERING] = color;
 	colors[HUNTING] = 3;
 	colors[INVESTIGATING] = 5;
+
+	this->setType(Entity::ZOMBIE);
 }
 
 int Zombie::getCurrentAction(){

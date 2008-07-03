@@ -6,29 +6,32 @@
 #define _EVENT_H
 
 class Event;
+class Game;
 
 #include "entity.h"
 #include "messagefactory.h"
 #include "event_factory.h"
-
 
 class Event {
 	public:
 		enum EventType{ATTACK, MOVE};
 
 	private:
+		friend class Referee;
 		int tick;
 		EventType eventType;
 		int thisID;
 		static int id;
-
+	protected:
+		static Game* game;
 	public:
 		Event();
 		int getTick();
 		int getType();
 		void setTick(int nTick);
 		void setType(EventType nEventType);
-		
+
+		static void initGamePtr(Game* nGame);
 		virtual Message* resolve() = 0;
 };
 

@@ -1,6 +1,8 @@
+#include "game.h"
 #include "event.h"
 
 int Event::id = 0;
+Game* Event::game = NULL;
 
 Event::Event(){
 	tick = 0;

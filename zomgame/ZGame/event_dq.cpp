@@ -94,7 +94,7 @@ void EventDeque::removeNode(DQNode *remNode){
 	//manage the hash map
 	if (getFirstNodeAtTick(remNode->getEventTick()) == remNode){ //if remNode is the one in the hash, remove it
 		tickIndex.erase(remNode->getEventTick());
-		if (size > 1 && remNode->getNextNode()->getEventTick() == remNode->getEventTick()){ 
+		if (size > 1 && remNode->getNextNode() != NULL && remNode->getNextNode()->getEventTick() == remNode->getEventTick()){ 
 			//and if the next node also equals remNode, add that node to the hash
 			tickIndex.insert(std::pair<int, DQNode*>(remNode->getEventTick(), remNode->getNextNode()));
 		}

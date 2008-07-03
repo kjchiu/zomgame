@@ -13,8 +13,8 @@ MoveEvent::MoveEvent(Entity *nMover, MapBlock *curLoc, MapBlock *destLoc){
 
 Message* MoveEvent::resolve(){
 	if (destinationLoc->hasEntities()){
-//		addEvent(EventFactory::createAttackEvent(mover, destinationLoc->getTopEntity(), getTick()));
-	} 
+		addEvent(EventFactory::createAttackEvent(mover, destinationLoc->getTopEntity(), getTick()));
+	}
 
 	return new Message();
 }
