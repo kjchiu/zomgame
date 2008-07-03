@@ -1,5 +1,5 @@
 #include "move_event.h"
-
+#include "game.h"
 MoveEvent::MoveEvent(){
 	setType(Event::MOVE);
 }
@@ -13,7 +13,7 @@ MoveEvent::MoveEvent(Entity *nMover, MapBlock *curLoc, MapBlock *destLoc){
 
 Message* MoveEvent::resolve(){
 	if (destinationLoc->hasEntities()){
-		addEvent(EventFactory::createAttackEvent(mover, checkBlock->getTopEntity(), getTick());
+//		addEvent(EventFactory::createAttackEvent(mover, destinationLoc->getTopEntity(), getTick()));
 	} 
 
 	return new Message();

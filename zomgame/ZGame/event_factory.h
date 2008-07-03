@@ -3,7 +3,9 @@
 #ifndef _EVENT_FAC_H
 #define _EVENT_FAC_H
 
-#include "event_types.h"
+#include "entity.h"
+#include "mapblock.h"
+
 
 class EventFactory;
 class Event;
@@ -12,8 +14,8 @@ class Event;
 class EventFactory {
 	private:
 	public:
-		static AttackEvent* createAttackEvent(Entity* nAttacker, Entity* nDefender, int tick);
-		static MoveEvent* createMoveEvent(Entity* mover, MapBlock* curLoc, MapBlock* destLoc, int tick);
+		static Event* createAttackEvent(Entity* nAttacker, Entity* nDefender, int tick);
+		static Event* createMoveEvent(Entity* mover, MapBlock* curLoc, MapBlock* destLoc, int tick);
 };
 
 #endif
