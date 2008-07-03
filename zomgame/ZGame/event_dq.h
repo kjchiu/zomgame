@@ -3,8 +3,10 @@
 #ifndef _DEQUE_H
 #define _DEQUE_H
 
-#include "dq_node.h"
 #include <hash_map>
+#include <vector>
+#include "dq_node.h"
+
 
 class EventDeque {
 	private:
@@ -12,6 +14,7 @@ class EventDeque {
 		DQNode* lastNode;
 		int size;
 		stdext::hash_map<int,DQNode*> tickIndex;
+		std::vector<int> keyframes;
 
 	public:
 		EventDeque();

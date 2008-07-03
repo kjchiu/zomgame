@@ -10,9 +10,7 @@
 EventDeque* Game::events = new EventDeque();
 Game* Game::_instance = NULL;
 
-void addEvent(Event* e){
-	Game::getEventList()->addNode(e);
-}
+
 
 Game::Game(){
 	init(100,100);
@@ -161,10 +159,10 @@ bool Game::isPassable(Coord* nextLoc){
 }
 
 bool Game::move(Player* p, Direction dir){
-	Coord *moveLoc = new Coord((*directionOffsets[dir]) + (*p->getLoc()));
+	/*Coord *moveLoc = new Coord((*directionOffsets[dir]) + (*p->getLoc()));
 	if (map->isWithinMap(moveLoc)){
 		MapBlock* checkBlock = map->getBlockAt(moveLoc->getX(), moveLoc->getY());
-		addEvent(EventFactory::createMoveEvent(p, map->getBlockAt(p->getLoc()), checkBlock, getTickcount()));
+		addEvent(EventFactory::createMoveEvent(p, dir, 0));
 		if (checkBlock->hasEntities()){
 
 		} else if (checkBlock->hasProps() && !checkBlock->isPassable()) {
@@ -181,17 +179,17 @@ bool Game::move(Player* p, Direction dir){
 			this->target->setCoord(getPlayer()->getLoc());
 		}
 
-	}
+	}*/
 	return false;
 }
 
 bool Game::move(Zombie* zombie, Direction dir){
-	Coord *moveLoc = new Coord((*directionOffsets[dir]) + (*zombie->getLoc()));
+	/*Coord *moveLoc = new Coord((*directionOffsets[dir]) + (*zombie->getLoc()));
 	if (map->isWithinMap(moveLoc)){
 		MapBlock* checkBlock = map->getBlockAt(moveLoc->getX(), moveLoc->getY());
 		if (checkBlock->hasEntities()){
 			if (!checkBlock->getTopEntity()->isPlayer()) { return false;} //don't attack or move onto other zombies
-			addEvent(EventFactory::createAttackEvent(zombie, player, getTickcount()));
+			addEvent(EventFactory::createAttackEvent(zombie, dir, 0));
 			return true;
 		} else if (checkBlock->hasProps() && !checkBlock->isPassable()) {
 			zombie->resolveObstacle(this, dir);
@@ -200,7 +198,7 @@ bool Game::move(Zombie* zombie, Direction dir){
 	//		zombie->setLoc(moveLoc);
 	//		map->getBlockAt(zombie->getLoc())->addEntity(zombie);
 		}
-	}
+	}*/
 	return false;
 }
 
@@ -265,23 +263,32 @@ int Game::processKey(int key){
 		//string* str = new string(); *str = "Attr toggled";
 		//addMessage(new Message(str));
 	} else if (key=='q') {
-		move(player, NORTHWEST); return 10; //based on speed
+		addEvent(EventFactory::createMoveEvent(player, NORTHWEST, 0));
+		return player->getSpeed();
 	} else if (key=='w') {
-		move(player, NORTH); return 10; //based on speed
+		//move(player, NORTH); return 10; //based on speed
+		addEvent(EventFactory::createMoveEvent(player, NORTH, 0));
+		return player->getSpeed();
 	} else if (key=='e') {
-		move(player, NORTHEAST); return 10; //based on speed
+		addEvent(EventFactory::createMoveEvent(player, NORTHEAST, 0));
+		return player->getSpeed();
 	} else if (key=='a') {
-		move(player, WEST); return 10; //based on speed
+		addEvent(EventFactory::createMoveEvent(player, WEST, 0));
+		return player->getSpeed();
 	} else if (key=='s') {
 		return 10; //wait
 	} else if (key=='d') {
-		move(player, EAST); return 10; //based on speed
+		addEvent(EventFactory::createMoveEvent(player, EAST, 0));
+		return player->getSpeed();
 	} else if (key=='z') {
-		move(player, SOUTHWEST); return 10; //based on speed
+		addEvent(EventFactory::createMoveEvent(player, SOUTHWEST, 0));
+		return player->getSpeed();
 	} else if (key=='x') {
-		move(player, SOUTH); return 10; //based on speed
+		addEvent(EventFactory::createMoveEvent(player, SOUTH, 0));
+		return player->getSpeed();
 	} else if (key=='c') {
-		move(player, SOUTHEAST); return 10; //based on speed
+		addEvent(EventFactory::createMoveEvent(player, SOUTHEAST, 0));
+		return player->getSpeed();
 	} else if (key=='Q') {
 		Coord focus = *player->getLoc() + *directionOffsets[NORTHWEST];
 		return ref->interact(player, map->getBlockAt(&focus)->getTopProp());
@@ -381,7 +388,7 @@ void Game::run(){
 		if (frameTime <= -1){ //if display does not need to process the key
 			frameTime = this->processKey(input);	//if no windows are open, process in the game
 		}
-		if (frameTime > 0) {
+		if (frameTime >= 0) {
 			this->tick();
 		}
 		tickCount += frameTime;
@@ -443,4 +450,9 @@ vector<Coord>* Game::getRay(Coord *start, Coord *target) {
 
 	ray->push_back(Coord(target->getX(), target->getY()));
 	return ray;
+}
+
+
+void Game::addEvent(Event* e){
+	getEventList()->addNode(e);
 }

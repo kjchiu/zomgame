@@ -30,6 +30,11 @@ int Coord::getY() const{
 Coord Coord::operator+(const Coord& otherCoord) const {
 	return Coord(getX()+otherCoord.getX(), getY()+otherCoord.getY());
 }
+
+Coord Coord::operator+(const Direction& dir) const {
+	return *this + DIRECTION_OFFSETS[dir];
+}
+
 Coord Coord::operator-(const Coord& otherCoord) const {
 	return Coord(getX()-otherCoord.getX(), getY()-otherCoord.getY());
 }

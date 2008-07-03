@@ -3,6 +3,7 @@
 #ifndef _ENTITY_H
 #define _ENTITY_H
 
+#include "attackable.h"
 #include "attribute.h"
 #include "renderable.h"
 #include "inventory.h"
@@ -10,8 +11,10 @@
 
 using namespace std;
 
-class Entity : public Renderable {
 
+class Entity : public Renderable, public Attackable {
+public:
+	enum EntityType{PLAYER, ZOMBIE};
 	protected:
 		Coord* location;
 		Inventory* inventory;
@@ -19,10 +22,11 @@ class Entity : public Renderable {
 		Weapon* equippedWeapon;
 		int speed;
 		int siteRadius;
-		enum EntityType{PLAYER, ZOMBIE};
+		
 		EntityType eType;
 
 	public:
+
 		Entity();
 		Entity(string name);
 		void init();
@@ -42,6 +46,9 @@ class Entity : public Renderable {
 		virtual int getSpeed() { return speed; }
 		virtual int getSiteRadius() { return siteRadius; }
 		virtual void respawn(Coord* loc) { }
+
+		virtual Attribute* getHealth();
+		virtual vector<Item*> destroy();
 };
 
 #endif

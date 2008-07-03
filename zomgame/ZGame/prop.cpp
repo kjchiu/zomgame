@@ -3,17 +3,17 @@
 Prop::Prop(){
 	setSeeThrough(true);
 	setPassable(true);
-	durability = new Attribute("Durability", 100);
+	health = new Attribute("Health", 100);
 }
 
 Prop::Prop(bool canPass) {
 	setPassable(canPass);
 	setSeeThrough(true);
-	durability = new Attribute("Durability", 100);
+	health = new Attribute("Health", 100);
 }
 
-Attribute* Prop::getDurability(){
-	return durability;
+Attribute* Prop::getHealth(){
+	return health;
 }
 
 vector<Item*> Prop::destroy(){
@@ -44,7 +44,7 @@ void Prop::setDebris(vector<Item*> &_debris) {
 	debris = _debris;
 }
 
-void Prop::initDurability(int value, int maxValue) {
-	delete durability;
-	durability = new Attribute(std::string("Durability"), value, maxValue);
+void Prop::initHealth(int value, int maxValue) {
+	delete health;
+	health = new Attribute(std::string("Durability"), value, maxValue);
 }

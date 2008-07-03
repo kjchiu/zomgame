@@ -1,15 +1,20 @@
 #ifndef _PLAYER_H
 #define _PLAYER_H
 /* Represents the player */
+
+#include <vector>
+
 #include "map.h"
 #include "entity.h"
 #include "skills.h"
-#include <vector>
 #include "globals.h"
 #include "weapon.h"
+#include "item.h"
 
 struct Skill;
 struct SkillValue;
+
+class Item;
 
 class Player : public Entity {
 	protected:
@@ -29,5 +34,7 @@ class Player : public Entity {
 		void unequip(Weapon* weapon);
 		void respawn(Coord* loc);
 		void draw(Map *map);
+
+
 };
 #endif

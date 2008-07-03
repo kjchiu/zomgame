@@ -5,16 +5,16 @@
 
 #include "event.h"
 #include "mapblock.h"
+#include "entity.h"
 
 class MoveEvent : public Event {
 	private:
 		Entity* mover;
-		MapBlock* currentLoc;
-		MapBlock* destinationLoc;
+		Coord* destinationLoc;
 
 	public:
 		MoveEvent();
-		MoveEvent(Entity* nMover, MapBlock* curLoc, MapBlock* destLoc);
+		MoveEvent(Entity* nMover, Coord* destLoc);
 		
 		Message* resolve();
 };

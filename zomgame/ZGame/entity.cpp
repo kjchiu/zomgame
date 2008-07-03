@@ -57,6 +57,9 @@ Attribute* Entity::getAttribute(string attName){
 	return new Attribute();
 }
 
+Attribute* Entity::getHealth() {
+	return getAttribute("Health");
+}
 Weapon* Entity::getEquippedWeapon(){
 	if (equippedWeapon == NULL){
 		return new Weapon(); //returns bare fists
@@ -97,4 +100,8 @@ void Entity::setLoc(Coord* newLoc){
 
 void Entity::setType(EntityType nType){
 	eType = nType;
+}
+
+std::vector<Item*> Entity::destroy() {
+	return std::vector<Item*>();
 }

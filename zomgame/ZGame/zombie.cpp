@@ -76,7 +76,7 @@ void Zombie::tick(Game* game) { //eat_brains()
 		if (moveQueue.front().first > game->getTickcount()) {
 			break;
 		} else {
-			game->move(this, moveQueue.front().second);
+			game->addEvent(EventFactory::createMoveEvent(this, moveQueue.front().second, 0));
 			moveQueue.pop_front();
 		}
 	}
@@ -93,7 +93,20 @@ void Zombie::resolveObstacle(Game* game, Direction dir) {
 }
 
 void Zombie::respawn(Coord* c) {
+	setLoc(c);
 	getAttribute("Health")->changeCurValueBy(20);
 	curAction = WANDERING;
-	this->setLoc(c);
+	Game::getInstance()->getMap()->getBlockAt(getLoc())->addEntity(this);
+}
+
+std::vector<Item*> Zombie::destroy() {
+	int x, y;
+	x = rand() % Game::getInstance()->getMap()->getWidth();
+	y = rand() % Game::getInstance()->getMap()->getHeight();
+	Coord *c;
+	do {
+		c = new Coord(x,y);
+	} while (Game::getInstance()->getMap()->getBlockAt(c)->hasEntities());
+	respawn(c);
+	return std::vector<Item*>();
 }

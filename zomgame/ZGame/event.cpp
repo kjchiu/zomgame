@@ -2,9 +2,9 @@
 #include "event.h"
 
 int Event::id = 0;
-Game* Event::game = NULL;
 
-Event::Event(){
+Event::Event(EventType _type) :
+	eventType(_type) {
 	tick = 0;
 	thisID = id++;
 }

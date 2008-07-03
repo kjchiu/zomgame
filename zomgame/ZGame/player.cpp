@@ -2,6 +2,7 @@
 
 
 Player::Player() : Entity(){
+	speed = 10;
 	setType(Entity::PLAYER);
 	name = "NameHere";
 	location = new Coord();

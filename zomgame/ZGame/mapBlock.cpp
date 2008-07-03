@@ -60,7 +60,10 @@ vector<Item*> MapBlock::getItems() {
 
 /* Simply get the entity that's on the top of the vector/stack. */
 Entity* MapBlock::getTopEntity(){
-	return entityList.back();	
+	if (entityList.size())
+		return entityList.back();	
+	else 
+		return NULL;
 }
 
 /* Simply get the prop that's on the top of the vector/stack. */
