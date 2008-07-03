@@ -36,7 +36,7 @@ int main() {
 	getmaxyx(stdscr,row,col);		/* get the number of rows and columns */
 	
 	Game *game;
-	game = new Game(); //make a new game
+	game = Game::getInstance(); //make a new game
 
 	game->run();
 

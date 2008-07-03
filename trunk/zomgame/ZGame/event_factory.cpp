@@ -1,5 +1,6 @@
 #include "event_factory.h"
 #include "event_types.h"
+
 Event* EventFactory::createAttackEvent(Entity* nAttacker, Entity* nDefender, int tick){
 	AttackEvent* e = new AttackEvent(nAttacker, nDefender);
 	e->setTick(tick);

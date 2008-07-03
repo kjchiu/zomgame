@@ -38,7 +38,7 @@ class Game {
 		deque<Message> messages;
 		Display* display;
 		static EventDeque* events; 
-
+		static Game* _instance;
 		Referee* ref;
 		Map* map;
 		Player* player;
@@ -51,6 +51,7 @@ class Game {
 		Game();
 		Game(int tWidth, int tHeight);
 		void init(int tWidth, int tHeight);
+		static Game* getInstance();
 
 		static EventDeque* getEventList();
 		vector<Coord>* getRay(Coord *start, Coord *target);

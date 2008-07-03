@@ -8,6 +8,8 @@
 #include "keycodes.h"
 
 EventDeque* Game::events = new EventDeque();
+Game* Game::_instance = NULL;
+
 void addEvent(Event* e){
 	Game::getEventList()->addNode(e);
 }
@@ -31,6 +33,8 @@ void Game::init(int tWidth, int tHeight){
 	player->setLoc(new Coord(10,10));
 	target = new Coord(player->getLoc());
 	map->getBlockAt(player->getLoc())->addEntity(player);
+
+	
 
 	ref = new Referee(this);
 	display = new Display(this);
@@ -98,6 +102,13 @@ void Game::init(int tWidth, int tHeight){
 	map->makeRoomAt(new Coord(15,15), 6, 8);
 }
 
+Game* Game::getInstance() {
+	if (_instance == NULL) {
+		_instance = new Game();
+	} 
+	return _instance;
+}
+
 void Game::addMessage(Message *msg){
 	messages.push_front(*msg->formatMsg(75));
 }
@@ -154,7 +165,9 @@ bool Game::move(Player* p, Direction dir){
 	if (map->isWithinMap(moveLoc)){
 		MapBlock* checkBlock = map->getBlockAt(moveLoc->getX(), moveLoc->getY());
 		addEvent(EventFactory::createMoveEvent(p, map->getBlockAt(p->getLoc()), checkBlock, getTickcount()));
-		if (checkBlock->hasProps() && !checkBlock->isPassable()) {
+		if (checkBlock->hasEntities()){
+
+		} else if (checkBlock->hasProps() && !checkBlock->isPassable()) {
 			if (checkBlock->getTopProp()->getName() == "Door" && !checkBlock->getTopProp()->isPassable()) {
 				checkBlock->getTopProp()->interact(player);
 			}
@@ -162,6 +175,7 @@ bool Game::move(Player* p, Direction dir){
 			map->getBlockAt(p->getLoc())->removeEntity(p);
 			p->setLoc(moveLoc);
 			map->getBlockAt(p->getLoc())->addEntity(p);
+			
 			Message *msg = MessageFactory::getItems(map->getBlockAt(moveLoc)->getItems());
 			if (msg) {addMessage(msg);}
 			this->target->setCoord(getPlayer()->getLoc());
@@ -182,9 +196,9 @@ bool Game::move(Zombie* zombie, Direction dir){
 		} else if (checkBlock->hasProps() && !checkBlock->isPassable()) {
 			zombie->resolveObstacle(this, dir);
 		} else {
-			map->getBlockAt(zombie->getLoc())->removeEntity(zombie);
-			zombie->setLoc(moveLoc);
-			map->getBlockAt(zombie->getLoc())->addEntity(zombie);
+	//		map->getBlockAt(zombie->getLoc())->removeEntity(zombie);
+	//		zombie->setLoc(moveLoc);
+	//		map->getBlockAt(zombie->getLoc())->addEntity(zombie);
 		}
 	}
 	return false;

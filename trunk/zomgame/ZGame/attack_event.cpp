@@ -31,8 +31,6 @@ Message* AttackEvent::resolve(){
 
 	string* message = new string();
 	*message += attacker->getName() + std::string(loc) + " attacks ";
-//	if (attacker->getName() == game->getPlayer()->getName()){message = "You attack ";}
-//	if (defender->getName() == game->getPlayer()->getName()){message += "you";} else {message += "the " + defender->getName();}
 	//check probability to hit based on player skill first
 	if (rand() % 100 < 20){ //durr magic number 20
 		*message += " but the attack misses.";

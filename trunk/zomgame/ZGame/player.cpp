@@ -2,6 +2,7 @@
 
 
 Player::Player() : Entity(){
+	setType(Entity::PLAYER);
 	name = "NameHere";
 	location = new Coord();
 	displayChar = '@';

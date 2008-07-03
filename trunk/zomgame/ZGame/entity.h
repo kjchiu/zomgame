@@ -24,8 +24,7 @@ class Entity : public Renderable {
 
 	public:
 		Entity();
-		Entity(bool isPlayer);
-		Entity(bool isPlayer, string name);
+		Entity(string name);
 		void init();
 		virtual void addAttribute(Attribute* att);
 		virtual void equip(Weapon* weapon);
@@ -33,6 +32,8 @@ class Entity : public Renderable {
 		int getAttributeValue(string attName);
 		Attribute* getAttribute(string attName);
 		Weapon* getEquippedWeapon();
+		int getType();
+		void setType(EntityType nType);
 		virtual Inventory* getInventory();
 		virtual Coord* getLoc();
 		virtual int getValueOf(string attName); //returns the curValue only
