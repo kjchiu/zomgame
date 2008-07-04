@@ -32,7 +32,7 @@ int Referee::attackLocation(Entity* attacker, Coord* loc, Message* msg){
 			destroy(mBlock->getTopProp(), loc);
 		}
 	} else { 
-		retString = "There is nothing to attack.";
+		retString = "There is nothing to attack!";
 	}
 			
 	msg->setMsg(retString.c_str());
@@ -85,7 +85,7 @@ int Referee::attackRngLocation(Player* player, Coord* loc, Message* msg){
 			sprintf(&buf[0], "You shot a %s with your %s. It has %d health left.", 
 							r->getName().c_str(), player->getEqRngWeapon()->getName().c_str(), dur);			
 		} else {
-			sprintf(&buf[0], "You point at the %s with your finger and say bang?", r->getName().c_str());
+			sprintf(&buf[0], "You have nothing to shoot with.");
 		}
 	} else {
 		if (player->getEqRngWeapon()) {
@@ -187,12 +187,14 @@ bool Referee::resolve(Player* player, void* target, int (*action)(Player*, void*
 	return result == 0;
 }
 
-int Referee::resolveEvents(DQNode* currentEvent, EventDeque* eventDeque){
+int Referee::resolveEvents(int currentTick, EventDeque* eventDeque){
 	DQNode* resolvedEvent;
-	while (currentEvent != NULL){
+	DQNode* currentEvent = eventDeque->getFirstNode();
+	while (currentEvent != NULL && currentEvent->getEventTick() <= currentTick){
 		Message* msg = currentEvent->getEventData()->resolve();
-		if (msg)
+		if (msg){
 			game->addMessage(msg);
+		}
 		resolvedEvent = currentEvent;
 		currentEvent = currentEvent->getNextNode();
 		eventDeque->removeNode(resolvedEvent);

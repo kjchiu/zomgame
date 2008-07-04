@@ -24,3 +24,27 @@ Event* EventFactory::createAttackEvent(Entity* attacker, Coord* targetLoc, int t
 	e->setTick(Game::getInstance()->getTickcount() + tick);
 	return e;
 }
+
+Event* EventFactory::createGetItemEvent(Entity* picker, Coord* loc, int index, int tick) {
+	GetItemEvent *e = new GetItemEvent(picker, loc, index);
+	e->setTick(Game::getInstance()->getTickcount() + tick);
+	return e;
+}
+
+Event* EventFactory::createSpawnEntityEvent(Entity* spawner, Coord* loc, int tick){
+	SpawnEntityEvent *e = new SpawnEntityEvent(spawner, loc);
+	e->setTick(Game::getInstance()->getTickcount() + tick);
+	return e;
+}
+
+Event* EventFactory::createSpawnItemEvent(Item* spawner, Coord* loc, int tick){
+	SpawnItemEvent *e = new SpawnItemEvent(spawner, loc);
+	e->setTick(Game::getInstance()->getTickcount() + tick);
+	return e;
+}
+
+Event* EventFactory::createSpawnPropEvent(Prop *spawner, Coord *loc, int tick){
+	SpawnPropEvent *e = new SpawnPropEvent(spawner, loc);
+	e->setTick(Game::getInstance()->getTickcount() + tick);
+	return e;
+}

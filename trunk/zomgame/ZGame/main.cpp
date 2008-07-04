@@ -37,7 +37,7 @@ int main() {
 	
 	Game *game;
 	game = Game::getInstance(); //make a new game
-
+	game->init(100,100);
 	game->run();
 
 	refresh();

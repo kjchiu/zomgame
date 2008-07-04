@@ -10,15 +10,13 @@
 EventDeque* Game::events = new EventDeque();
 Game* Game::_instance = NULL;
 
-
-
 Game::Game(){
-	init(100,100);
+//	init(100,100);
 }
 
 /* tWidth and tHeight represent the size of the world */
 Game::Game(int tWidth, int tHeight){
-	init(tWidth, tHeight);
+//	init(tWidth, tHeight);
 }
 
 void Game::init(int tWidth, int tHeight){
@@ -39,18 +37,6 @@ void Game::init(int tWidth, int tHeight){
 	display->setCenter(player);
 	display->setTarget(target);
 
-	/*Deque* dq = new Deque();
-	DQNode* dn = new DQNode();
-	AttackEvent* ae = EventFactory::createAttackEvent(new Entity(), new Entity(), 10);
-	dn->setEventData(ae);
-	dq->addNode(dn);
-	DQNode* dn2 = new DQNode();
-	AttackEvent* ae2 = EventFactory::createAttackEvent(new Entity(), new Entity(), 10);
-	dn2->setEventData(ae2);
-	dq->addNode(dn2);
-	dq->removeNode(dn2);
-	dq->removeNode(dn);*/
-
 	//set up the offsets
 	directionOffsets[0] = new Coord(0,-1);
 	directionOffsets[1] = new Coord(1,-1);
@@ -68,8 +54,8 @@ void Game::init(int tWidth, int tHeight){
 	zombies.push_back(zombones);
 	for ( int i = 0; i < 100; i++) {
 		zombones = new Zombie();
-		zombones->setLoc(new Coord(rand() % 50, rand() % 50));
-		map->getBlockAt(zombones->getLoc())->addEntity(zombones);
+		addEvent(EventFactory::createSpawnEntityEvent(zombones, new Coord(rand() % 50, rand() % 50), 0));
+		
 		zombies.push_back(zombones);
 	}
 
@@ -98,6 +84,8 @@ void Game::init(int tWidth, int tHeight){
 
 	map->makeRoomAt(new Coord(7,7), 4,4);
 	map->makeRoomAt(new Coord(15,15), 6, 8);
+	
+	ref->resolveEvents(0, getEventList());
 }
 
 Game* Game::getInstance() {
@@ -361,8 +349,9 @@ void Game::tick(){
 			z->tick(this);
 		}
 	}
+
 	//check events here
-	ref->resolveEvents(events->getFirstNodeAtTick(getTickcount()), getEventList());
+	ref->resolveEvents(getTickcount(), getEventList());
 	
 }
 
