@@ -146,49 +146,6 @@ bool Game::isPassable(Coord* nextLoc){
 	return false;
 }
 
-bool Game::move(Player* p, Direction dir){
-	/*Coord *moveLoc = new Coord((*directionOffsets[dir]) + (*p->getLoc()));
-	if (map->isWithinMap(moveLoc)){
-		MapBlock* checkBlock = map->getBlockAt(moveLoc->getX(), moveLoc->getY());
-		addEvent(EventFactory::createMoveEvent(p, dir, 0));
-		if (checkBlock->hasEntities()){
-
-		} else if (checkBlock->hasProps() && !checkBlock->isPassable()) {
-			if (checkBlock->getTopProp()->getName() == "Door" && !checkBlock->getTopProp()->isPassable()) {
-				checkBlock->getTopProp()->interact(player);
-			}
-		} else {
-			map->getBlockAt(p->getLoc())->removeEntity(p);
-			p->setLoc(moveLoc);
-			map->getBlockAt(p->getLoc())->addEntity(p);
-			
-			Message *msg = MessageFactory::getItems(map->getBlockAt(moveLoc)->getItems());
-			if (msg) {addMessage(msg);}
-			this->target->setCoord(getPlayer()->getLoc());
-		}
-
-	}*/
-	return false;
-}
-
-bool Game::move(Zombie* zombie, Direction dir){
-	/*Coord *moveLoc = new Coord((*directionOffsets[dir]) + (*zombie->getLoc()));
-	if (map->isWithinMap(moveLoc)){
-		MapBlock* checkBlock = map->getBlockAt(moveLoc->getX(), moveLoc->getY());
-		if (checkBlock->hasEntities()){
-			if (!checkBlock->getTopEntity()->isPlayer()) { return false;} //don't attack or move onto other zombies
-			addEvent(EventFactory::createAttackEvent(zombie, dir, 0));
-			return true;
-		} else if (checkBlock->hasProps() && !checkBlock->isPassable()) {
-			zombie->resolveObstacle(this, dir);
-		} else {
-	//		map->getBlockAt(zombie->getLoc())->removeEntity(zombie);
-	//		zombie->setLoc(moveLoc);
-	//		map->getBlockAt(zombie->getLoc())->addEntity(zombie);
-		}
-	}*/
-	return false;
-}
 
 void Game::moveTarget(Direction dir) {
 	Coord moveLoc = (*directionOffsets[dir]) + (*getTarget());
@@ -208,8 +165,10 @@ int Game::processKey(int key){
 	//itoa(key, ikey, 10);
 	//addMessage(new Message(&ikey[0]));
 	int time;
+	Message* message = new Message();
+	Coord focus;
 	if (PDC_get_key_modifiers() & PDC_KEY_MODIFIER_CONTROL){
-		Message message;
+		
 		Direction dir;
 		switch(key)
 		{
@@ -228,8 +187,8 @@ int Game::processKey(int key){
 		default:
 			return 0;
 		}
-		time = ref->attackLocation(getPlayer(), &((*directionOffsets[dir]) + (*player->getLoc())), &message);
-		addMessage(&message);
+		time = ref->attackLocation(getPlayer(), &((*directionOffsets[dir]) + (*player->getLoc())), message);
+		addMessage(message);
 		return time;
 	}
 	else {
@@ -248,7 +207,7 @@ int Game::processKey(int key){
 			break;
 		case 'f':
 			//check for line of sight first, then
-			Message* message = new Message();
+			
 			time = ref->attackRngLocation(player, getTarget(), message);
 			addMessage(message);
 			return time;
@@ -281,28 +240,28 @@ int Game::processKey(int key){
 			addEvent(EventFactory::createMoveEvent(player, SOUTHEAST, 0));
 			return player->getSpeed();
 		case 'Q':
-			Coord focus = *player->getLoc() + *directionOffsets[NORTHWEST];
+			focus = *player->getLoc() + *directionOffsets[NORTHWEST];
 			return ref->interact(player, map->getBlockAt(&focus)->getTopProp());
 		case 'W':
-			Coord focus = *player->getLoc() + *directionOffsets[NORTH];
+			focus = *player->getLoc() + *directionOffsets[NORTH];
 			return ref->interact(player, map->getBlockAt(&focus)->getTopProp());
 		case 'E':
-			Coord focus = *player->getLoc() + *directionOffsets[NORTHEAST];
+			focus = *player->getLoc() + *directionOffsets[NORTHEAST];
 			return ref->interact(player, map->getBlockAt(&focus)->getTopProp());
 		case 'D':
-			Coord focus = *player->getLoc() + *directionOffsets[EAST];
+			focus = *player->getLoc() + *directionOffsets[EAST];
 			return ref->interact(player, map->getBlockAt(&focus)->getTopProp());
 		case 'C':
-			Coord focus = *player->getLoc() + *directionOffsets[SOUTHEAST];
+			focus = *player->getLoc() + *directionOffsets[SOUTHEAST];
 			return ref->interact(player, map->getBlockAt(&focus)->getTopProp());
 		case 'X':
-			Coord focus = *player->getLoc() + *directionOffsets[SOUTH];
+			focus = *player->getLoc() + *directionOffsets[SOUTH];
 			return ref->interact(player, map->getBlockAt(&focus)->getTopProp());
 		case 'Z':
-			Coord focus = *player->getLoc() + *directionOffsets[SOUTHWEST];
+			focus = *player->getLoc() + *directionOffsets[SOUTHWEST];
 			return ref->interact(player, map->getBlockAt(&focus)->getTopProp());
 		case 'A':
-			Coord focus = *player->getLoc() + *directionOffsets[WEST];
+			focus = *player->getLoc() + *directionOffsets[WEST];
 			return ref->interact(player, map->getBlockAt(&focus)->getTopProp());
 		case '.':
 			return 10;

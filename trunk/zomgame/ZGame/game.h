@@ -69,10 +69,7 @@ class Game {
 		int processKey(int input);
 
 		void addEvent(Event* e);
-		bool move(Zombie* z, Direction dir);
-		bool move(Player* p, Direction dir);
 		void moveTarget(Direction dir);
-		void setCharAt(char setChar, int x, int y);
 		bool isPassable(Coord* nextLoc);
 		unsigned int getTickcount();
 
