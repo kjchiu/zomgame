@@ -30,7 +30,7 @@ class Referee {
 		bool pickUpItem(Entity* picker, MapBlock* loc, int index, Message* msg);
 		bool resolveAttack(Entity* attacker, Entity* defender, Message* msg);
 		bool resolve(Player* player, void* target, int (*action)(Player*, void*, vector<Message*>*) );
-		int resolveEvents(DQNode* firstEvent, EventDeque* eventDeque);
+		int resolveEvents(int currentTick, EventDeque* eventDeque);
 		int destroy(Prop* prop, Coord* loc);
 		int destroy(Entity* ent, Coord* loc);
 };

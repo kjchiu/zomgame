@@ -76,12 +76,11 @@ void Display::cleanSelections(){
 
 // pulls down necessary data from game to draw
 void Display::draw() {
-	if (dState->mapIsToggled()) {
-		this->draw(game->getMap());
-	} else if (dState->attrIsToggled()){
+	if (dState->attrIsToggled()){
 		drawCharacterInfo();
+	} else {
+		this->draw(game->getMap());
 	}
-
 
 	this->draw(game->getMessages());
 	if (invIsToggled()){
@@ -89,9 +88,6 @@ void Display::draw() {
 	}
 
 	draw(game->getPlayer(), game->getMap()->getBlockAt(game->getTarget()));
-
-	
-	
 }
 
 void Display::draw(Map* map) {
@@ -394,10 +390,7 @@ int Display::processKeyInventory(int input){
 		dState->switchInvSelect();
 	} else if (input == 'g'){
 		if (!dState->invIsHighlighted()){
-			Message msg;
-			game->getReferee()->pickUpItem(game->getPlayer(), game->getMap()->getBlockAt(game->getPlayer()->getLoc()), 
-											groundSelection, &msg);
-			game->addMessage(&msg);
+			game->addEvent(EventFactory::createGetItemEvent(game->getPlayer(), game->getPlayer()->getLoc(), groundSelection, 0));
 			return 5;
 		} //pick up the item
 	} else if (input == WIN_KEY_ENTER) { //enter key
