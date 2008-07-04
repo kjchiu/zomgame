@@ -209,109 +209,124 @@ int Game::processKey(int key){
 	//addMessage(new Message(&ikey[0]));
 	int time;
 	if (PDC_get_key_modifiers() & PDC_KEY_MODIFIER_CONTROL){
-		if (key==WIN_KEY_CTRL_W){
-			Message message;
-			time = ref->attackLocation(getPlayer(), &((*directionOffsets[NORTH])+(*player->getLoc())), &message);
-			addMessage(&message);
-			return time;
-		} else if (key==WIN_KEY_CTRL_A){
-			Message message;
-			time = ref->attackLocation(getPlayer(), &((*directionOffsets[WEST])+(*player->getLoc())), &message);
-			addMessage(&message);
-			return time;
-		} else if (key==WIN_KEY_CTRL_S){
-			Message message;
-			time = ref->attackLocation(getPlayer(), &((*directionOffsets[SOUTH])+(*player->getLoc())), &message);
-			addMessage(&message);
-			return time;
-		} else if (key==WIN_KEY_CTRL_D){
-			Message message;
-			time = ref->attackLocation(getPlayer(), &((*directionOffsets[EAST])+(*player->getLoc())), &message);
-			addMessage(&message);
-			return time;
+		Message message;
+		Direction dir;
+		switch(key)
+		{
+		case WIN_KEY_CTRL_W:
+			dir = NORTH;
+			break;
+		case WIN_KEY_CTRL_A:
+			dir = WEST;
+			break;
+		case WIN_KEY_CTRL_S:
+			dir = SOUTH;
+			break;
+		case WIN_KEY_CTRL_D:
+			dir = EAST;
+			break;
+		default:
+			return 0;
 		}
-	} else if(key == WIN_KEY_DEL) {
-		quitGame();
-		return -1;
-	} else if (key=='~') {
-
-	} else if (key=='g'){
-		if (!map->getBlockAt(player->getLoc())->getItems().empty()){
-			display->toggleInventory(false);
-			return 5;
-		}
-	} else if (key=='f'){
-		//check for line of sight first, then
-		Message* message = new Message();
-		time = ref->attackRngLocation(player, getTarget(), message);
-		addMessage(message);
+		time = ref->attackLocation(getPlayer(), &((*directionOffsets[dir]) + (*player->getLoc())), &message);
+		addMessage(&message);
 		return time;
-	} else if (key=='u'){ //i don't know, some random key
-		display->toggleAttributes();
-		//string* str = new string(); *str = "Attr toggled";
-		//addMessage(new Message(str));
-	} else if (key=='q') {
-		addEvent(EventFactory::createMoveEvent(player, NORTHWEST, 0));
-		return player->getSpeed();
-	} else if (key=='w') {
-		//move(player, NORTH); return 10; //based on speed
-		addEvent(EventFactory::createMoveEvent(player, NORTH, 0));
-		return player->getSpeed();
-	} else if (key=='e') {
-		addEvent(EventFactory::createMoveEvent(player, NORTHEAST, 0));
-		return player->getSpeed();
-	} else if (key=='a') {
-		addEvent(EventFactory::createMoveEvent(player, WEST, 0));
-		return player->getSpeed();
-	} else if (key=='s') {
-		return 10; //wait
-	} else if (key=='d') {
-		addEvent(EventFactory::createMoveEvent(player, EAST, 0));
-		return player->getSpeed();
-	} else if (key=='z') {
-		addEvent(EventFactory::createMoveEvent(player, SOUTHWEST, 0));
-		return player->getSpeed();
-	} else if (key=='x') {
-		addEvent(EventFactory::createMoveEvent(player, SOUTH, 0));
-		return player->getSpeed();
-	} else if (key=='c') {
-		addEvent(EventFactory::createMoveEvent(player, SOUTHEAST, 0));
-		return player->getSpeed();
-	} else if (key=='Q') {
-		Coord focus = *player->getLoc() + *directionOffsets[NORTHWEST];
-		return ref->interact(player, map->getBlockAt(&focus)->getTopProp());
-	} else if (key=='W') {
-		Coord focus = *player->getLoc() + *directionOffsets[NORTH];
-		return ref->interact(player, map->getBlockAt(&focus)->getTopProp());
-	} else if (key=='E') {
-		Coord focus = *player->getLoc() + *directionOffsets[NORTHEAST];
-		return ref->interact(player, map->getBlockAt(&focus)->getTopProp());
-	} else if (key=='D') {
-		Coord focus = *player->getLoc() + *directionOffsets[EAST];
-		return ref->interact(player, map->getBlockAt(&focus)->getTopProp());
-	} else if (key=='C') {
-		Coord focus = *player->getLoc() + *directionOffsets[SOUTHEAST];
-		return ref->interact(player, map->getBlockAt(&focus)->getTopProp());
-	} else if (key=='X') {
-		Coord focus = *player->getLoc() + *directionOffsets[SOUTH];
-		return ref->interact(player, map->getBlockAt(&focus)->getTopProp());
-	} else if (key=='Z') {
-		Coord focus = *player->getLoc() + *directionOffsets[SOUTHWEST];
-		return ref->interact(player, map->getBlockAt(&focus)->getTopProp());
-	} else if (key=='A') {
-		Coord focus = *player->getLoc() + *directionOffsets[WEST];
-		return ref->interact(player, map->getBlockAt(&focus)->getTopProp());
-	} else if (key=='.') { return 10;
-	} else if (key=='i') {
-		addMessage(new Message("Inventory toggled"));
-		display->toggleInventory(true);
-		return 5;
-	} else if (key == 'o') { moveTarget(NORTH);
-	} else if (key == 'k') { moveTarget(WEST);
-	} else if (key == 'l') { moveTarget(SOUTH);
-	} else if (key == ';') { moveTarget(EAST);
-	} else if (key == 'p') {
-		display->togglePopup();
+	}
+	else {
+		//this is not only more efficient, but it looks a lot better
+		//enough with the massive if chains
+		switch(key)
+		{
+		case WIN_KEY_DEL:
+			quitGame();
+			return -1;
+		case 'g':
+			if(!map->getBlockAt(player->getLoc())->getItems().empty()){
+				display->toggleInventory(false);
+				return 5;
+			}
+			break;
+		case 'f':
+			//check for line of sight first, then
+			Message* message = new Message();
+			time = ref->attackRngLocation(player, getTarget(), message);
+			addMessage(message);
+			return time;
+		case 'u':
+			display->toggleAttributes();
+		case 'q':
+			addEvent(EventFactory::createMoveEvent(player, NORTHWEST, 0));
+			return player->getSpeed();
+		case 'w':
+			addEvent(EventFactory::createMoveEvent(player, NORTH, 0));
+			return player->getSpeed();
+		case 'e':
+			addEvent(EventFactory::createMoveEvent(player, NORTHEAST, 0));
+			return player->getSpeed();
+		case 'a':
+			addEvent(EventFactory::createMoveEvent(player, WEST, 0));
+			return player->getSpeed();
+		case 's':
+			return 10; //wait
+		case 'd':
+			addEvent(EventFactory::createMoveEvent(player, EAST, 0));
+			return player->getSpeed();
+		case 'z':
+			addEvent(EventFactory::createMoveEvent(player, SOUTHWEST, 0));
+			return player->getSpeed();
+		case 'x':
+			addEvent(EventFactory::createMoveEvent(player, SOUTH, 0));
+			return player->getSpeed();
+		case 'c':
+			addEvent(EventFactory::createMoveEvent(player, SOUTHEAST, 0));
+			return player->getSpeed();
+		case 'Q':
+			Coord focus = *player->getLoc() + *directionOffsets[NORTHWEST];
+			return ref->interact(player, map->getBlockAt(&focus)->getTopProp());
+		case 'W':
+			Coord focus = *player->getLoc() + *directionOffsets[NORTH];
+			return ref->interact(player, map->getBlockAt(&focus)->getTopProp());
+		case 'E':
+			Coord focus = *player->getLoc() + *directionOffsets[NORTHEAST];
+			return ref->interact(player, map->getBlockAt(&focus)->getTopProp());
+		case 'D':
+			Coord focus = *player->getLoc() + *directionOffsets[EAST];
+			return ref->interact(player, map->getBlockAt(&focus)->getTopProp());
+		case 'C':
+			Coord focus = *player->getLoc() + *directionOffsets[SOUTHEAST];
+			return ref->interact(player, map->getBlockAt(&focus)->getTopProp());
+		case 'X':
+			Coord focus = *player->getLoc() + *directionOffsets[SOUTH];
+			return ref->interact(player, map->getBlockAt(&focus)->getTopProp());
+		case 'Z':
+			Coord focus = *player->getLoc() + *directionOffsets[SOUTHWEST];
+			return ref->interact(player, map->getBlockAt(&focus)->getTopProp());
+		case 'A':
+			Coord focus = *player->getLoc() + *directionOffsets[WEST];
+			return ref->interact(player, map->getBlockAt(&focus)->getTopProp());
+		case '.':
+			return 10;
+		case 'i':
+			addMessage(new Message("Inventory toggled"));
+			display->toggleInventory(true);
+			return 5;
+		case 'o':
+			moveTarget(NORTH);
+			break;
+		case 'k':
+			moveTarget(WEST);
+			break;
+		case 'l':
+			moveTarget(SOUTH);
+			break;
+		case ';':
+			moveTarget(EAST);
+			break;
+		case 'p':
+			display->togglePopup();
+			break;
+		default: break;
+		}
 	}
 
 	// i hope this is redundant -.-
