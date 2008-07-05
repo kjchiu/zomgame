@@ -45,11 +45,11 @@ int Referee::attackRngLocation(Player* player, Coord* loc, Message* msg){
 	MapBlock* block;
 	vector<Coord>* ray = game->getRay(player->getLoc(), loc);
 	if (!ray) {
-		sprintf(&buf[0], "Stop shooting yourself.");
+		sprintf_s(&buf[0], 128, "Stop shooting yourself.");
 		msg->setMsg(buf);
 		return 0;
 	}
-	int i = 1;						
+	unsigned int i = 1;						
 	do {
 		block =	game->getMap()->getBlockAt(&(ray->at(i)));
 		if (block->hasEntities()) {
@@ -82,16 +82,16 @@ int Referee::attackRngLocation(Player* player, Coord* loc, Message* msg){
 					destroy(block->getTopProp(), &ray->at(i));
 				}
 			}
-			sprintf(&buf[0], "You shot a %s with your %s. It has %d health left.", 
+			sprintf_s(&buf[0], 128, "You shot a %s with your %s. It has %d health left.", 
 							r->getName().c_str(), player->getEqRngWeapon()->getName().c_str(), dur);			
 		} else {
-			sprintf(&buf[0], "You have nothing to shoot with.");
+			sprintf_s(&buf[0], 128, "You have nothing to shoot with.");
 		}
 	} else {
 		if (player->getEqRngWeapon()) {
-			sprintf(&buf[0], "You attack the darkness?");		
+			sprintf_s(&buf[0], 128, "You attack the darkness?");		
 		} else {
-			sprintf(&buf[0], "You point at the darkness with your finger and say bang?");
+			sprintf_s(&buf[0], 128, "You point at the darkness with your finger and say bang?");
 		}
 	}
 	msg->setMsg(&buf[0]);
@@ -180,7 +180,7 @@ bool Referee::resolveAttack(Entity* attacker, Entity* defender, Message* msg) {
 bool Referee::resolve(Player* player, void* target, int (*action)(Player*, void*, vector<Message*>*)) {	
 	vector<Message*> log;
 	int result =  action(player, target, &log);
-	for (int i = 0; i < log.size(); i++) {
+	for (unsigned int i = 0; i < log.size(); i++) {
 		game->addMessage(log.at(i));
 	}
 	//delete log;
@@ -214,12 +214,12 @@ int Referee::interact(Player* player, Prop* prop) {
 int Referee::destroy(Prop* prop, Coord* loc) {
 	char msg[64];
 	vector<Item*> debris = prop->destroy();
-	for (int i = 0; i < debris.size(); i++) {
-		sprintf(&msg[0], "added %s debris", debris.at(i)->getName().c_str());
+	for (unsigned int i = 0; i < debris.size(); i++) {
+		sprintf_s(&msg[0], 128, "added %s debris", debris.at(i)->getName().c_str());
 		game->addMessage(new Message(new std::string(msg)));
 		game->getMap()->getBlockAt(loc)->addItem(debris.at(i));
 	}
-	sprintf(&msg[0], "%s has been destroyed.", prop->getName().c_str());
+	sprintf_s(&msg[0], 128, "%s has been destroyed.", prop->getName().c_str());
 	game->addMessage(new Message(new std::string(msg)));
 	game->getMap()->getBlockAt(loc)->removeProp(prop);
 	return 0;

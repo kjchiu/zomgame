@@ -11,7 +11,7 @@
 #include "weapon.h"
 #include "item.h"
 
-struct Skill;
+class Skill;
 struct SkillValue;
 
 class Item;

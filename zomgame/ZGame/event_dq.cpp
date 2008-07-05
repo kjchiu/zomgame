@@ -27,7 +27,7 @@ void EventDeque::addNode(DQNode *newNode){
 	}
 
 	DQNode* checkNode = getFirstNodeAtTick(newNode->getEventTick());
-	int i = 0;
+	unsigned int i = 0;
 	// does the keyframe exist?
 	if (checkNode == NULL){
 		
@@ -86,7 +86,7 @@ DQNode* EventDeque::getFirstNodeAtTick(int tick){
 }
 
 DQNode* EventDeque::getLastNodeAtTick(int tick){
-	int i;
+	unsigned int i = 0;
 	while(i < keyframes.size()) {
 		if (tick < keyframes.at(i)) {
 			break;

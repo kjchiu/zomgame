@@ -312,11 +312,11 @@ void Game::tick(){
 
 			char bufA[128];
 			char bufB[128];
-			sprintf(&bufA[0],"Respawn zombie @ (%d,%d)", z->getLoc()->getX(), z->getLoc()->getY());
+			sprintf_s(&bufA[0], 128, "Respawn zombie @ (%d,%d)", z->getLoc()->getX(), z->getLoc()->getY());
 
 			//map->getBlockAt(z->getLoc())->removeEntity(z);
 			z->respawn(new Coord(c));
-			sprintf(&bufB[0],"Zombie moved to (%d,%d)", z->getLoc()->getX(), z->getLoc()->getY());
+			sprintf_s(&bufB[0], 128, "Zombie moved to (%d,%d)", z->getLoc()->getX(), z->getLoc()->getY());
 			addMessage(new Message(new std::string(bufB)));
 			addMessage(new Message(new std::string(bufA)));
 			map->getBlockAt(&c)->addEntity(z);
@@ -370,8 +370,8 @@ vector<Coord>* Game::getRay(Coord *start, Coord *target) {
 		// a = slope = (y2 - y1) / (x2 - x1)
 		// y2 - y1 = a(x2 - x1)
 		float dx, dy;
-		dy = (target->getY() - start->getY());
-		dx = (target->getX() - start->getX());
+		dy = static_cast<float>((target->getY() - start->getY()));
+		dx = static_cast<float>((target->getX() - start->getX()));
 		slope =  dy / dx ;
 		// check which is the dominant axis, (i.e. dx > dy?)
 		// iterate over the longer one to ensure no gaps in ray
@@ -382,10 +382,10 @@ vector<Coord>* Game::getRay(Coord *start, Coord *target) {
 			for (int x = start->getX(); x != target->getX(); x+=dir) {
 				y = slope * (x - start->getX()) + start->getY();
 				float flor = floor(y);
-				if (y - flor > 0.5) {
-					ray->push_back(Coord(x, ceil(y)));
+				if (y - flor > 0.5f) {
+					ray->push_back(Coord(static_cast<int>(x), static_cast<int>(ceil(y))));
 				} else {
-					ray->push_back(Coord(x,flor));
+					ray->push_back(Coord(static_cast<int>(x), static_cast<int>(flor)));
 				}
 			}
 		} else {
@@ -396,9 +396,9 @@ vector<Coord>* Game::getRay(Coord *start, Coord *target) {
 				x = ((y - start->getY()) / slope) + start->getX();
 				float flor = floor(x);
 				if (x - flor > 0.5) {
-					ray->push_back(Coord(ceil(x), y));
+					ray->push_back(Coord(static_cast<int>(ceil(x)), static_cast<int>(y)));
 				} else {
-					ray->push_back(Coord(flor,y));
+					ray->push_back(Coord(static_cast<int>(flor), static_cast<int>(y)));
 				}
 			}
 		}
