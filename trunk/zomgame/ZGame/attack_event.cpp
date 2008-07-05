@@ -23,7 +23,7 @@ Message* AttackEvent::resolve(){
 	MapBlock *attacker_block, *defender_block;
 	attacker_block = Game::getInstance()->getMap()->getBlockAt(attacker->getLoc());
 	defender_block = Game::getInstance()->getMap()->getBlockAt(targetLoc);
-	sprintf(&loc[0], "(%d,%d)", attacker->getLoc()->getX(), attacker->getLoc()->getY());
+	sprintf_s(&loc[0], 10, "(%d,%d)", attacker->getLoc()->getX(), attacker->getLoc()->getY());
 	
 	Message* returnMessage = new Message();
 	string* messageStr = new string();
@@ -82,7 +82,7 @@ Message* AttackEvent::resolve(){
 		}
 		std::vector<Item*> debris = defender->destroy();
 		// add debris to map
-		for (int i = 0; i < debris.size(); i++)
+		for (unsigned int i = 0; i < debris.size(); i++)
 			Game::getInstance()->addEvent(EventFactory::createSpawnItemEvent(debris.at(i), targetLoc, 0));
 	}
 	

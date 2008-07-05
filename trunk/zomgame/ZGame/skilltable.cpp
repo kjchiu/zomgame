@@ -13,7 +13,7 @@ Skill* SkillTable::getSkill(int id) {
 
 /* Finds an id of a skill given. Runs in O(n), not very efficient */
 int SkillTable::getSkillID(std::string skillName){
-	for (int i=0; i<table.size(); i++){
+	for (unsigned int i = 0; i < table.size(); i++){
 		if (getSkill(i)->getName() == skillName){
 			return table.find(i)->first;
 		}

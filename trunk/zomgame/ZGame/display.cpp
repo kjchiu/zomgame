@@ -61,7 +61,7 @@ void Display::cleanSelections(){
 	}
 	
 	//same for the groundSelection
-	int groundSize = game->getMap()->getBlockAt(game->getPlayer()->getLoc())->getItems().size();
+	int groundSize = static_cast<int>(game->getMap()->getBlockAt(game->getPlayer()->getLoc())->getItems().size());
 	if (groundSelection < 0){ groundSelection += groundSize; }
 	if (groundSize == 0){ groundSelection = 0; }
 		else {groundSelection %= groundSize; }
@@ -128,7 +128,7 @@ void Display::draw(Map* map) {
 	
 	if (ray) {
 		Coord c;
-		for (int i = 0; i < ray->size(); i++) {
+		for (unsigned int i = 0; i < ray->size(); i++) {
 			c = ray->at(i);
 			c = camera->getLocalCoordinates(&c, getCenter());
 			short fg, bg;
@@ -241,7 +241,7 @@ void Display::draw(Player* player, MapBlock* block){
 	}
 	if (block->getItems().size() > 0){
 		mvwprintw(menuWin, halfway+7, 2, "Items");
-		for (int i=0; i<block->getItems().size(); i++){
+		for (unsigned int i = 0; i < block->getItems().size(); i++){
 			mvwprintw(menuWin, i+halfway+8, 3, "%s", block->getItemAt(i)->getListName().c_str());
 		}
 	}
@@ -249,10 +249,10 @@ void Display::draw(Player* player, MapBlock* block){
 	box(menuWin, 0,0);
 	mvwprintw(menuWin, 0, 3, "PLAYER");
 	mvwaddch(menuWin, halfway, 0, ACS_LTEE);
-	for (unsigned int i = 1; i<getmaxx(menuWin)-1; i++){
+	for (int i = 1; i<  getmaxx(menuWin) - 1; i++){
 		mvwaddch(menuWin, halfway, i, ACS_HLINE);
 	}
-	mvwaddch(menuWin, halfway, getmaxx(menuWin)-1, ACS_RTEE);
+	mvwaddch(menuWin, halfway, getmaxx(menuWin) - 1, ACS_RTEE);
 	mvwprintw(menuWin, halfway, 2, "INFO");
 	wrefresh(menuWin);
 }
@@ -268,7 +268,7 @@ void Display::drawCharacterInfo(){
 
 
 	mvwprintw(playWin, 1, width-20, "SKILLS");
-	for (int i=0; i<p->getSkills()->size(); i++){
+	for (unsigned int i = 0; i < p->getSkills()->size(); i++){
 		mvwprintw(playWin, i+2, width-20, "%d: %s - %d", i, skill_list.getSkill(i)->getName().c_str(), p->getSkillValue(i));
 	}
 
@@ -284,7 +284,7 @@ void Display::drawInventoryList(vector<Item*> items, int xLoc, int selection, bo
 	getmaxyx(invWin, height, width);
 
 	int yLoc = 1;
-	for (unsigned int i=minIndex; i<items.size() && i<=maxIndex; i++){
+	for (int i = minIndex; i < static_cast<int>(items.size()) && i <= maxIndex; i++){
 		string itemName = "  ";
 		Item* item = items.at(i);
 		if (item == game->getPlayer()->getEquippedWeapon() || item == game->getPlayer()->getEqRngWeapon()){
@@ -445,7 +445,7 @@ void Display::setUpSkillWindow(Item* item){
 	popupWin->clear();
 	vector<string>* skillNames = new vector<string>();
 	
-	for (int i=0; i<item->getSkills()->size(); i++){
+	for (unsigned int i = 0; i < item->getSkills()->size(); i++){
 		skillNames->push_back(skill_list.getSkill(item->getSkills()->at(i))->getName());
 	}
 	skillNames->push_back("Drop"); //every item can be dropped
