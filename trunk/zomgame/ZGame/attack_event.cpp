@@ -66,7 +66,7 @@ Message* AttackEvent::resolve(){
 	// break the weapon if it runs out of durability
 	if (attacker->getEquippedWeapon()->getDurability()->getCurValue() <= 0){
 		attacker->getInventory()->removeItem(attacker->getEquippedWeapon());
-		attacker->equip(NULL);
+		attacker->equip(WeaponFactory::createFists());
 	}
 
 	// eliminate the defender
