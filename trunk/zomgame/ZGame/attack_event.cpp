@@ -37,7 +37,8 @@ Message* AttackEvent::resolve(){
 	} 
 	//TODO: subtract stamina
 	//work on damage calculations and output messages
-	attacker->getEquippedWeapon()->getDurability()->changeCurValueBy(-(rand()%3)-1);
+	if(attacker->getEquippedWeapon()->getName() != "fists")
+		attacker->getEquippedWeapon()->getDurability()->changeCurValueBy(-(rand()%3)-1);
 	maxDmg = attacker->getAttribute("Strength")->getCurValue() + attacker->getEquippedWeapon()->getDamage();
 	dmg = rand() % maxDmg; 
 
