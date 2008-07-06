@@ -188,9 +188,10 @@ int Game::processKey(int key){
 		default:
 			return 0;
 		}
-		time = ref->attackLocation(getPlayer(), &((*directionOffsets[dir]) + (*player->getLoc())), message);
-		addMessage(message);
-		return time;
+		//time = ref->attackLocation(getPlayer(), &((*directionOffsets[dir]) + (*player->getLoc())), message);
+		addEvent(EventFactory::createAttackEvent(getPlayer(), dir, 0));
+		return 10;
+		//return time;
 	}
 	else {
 		//this is not only more efficient, but it looks a lot better
@@ -208,9 +209,10 @@ int Game::processKey(int key){
 			break;
 		case 'f':
 			//check for line of sight first, then
-			
-			time = ref->attackRngLocation(player, getTarget(), message);
-			addMessage(message);
+			addEvent(EventFactory::createRangedAttackEvent(player, getTarget(), 0));
+			//time = ref->attackRngLocation(player, getTarget(), message);
+			//addMessage(message);
+			time = 10;
 			return time;
 		case 'u':
 			display->toggleAttributes();

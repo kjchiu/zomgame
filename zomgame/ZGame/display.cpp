@@ -420,14 +420,17 @@ int Display::processKeyUseItem(int input){
 		Item* item = game->getPlayer()->getInventory()->getItemAt(inventorySelection);
 		//inventorySelection = 0;
 		if (popupWin->getListItemAt(popupWin->getSelectedIndex()) == "Drop"){
-			game->getReferee()->dropItem(game->getPlayer(), inventorySelection, new Message());
+			//game->getReferee()->dropItem(game->getPlayer(), inventorySelection, new Message());
+			game->addEvent(EventFactory::createDropItemEvent(game->getPlayer(), inventorySelection, 0));
 			return 5;
 		}
 		//use the selected skill
 		
-		return game->getReferee()->resolve(game->getPlayer(), 
+		/*return game->getReferee()->resolve(game->getPlayer(), 
 								item, 
-								skill_list.getSkill(item->getSkills()->at(popupWin->getSelectedIndex()))->action);
+								skill_list.getSkill(item->getSkills()->at(popupWin->getSelectedIndex()))->action);*/
+		game->addEvent(EventFactory::createSkillEvent(game->getPlayer(), skill_list.getSkill(item->getSkills()->at(popupWin->getSelectedIndex())), item, 0));
+		return 5;
 	}
 	return 0;
 }

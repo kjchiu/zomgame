@@ -20,6 +20,7 @@ class Attribute {
 		string getName();
 		int getCurValue();
 		int getMaxValue();
+		int getPercentage();
 		void setName(string nName);
 		void setValue(int value);
 		void changeCurValueBy(int change);

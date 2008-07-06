@@ -11,6 +11,7 @@ class MessageFactory {
 public:
 	static Message* getMessage(std::string &msg);
 	static Message* getInteractMessage(Entity* entity, Prop* prop);
+	static Message* getDropItemMessage(Entity* entity, Item* item);
 	static Message* getItems(std::vector<Item*> items);
 };
 #endif

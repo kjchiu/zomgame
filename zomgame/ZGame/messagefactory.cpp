@@ -32,3 +32,12 @@ Message* MessageFactory::getInteractMessage(Entity* entity, Prop* prop) {
 	*msg += ".";
 	return new Message(msg);
 }
+
+Message* MessageFactory::getDropItemMessage(Entity* entity, Item* item) {
+	std::string *msg = new std::string();
+	*msg = entity->getName();
+	*msg += " used ";
+	*msg += item->getName();
+	*msg += ".";
+	return new Message(msg);
+}
