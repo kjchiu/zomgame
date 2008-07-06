@@ -21,18 +21,7 @@ class Referee {
 		Game* game;
 	public:
 		Referee(Game*);
-		int attackLocation(Entity* attacker, Coord* loc, Message* msg);
-		int attackRngLocation(Player* player, Coord* loc, Message* msg);
-		int attackDirection(Entity* attacker, Direction dir);
-		bool doActionOnItem(Item* item, int skillIndex);
-		int interact(Player* player, Prop* prop);
-		bool dropItem(Entity* dropper, int index, Message* msg);
-		bool pickUpItem(Entity* picker, MapBlock* loc, int index, Message* msg);
-		bool resolveAttack(Entity* attacker, Entity* defender, Message* msg);
-		bool resolve(Player* player, void* target, int (*action)(Player*, void*, vector<Message*>*) );
 		int resolveEvents(int currentTick, EventDeque* eventDeque);
-		int destroy(Prop* prop, Coord* loc);
-		int destroy(Entity* ent, Coord* loc);
 };
 
 #endif

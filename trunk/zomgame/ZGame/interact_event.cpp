@@ -8,6 +8,5 @@ InteractEvent::InteractEvent(Entity* _actor, Coord* _loc)
 Message* InteractEvent::resolve() {
 	Prop* prop = Game::getInstance()->getMap()->getBlockAt(loc)->getTopProp();
 	prop->interact(static_cast<Player*>(actor));
-	return MessageFactory::getInteractMessage(actor, prop);
-		
+	return MessageFactory::getInteractMessage(actor, prop);		
 }

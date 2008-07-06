@@ -12,9 +12,11 @@ EventDeque::EventDeque(DQNode *nFirstNode){
 }
 
 void EventDeque::addNode(Event* ev){
-	DQNode* dqn = new DQNode();
-	dqn->setEventData(ev);
-	addNode(dqn);
+	if (ev) {
+		DQNode* dqn = new DQNode();
+		dqn->setEventData(ev);
+		addNode(dqn);
+	}
 }
 
 void EventDeque::addNode(DQNode *newNode){

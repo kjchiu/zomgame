@@ -14,7 +14,7 @@ class Game;
 
 class Event {
 	public:
-		enum EventType{ATTACK, GET_ITEM, MOVE, SPAWN_ENT, SPAWN_ITEM, SPAWN_PROP, INTERACT};
+		enum EventType{ATTACK, RANGED_ATTACK, GET_ITEM, DROP_ITEM, MOVE, SPAWN_ENT, SPAWN_ITEM, SPAWN_PROP, INTERACT, SKILL};
 
 	private:
 		friend class Referee;

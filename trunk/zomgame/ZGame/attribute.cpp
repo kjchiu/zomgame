@@ -30,6 +30,10 @@ int Attribute::getCurValue(){
 	return curValue;
 }
 
+int Attribute::getPercentage() {
+	return (curValue / maxValue) * 100;
+}
+
 int Attribute::getMaxValue(){
 	return maxValue;
 }
