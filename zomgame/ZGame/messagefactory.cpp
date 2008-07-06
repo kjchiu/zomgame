@@ -23,3 +23,12 @@ Message* MessageFactory::getItems(std::vector<Item*> items) {
 		return NULL;
 	}
 }
+
+Message* MessageFactory::getInteractMessage(Entity* entity, Prop* prop) {
+	std::string *msg = new std::string();
+	*msg = entity->getName();
+	*msg += " used ";
+	*msg += prop->getName();
+	*msg += ".";
+	return new Message(msg);
+}

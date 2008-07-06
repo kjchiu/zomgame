@@ -9,5 +9,6 @@
 #include "spawn_entity_event.h"
 #include "spawn_item_event.h"
 #include "spawn_prop_event.h"
+#include "interact_event.h"
 
 #endif

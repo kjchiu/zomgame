@@ -212,7 +212,7 @@ int Referee::interact(Player* player, Prop* prop) {
 }
 
 int Referee::destroy(Prop* prop, Coord* loc) {
-	char msg[64];
+	char msg[128];
 	vector<Item*> debris = prop->destroy();
 	for (unsigned int i = 0; i < debris.size(); i++) {
 		sprintf_s(&msg[0], 128, "added %s debris", debris.at(i)->getName().c_str());

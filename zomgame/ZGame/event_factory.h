@@ -25,6 +25,8 @@ class EventFactory {
 		static Event* createSpawnItemEvent(Item* spawner, Coord* loc, int tick);
 		static Event* createSpawnPropEvent(Prop* spawner, Coord* loc, int tick);
 
+		static Event* createInteractEvent(Entity* actor, Coord* loc, int tick);
+
 };
 
 #endif
