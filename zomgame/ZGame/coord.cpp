@@ -66,7 +66,7 @@ void Coord::setY(int nY){
 
 int Coord::getDistance(const Coord &coord) const {
 	Coord delta = Coord(x - coord.getX(), y - coord.getY());
-	return sqrt((double)(delta.getX() * delta.getX() + delta.getY() * delta.getY()));
+	return static_cast<int>(sqrt((double)(delta.getX() * delta.getX() + delta.getY() * delta.getY())));
 }
 
 string* Coord::toString(){

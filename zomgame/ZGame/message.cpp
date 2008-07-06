@@ -25,8 +25,8 @@ Message* Message::formatMsg(int length){
 	int lastPos = 0, pos = 0;
 	//first go through the message and place a \n after 'length' number of characters
 	string substr = "";
-	for (int i=0; i<msg->size()/length; i++){
-		for (int j = lastPos+1; j<=(i+1)*(length-2); j++){
+	for (unsigned int i = 0; i < msg->size() / length; i++){
+		for (unsigned int j = lastPos + 1; j <= (i + 1) * (length - 2); j++){
 			if (msg->at(j) == ' '){
 				pos = j;
 			}
@@ -46,7 +46,7 @@ Message* Message::formatMsg(int length){
 	msg = getMsg();
 	
 	//now format the \n to take account of the borders
-	for (int i=0; i<msg->size(); i++){
+	for (unsigned int i = 0; i < msg->size(); i++){
 		if (msg->at(i) == '\n'){
 			numLines++;
 			(*newMsg) += "\n   ";

@@ -84,6 +84,7 @@ void Game::init(int tWidth, int tHeight){
 
 	map->makeRoomAt(new Coord(7,7), 4,4);
 	map->makeRoomAt(new Coord(15,15), 6, 8);
+	map->saveTo("testmap.zom");
 	
 	ref->resolveEvents(0, getEventList());
 }
