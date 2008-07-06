@@ -1,6 +1,7 @@
 #include "map.h"
 #include "zombie.h"
 #include <ctime> //for debugging. used to generate shit random maps
+#include <fstream>
 
 Map::Map(){
 	height = MAPHEIGHT;
@@ -15,6 +16,11 @@ Map::Map(){
 
 void Map::clear() {
 	for (int i=0; i<height*width; i++) {  // clear the map to new MapBlocks:
+		if(map[i])
+		{
+			delete map[i];
+			map[i] = NULL;
+		}
 		map[i] = new MapBlock();
 	}
 }
@@ -77,4 +83,95 @@ bool Map::isWithinMap(Coord* checkCoord){
 
 void Map::draw(){
 
+}
+
+void Map::loadFrom(const char* filename)
+{
+	//this could fail badly
+	try
+	{
+		//open the file
+		ifstream in(filename, ios::in | ios::binary);
+
+		//read the identifier
+		char ident[4];
+		in.read(ident, 4);
+
+		//verify the file type
+		if((ident[0] != 'Z') || (ident[1] != 'M'))
+			return;
+		int version = (ident[2] << 8) + ident[3];
+		if(version != 1)
+			return;
+
+		//read in the size
+		in.read(reinterpret_cast<char*>(&width), sizeof(int));
+		in.read(reinterpret_cast<char *>(&height), sizeof(int));
+
+		//read in the grid
+		for(int y = 0; y < height; y++)
+		{
+			for(int x = 0; x < width; x++)
+			{
+				getBlockAt(x, y)->loadFrom(in);
+			}
+		}
+
+		//read in the metadata
+		in.seekg(-static_cast<int>(sizeof(int)), ios::end);
+		int metaSize = 0;
+		in.read(reinterpret_cast<char*>(&metaSize), sizeof(int));
+		char *metadata = new char[metaSize];
+		in.seekg(-(static_cast<int>(sizeof(int)) + metaSize), ios::end);
+		in.read(metadata, metaSize);
+		//do something with metadata before deleting it
+		delete[] metadata;
+
+		//close the file
+		in.close();
+	}
+	catch(...)
+	{
+		//wtf do I do with this? printf?
+	}
+}
+
+void Map::saveTo(const char* filename)
+{
+	//this could fail badly
+	try
+	{
+		//open the file
+		ofstream out(filename, ios::out | ios::binary);
+
+		//write out the identifier
+		char ident[4] = {'Z', 'M', 0, 1};
+		out.write(ident, 4);
+
+		//write out the size
+		out.write(reinterpret_cast<char *>(&width), sizeof(int));
+		out.write(reinterpret_cast<char *>(&height), sizeof(int));
+
+		//write out the grid
+		for(int y = 0; y < height; y++)
+		{
+			for(int x = 0; x < width; x++)
+			{
+				getBlockAt(x, y)->saveTo(out);
+			}
+		}
+
+		//write out the metadata
+		char *meta = "This should be metadata.";
+		int metaLen = 25;
+		out.write(meta, metaLen);
+		out.write(reinterpret_cast<char *>(&metaLen), sizeof(int));
+
+		//close the file
+		out.close();
+	}
+	catch(...)
+	{
+		// something should go here
+	}
 }

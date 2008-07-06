@@ -10,11 +10,10 @@
 
 
 class Map{
-	public:	
+	private:	
 		static const int MAPWIDTH = 100, MAPHEIGHT = 100;
 		int height, width;
 
-	private:
 		MapBlock* map[MAPWIDTH*MAPHEIGHT];	//this is essentially the entire 'world'
 		
 	public:
@@ -30,6 +29,8 @@ class Map{
 		void makeRoomAt(Coord* topLeft, int width, int height); //makes a room. I'm bored.
 		void setBlockAt(MapBlock *mBlock, int x, int y);
 		bool isWithinMap(Coord* checkCoord);
+		void loadFrom(const char* filename);
+		void saveTo(const char* filename);
 		
 
 };

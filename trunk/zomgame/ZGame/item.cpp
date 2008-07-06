@@ -55,8 +55,8 @@ int Item::getWeight(){
 }
 
 void Item::removeSkill(int skillNum){
-	int arraySize = associatedSkills->size();
-	for (unsigned int i=0;i<arraySize;i++){
+	unsigned int arraySize = associatedSkills->size();
+	for (unsigned int i = 0; i < arraySize; i++){
 		if (associatedSkills->at(i) == skillNum){
 			if (i==arraySize - 1){
 				associatedSkills->pop_back();

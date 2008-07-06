@@ -18,7 +18,7 @@ void Entity::init(){
 }
 
 void Entity::addAttribute(Attribute* att){
-	for (int i=0; i<attributes->size(); i++){
+	for (unsigned int i = 0; i < attributes->size(); i++){
 		if (attributes->at(i)->getName() == att->getName()){
 			if (i==attributes->size()-1){
 				attributes->pop_back();
@@ -80,11 +80,12 @@ int Entity::getType(){
 }
 
 int Entity::getValueOf(string attName){
-	for (int i=0; i<attributes->size(); i++){
+	for (unsigned int i = 0; i < attributes->size(); i++){
 		if (attributes->at(i)->getName() == attName){
 			return attributes->at(i)->getCurValue();
 		}
 	}
+	return -1;
 }
 
 bool Entity::isPlayer(){

@@ -4,6 +4,7 @@
 #define MAPBLOCK
 
 #include <vector>
+#include <fstream>
 
 #include "entity.h"
 #include "terrain.h"
@@ -45,6 +46,8 @@ class MapBlock {
 		void removeProp(Prop* prop);
 		void setTerrain(Terrain* ter);
 		Message* getBlockInfo();
+		void loadFrom(ifstream &in);
+		void saveTo(ofstream &out);
 
 };
 

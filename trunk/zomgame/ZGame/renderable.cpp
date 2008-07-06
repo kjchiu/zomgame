@@ -4,7 +4,7 @@ int Renderable::id = 0;
 
 string Renderable::getListName(){
 	string returnString = "";
-	for (int i=0; i<getName().size();i++){
+	for (unsigned int i = 0; i < getName().size();i++){
 		//65 = A, 90=Z, 97 = a
 		int lowerChar = getName().at(i);
 		if (i == 0){

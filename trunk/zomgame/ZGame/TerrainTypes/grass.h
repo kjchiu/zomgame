@@ -26,6 +26,7 @@ public:
 	virtual char getChar() { return ';'; }
 	virtual short getColor() { return 1; } // 
 	virtual string getName() { return "grass"; }
+	TerrainType getType() {return GRASS;}
 
 };
 #endif

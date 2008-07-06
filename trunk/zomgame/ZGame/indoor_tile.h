@@ -4,5 +4,7 @@ class IndoorTile : public Terrain {
 public:
 	IndoorTile() {setDisplayChar('-');}
 	virtual ~IndoorTile() {}
+
+	TerrainType getType() {return INDOOR_TILE;}
 };
 #endif

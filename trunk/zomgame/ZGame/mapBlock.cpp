@@ -1,4 +1,5 @@
 #include "mapBlock.h"
+#include "terrain_factory.h"
 
 
 MapBlock::MapBlock(){
@@ -152,6 +153,26 @@ void MapBlock::setTerrain(Terrain* ter){
 
 Message* MapBlock::getBlockInfo() {
 	char buf[512];
-	sprintf(&buf[0], "Entities: %d, Props: %d, passable: %d", entityList.size(), propList.size(), isPassable());
+	sprintf_s(&buf[0], 512, "Entities: %d, Props: %d, passable: %d", entityList.size(), propList.size(), isPassable());
 	return new Message(new std::string(buf));
+}
+
+void MapBlock::loadFrom(std::ifstream &in)
+{
+	//load the terrain
+	if(terrain)
+	{
+		delete terrain;
+		terrain = NULL;
+	}
+	int tType = 0;
+	in.read(reinterpret_cast<char*>(&tType), sizeof(int));
+	terrain = TerrainFactory::makeTerrain(static_cast<TerrainType>(tType));
+}
+
+void MapBlock::saveTo(std::ofstream &out)
+{
+	//write out the type
+	int tType = terrain->getType();
+	out.write(reinterpret_cast<char*>(&tType), sizeof(int));
 }
