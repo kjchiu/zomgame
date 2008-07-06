@@ -1,5 +1,6 @@
 #include "mapBlock.h"
 #include "terrain_factory.h"
+#include "itemFactory.h"
 
 
 MapBlock::MapBlock(){
@@ -165,14 +166,77 @@ void MapBlock::loadFrom(std::ifstream &in)
 		delete terrain;
 		terrain = NULL;
 	}
-	int tType = 0;
-	in.read(reinterpret_cast<char*>(&tType), sizeof(int));
+	char tType = 0;
+	in.read(&tType, sizeof(char));
 	terrain = TerrainFactory::makeTerrain(static_cast<TerrainType>(tType));
+
+	//load the item list
+	char temp = 0;
+	in.read(&temp, sizeof(char));
+	int numItems = temp;
+	for(int i = 0; i < numItems; i++)
+	{
+		//get info from file
+		char itemId = 0;
+		in.read(&itemId, sizeof(char));
+		char nameLen = 0;
+		in.read(&nameLen, sizeof(char));
+		char nameBuffer[256] = "";
+		if(nameLen > 0)
+			in.read(nameBuffer, nameLen);
+		short descLen = 0;
+		in.read(reinterpret_cast<char*>(&descLen), sizeof(short));
+		char descBuffer[512] = "";
+		if(descLen > 0)
+			in.read(descBuffer, descLen);
+
+		//create the item
+		if(descLen > 0)
+			itemList.push_back(ItemFactory::createItem(nameBuffer, static_cast<Item::ItemType>(itemId), descBuffer));
+		else
+			itemList.push_back(ItemFactory::createItem(nameBuffer, static_cast<Item::ItemType>(itemId)));
+	}
 }
 
 void MapBlock::saveTo(std::ofstream &out)
 {
 	//write out the type
-	int tType = terrain->getType();
-	out.write(reinterpret_cast<char*>(&tType), sizeof(int));
+	char tType = static_cast<char>(terrain->getType());
+	out.write(&tType, sizeof(char));
+
+	//write out the item list
+	char numItems = static_cast<char>(itemList.size());
+	out.write(&numItems, sizeof(char));
+	for(vector<Item*>::iterator iter = itemList.begin(); iter != itemList.end(); iter++)
+	{
+		char itemId = static_cast<char>((*iter)->getID());
+		out.write(&itemId, sizeof(char));
+		//Item *item = *iter;
+
+		if(!(*iter)->getName().empty())
+		{
+			string itemName = (*iter)->getName();
+			char nameLen = static_cast<char>(itemName.size() + 1);
+			out.write(&nameLen, sizeof(char));
+			out.write(itemName.c_str(), nameLen);
+		}
+		else
+		{
+			char len = 0;
+			out.write(&len, sizeof(char));
+		}
+
+		if(!(*iter)->getDescription().empty())
+		{
+			string itemDesc = (*iter)->getDescription();
+			short descLen = static_cast<short>(itemDesc.size() + 1);
+			out.write(reinterpret_cast<char*>(&descLen), sizeof(short));
+			out.write(itemDesc.c_str(), descLen);
+		}
+		else
+		{
+			char len = 0;
+			out.write(&len, sizeof(char));
+		}
+	}
 }
