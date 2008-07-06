@@ -108,5 +108,9 @@ std::vector<Item*> Zombie::destroy() {
 		c = new Coord(x,y);
 	} while (Game::getInstance()->getMap()->getBlockAt(c)->hasEntities());
 	respawn(c);
-	return std::vector<Item*>();
+
+	// Fear their woody innards.
+	std::vector<Item*> debris;
+	debris.push_back(ItemFactory::createWoodPlank());
+	return debris;
 }

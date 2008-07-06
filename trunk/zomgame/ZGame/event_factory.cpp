@@ -60,6 +60,12 @@ Event* EventFactory::createSpawnItemEvent(Item* spawner, Coord* loc, int tick){
 	return e;
 }
 
+Event* EventFactory::createSpawnItemEvent(std::vector<Item*> items, Coord* loc, int tick) {
+	SpawnItemEvent *e = new SpawnItemEvent(items, loc);
+	e->setTick(Game::getInstance()->getTickcount() + tick);
+	return e;
+}
+
 Event* EventFactory::createSpawnPropEvent(Prop *spawner, Coord *loc, int tick){
 	SpawnPropEvent *e = new SpawnPropEvent(spawner, loc);
 	e->setTick(Game::getInstance()->getTickcount() + tick);

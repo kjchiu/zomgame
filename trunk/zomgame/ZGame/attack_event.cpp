@@ -80,10 +80,7 @@ Message* AttackEvent::resolve(){
 		} else if (map->getBlockAt(targetLoc)->hasProps()) {
 			defender_block->removeProp(defender_block->getTopProp());
 		}
-		std::vector<Item*> debris = defender->destroy();
-		// add debris to map
-		for (unsigned int i = 0; i < debris.size(); i++)
-			Game::getInstance()->addEvent(EventFactory::createSpawnItemEvent(debris.at(i), targetLoc, 0));
+			Game::getInstance()->addEvent(EventFactory::createSpawnItemEvent(defender->destroy(), targetLoc, 0));
 	}
 	
 	return returnMessage;

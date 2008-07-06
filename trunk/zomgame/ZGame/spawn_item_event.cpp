@@ -1,21 +1,19 @@
 #include "spawn_item_event.h"
 #include "game.h"
 
-SpawnItemEvent::SpawnItemEvent(Item* nSpawn, Coord* nLoc):Event(SPAWN_ITEM){
-	spawner = nSpawn;
-	loc = nLoc;
+SpawnItemEvent::SpawnItemEvent(Item* item, Coord* nLoc) : loc(nLoc), Event(SPAWN_ITEM){
+	items.push_back(item);
+}
+
+SpawnItemEvent::SpawnItemEvent(std::vector<Item*> &_items, Coord* _loc)
+: items(_items), loc(_loc), Event(SPAWN_ITEM) {
 }
 
 Message* SpawnItemEvent::resolve(){
-	if (!Game::getInstance()->getMap()->isWithinMap(loc)){
-		return NULL;
-	}
-	
-//	then what?
-//	if (Game::getInstance()->getMap()->getBlockAt(loc)->hasEntities()){
-//		return NULL;
-//	}
-
-	Game::getInstance()->getMap()->getBlockAt(loc)->addItem(spawner); 
+	if (Game::getInstance()->getMap()->isWithinMap(loc)){
+		for (int i = 0; i < items.size(); i++) {
+		Game::getInstance()->getMap()->getBlockAt(loc)->addItem(items.at(i)); 
+		}
+	} 
 	return NULL;
 }
