@@ -27,6 +27,7 @@ class EventFactory {
 
 		static Event* createSpawnEntityEvent(Entity* spawner, Coord* loc, int tick);
 		static Event* createSpawnItemEvent(Item* spawner, Coord* loc, int tick);
+		static Event* createSpawnItemEvent(std::vector<Item*> items, Coord* loc, int tick);
 		static Event* createSpawnPropEvent(Prop* spawner, Coord* loc, int tick);
 
 		static Event* createInteractEvent(Entity* actor, Coord* loc, int tick);

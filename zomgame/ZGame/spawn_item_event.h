@@ -5,15 +5,16 @@
 
 #include "event.h"
 #include "coord.h"
+#include <vector>
 
 class SpawnItemEvent : public Event{
 	private:
-		Item* spawner;
+		std::vector<Item*> items;
 		Coord* loc;
 
 	public:
-		SpawnItemEvent(Item* nSpawner, Coord* nLoc);
-
+		SpawnItemEvent(Item* item, Coord* nLoc);
+		SpawnItemEvent(std::vector<Item*> &items, Coord* loc);
 		Message* resolve();
 };
 
