@@ -242,28 +242,36 @@ int Game::processKey(int key){
 			return player->getSpeed();
 		case 'Q':
 			focus = *player->getLoc() + *directionOffsets[NORTHWEST];
-			return ref->interact(player, map->getBlockAt(&focus)->getTopProp());
+			addEvent(EventFactory::createInteractEvent(player, new Coord(focus), 0));
+			return player->getSpeed();
 		case 'W':
 			focus = *player->getLoc() + *directionOffsets[NORTH];
-			return ref->interact(player, map->getBlockAt(&focus)->getTopProp());
+			addEvent(EventFactory::createInteractEvent(player, new Coord(focus), 0));
+			return player->getSpeed();
 		case 'E':
 			focus = *player->getLoc() + *directionOffsets[NORTHEAST];
-			return ref->interact(player, map->getBlockAt(&focus)->getTopProp());
+			addEvent(EventFactory::createInteractEvent(player, new Coord(focus), 0));
+			return player->getSpeed();
 		case 'D':
 			focus = *player->getLoc() + *directionOffsets[EAST];
-			return ref->interact(player, map->getBlockAt(&focus)->getTopProp());
+			addEvent(EventFactory::createInteractEvent(player, new Coord(focus), 0));
+			return player->getSpeed();
 		case 'C':
 			focus = *player->getLoc() + *directionOffsets[SOUTHEAST];
-			return ref->interact(player, map->getBlockAt(&focus)->getTopProp());
+			addEvent(EventFactory::createInteractEvent(player, new Coord(focus), 0));
+			return player->getSpeed();
 		case 'X':
 			focus = *player->getLoc() + *directionOffsets[SOUTH];
-			return ref->interact(player, map->getBlockAt(&focus)->getTopProp());
+			addEvent(EventFactory::createInteractEvent(player, new Coord(focus), 0));
+			return player->getSpeed();
 		case 'Z':
 			focus = *player->getLoc() + *directionOffsets[SOUTHWEST];
-			return ref->interact(player, map->getBlockAt(&focus)->getTopProp());
+			addEvent(EventFactory::createInteractEvent(player, new Coord(focus), 0));
+			return player->getSpeed();
 		case 'A':
 			focus = *player->getLoc() + *directionOffsets[WEST];
-			return ref->interact(player, map->getBlockAt(&focus)->getTopProp());
+			addEvent(EventFactory::createInteractEvent(player, new Coord(focus), 0));
+			return player->getSpeed();
 		case '.':
 			return 10;
 		case 'i':

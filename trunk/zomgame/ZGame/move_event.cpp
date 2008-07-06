@@ -20,6 +20,9 @@ Message* MoveEvent::resolve(){
 			target->addEntity(mover);
 			mover->setLoc(destinationLoc);
 			Game::getInstance()->getTarget()->setCoord(mover->getLoc());
+		} else if (target->hasProps() && dynamic_cast<Door*>(target->getTopProp())) {
+			Game::getInstance()->addEvent(EventFactory::createInteractEvent(mover, destinationLoc, 0));
+
 		} else if(target->hasEntities()) {
 			Game::getInstance()->addEvent(EventFactory::createAttackEvent(mover, destinationLoc, 0));
 		}

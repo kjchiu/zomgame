@@ -48,3 +48,9 @@ Event* EventFactory::createSpawnPropEvent(Prop *spawner, Coord *loc, int tick){
 	e->setTick(Game::getInstance()->getTickcount() + tick);
 	return e;
 }
+
+Event* EventFactory::createInteractEvent(Entity *actor, Coord *loc, int tick) {
+	InteractEvent *e = new InteractEvent(actor, loc);
+	e->setTick(Game::getInstance()->getTickcount() + tick);
+	return e;
+}
