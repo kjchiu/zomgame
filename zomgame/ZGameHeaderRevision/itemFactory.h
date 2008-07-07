@@ -1,10 +1,9 @@
 /* Produces items */
 
-#ifndef ITEMFACTORY_H
-#define ITEMFACTORY_H
+#ifndef _ITEMFACTORY_H
+#define _ITEMFACTORY_H
 
-#include "item.h"
-#include "weapon.h"
+#include "all_includes.h"
 
 class ItemFactory {
 

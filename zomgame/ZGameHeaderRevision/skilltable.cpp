@@ -1,4 +1,4 @@
-#include "skills.h"
+#include "all_includes.h"
 
 SkillTable::SkillTable() {
 	skill_count = 0;

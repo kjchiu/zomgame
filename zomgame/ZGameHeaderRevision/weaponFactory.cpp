@@ -1,4 +1,4 @@
-#include "weaponFactory.h"
+#include "all_includes.h"
 
 Weapon* WeaponFactory::createPistol() {
 	Weapon* pistol = new Weapon("Pistol", 20);

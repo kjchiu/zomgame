@@ -1,20 +1,12 @@
 #ifndef _SKILLS_H
 #define _SKILLS_H
 
-#include <string>
-
-#include "skilltable.h"
-#include "player.h"
-#include "message.h"
-#include "messagefactory.h"
-//#include "boost/filesystem.hpp"
+#include "all_includes.h"
 
 enum SkillType {PASSIVE, ACTIVE};
 #define TARGET_ITEM 1
 #define TARGET_ENTITY 2
 #define TARGET_POSITION 4
-
-class Player; // fucking forward declarations :(
 
 
 class Skill{

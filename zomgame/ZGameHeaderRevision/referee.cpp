@@ -1,4 +1,4 @@
-#include "referee.h"
+#include "all_includes.h"
 
 Referee::Referee(Game* game){
 	this->game = game;

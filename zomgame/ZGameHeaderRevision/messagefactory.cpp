@@ -1,4 +1,4 @@
-#include "messagefactory.h"
+#include "all_includes.h"
 
 Message* MessageFactory::getMessage(std::string &msg) {
 	return new Message(&msg);

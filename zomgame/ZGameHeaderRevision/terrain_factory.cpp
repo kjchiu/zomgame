@@ -1,5 +1,4 @@
-#include "terrain_factory.h"
-#include "TerrainTypes/terrain_types.h"
+#include "all_includes.h"
 
 Terrain* TerrainFactory::makeTerrain(TerrainType type)
 {

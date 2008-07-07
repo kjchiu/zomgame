@@ -1,5 +1,4 @@
-#include "attack_event.h"
-#include "game.h"
+#include "all_includes.h"
 
 AttackEvent::AttackEvent(Entity* _attacker, Coord* _targetLoc) :
 	attacker(_attacker), targetLoc(_targetLoc), Event(ATTACK){

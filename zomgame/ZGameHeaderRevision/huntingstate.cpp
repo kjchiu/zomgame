@@ -1,5 +1,4 @@
-#include "huntingstate.h"
-#include "globals.h"
+#include "all_includes.h"
 
 HuntingState::HuntingState(Zombie* zombie) : BrainState(zombie) {
 }

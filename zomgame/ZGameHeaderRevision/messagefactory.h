@@ -1,11 +1,7 @@
 #ifndef _MESSAGE_FACTORY_H
 #define _MESSAGE_FACTORY_H
 
-#include "item.h"
-#include "mapBlock.h"
-#include "player.h"
-#include "message.h"
-#include <vector>
+#include "all_includes.h"
 
 class MessageFactory {
 public:

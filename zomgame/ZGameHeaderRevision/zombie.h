@@ -3,17 +3,9 @@
 #ifndef _ZOMBIE_H
 #define _ZOMBIE_H
 
-class Game;
+#include "all_includes.h"
+
 class Zombie;
-
-#include "game.h"
-#include "entity.h"
-#include "coord.h"
-#include "direction.h"
-#include "item.h"
-
-#include <string>
-#include <deque>
 
 using namespace std;
 

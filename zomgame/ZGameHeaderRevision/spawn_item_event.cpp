@@ -1,5 +1,4 @@
-#include "spawn_item_event.h"
-#include "game.h"
+#include "all_includes.h"
 
 SpawnItemEvent::SpawnItemEvent(Item* item, Coord* nLoc) : loc(nLoc), Event(SPAWN_ITEM){
 	items.push_back(item);

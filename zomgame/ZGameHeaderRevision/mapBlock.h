@@ -1,18 +1,9 @@
 /* This is a block on the map, filled with items, walls, nothing, etc */
 
-#ifndef MAPBLOCK
-#define MAPBLOCK
+#ifndef _MAPBLOCK_H
+#define _MAPBLOCK_H
 
-#include <vector>
-#include <fstream>
-
-#include "entity.h"
-#include "terrain.h"
-#include "prop.h"
-#include "item.h"
-#include "TerrainTypes\terrain_types.h"
-#include "curses.h"
-#include "message.h"
+#include "all_includes.h"
 
 
 using namespace std;

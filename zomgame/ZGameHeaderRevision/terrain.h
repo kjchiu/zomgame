@@ -2,10 +2,7 @@
 #define TERRAIN_H
 /* Represents a terrain type */
 
-#include <string>
-#include "renderable.h"
-
-using namespace std;
+#include "all_includes.h"
 
 enum TerrainType
 {

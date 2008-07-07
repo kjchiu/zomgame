@@ -1,4 +1,4 @@
-#include "wanderstate.h"
+#include "all_includes.h"
 
 WanderState::WanderState(Zombie* _zombie) : BrainState(_zombie){
 	dir = SOUTH;

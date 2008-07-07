@@ -3,7 +3,7 @@
 #ifndef _ATTACK_E_H
 #define _ATTACK_E_H
 
-#include "event.h"
+#include "all_includes.h"
 
 class AttackEvent : public Event {
 	private:

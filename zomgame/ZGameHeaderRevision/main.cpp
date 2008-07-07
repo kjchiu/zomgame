@@ -1,7 +1,4 @@
-#include <curses.h>
-
-#include "game.h"
-#include "globals.h"
+#include "all_includes.h"
 
 
 

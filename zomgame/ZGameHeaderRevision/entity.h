@@ -3,11 +3,7 @@
 #ifndef _ENTITY_H
 #define _ENTITY_H
 
-#include "attackable.h"
-#include "attribute.h"
-#include "renderable.h"
-#include "inventory.h"
-#include "weapon.h"
+#include "all_includes.h"
 
 using namespace std;
 

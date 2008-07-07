@@ -1,5 +1,8 @@
 #ifndef _WOOD_WALL_H
 #define _WOOD_WALL_H
+
+#include "all_includes.h"
+
 class WoodWall : public Terrain {
 public:
 	WoodWall() {}

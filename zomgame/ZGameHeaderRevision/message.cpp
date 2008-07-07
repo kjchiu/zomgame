@@ -1,4 +1,4 @@
-#include "message.h"
+#include "all_includes.h"
 
 Message::Message(){
 	setMsg(" ");

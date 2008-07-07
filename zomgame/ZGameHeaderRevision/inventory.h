@@ -3,9 +3,7 @@
 #ifndef _INVENTORY_H_
 #define _INVENTORY_H_
 
-#include <vector>
-
-#include "item.h"
+#include "all_includes.h"
 
 using namespace std;
 

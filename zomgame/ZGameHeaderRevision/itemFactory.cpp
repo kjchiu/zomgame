@@ -1,4 +1,4 @@
-#include "itemFactory.h"
+#include "all_includes.h"
 
 Item* ItemFactory::createItem(std::string name, Item::ItemType itemType){
 	Item* item = new Item();

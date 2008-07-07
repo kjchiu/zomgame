@@ -3,8 +3,7 @@
 #ifndef _ITEM_H
 #define _ITEM_H
 
-#include "renderable.h"
-#include <vector>
+#include "all_includes.h"
 
 using namespace std;
 

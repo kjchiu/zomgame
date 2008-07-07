@@ -1,4 +1,4 @@
-#include "prop.h"
+#include "all_includes.h"
 
 Prop::Prop(){
 	setSeeThrough(true);

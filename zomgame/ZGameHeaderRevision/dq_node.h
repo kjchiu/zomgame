@@ -3,8 +3,7 @@
 #ifndef _DQNODE_H
 #define _DQNODE_H
 
-#include <stdio.h>
-#include "event.h"
+#include "all_includes.h"
 
 
 class DQNode {

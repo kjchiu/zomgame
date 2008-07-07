@@ -1,4 +1,4 @@
-#include "attribute.h"
+#include "all_includes.h"
 
 Attribute::Attribute(){
 	init("Attribute", 1, 1);

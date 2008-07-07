@@ -1,4 +1,4 @@
-#include "propFactory.h"
+#include "all_includes.h"
 
 Door* PropFactory::createDoor(){
 	return createDoor(100);

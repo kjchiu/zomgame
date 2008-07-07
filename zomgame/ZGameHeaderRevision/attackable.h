@@ -1,11 +1,7 @@
 #ifndef _ATTACKABLE_H_
 #define _ATTACKABLE_H_
 
-#include <vector>
-#include <string>
-
-#include "attribute.h"
-#include "item.h"
+#include "all_includes.h"
 
 class Attackable {
 public:

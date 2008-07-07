@@ -3,8 +3,7 @@
 #ifndef _DEQUE_H
 #define _DEQUE_H
 
-#include "dq_node.h"
-#include <hash_map>
+#include "all_includes.h"
 
 class Deque {
 	private:

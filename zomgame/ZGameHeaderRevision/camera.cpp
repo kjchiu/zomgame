@@ -1,6 +1,4 @@
-#include "camera.h"
-#include "player.h"
-#include "map.h"
+#include "all_includes.h"
 
 Camera::Camera(){
 	height = 33;

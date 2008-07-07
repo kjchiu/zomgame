@@ -1,6 +1,4 @@
-#include "mapBlock.h"
-#include "terrain_factory.h"
-#include "itemFactory.h"
+#include "all_includes.h"
 
 
 MapBlock::MapBlock(){

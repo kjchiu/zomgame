@@ -1,5 +1,4 @@
-#include "spawn_entity_event.h"
-#include "game.h"
+#include "all_includes.h"
 
 SpawnEntityEvent::SpawnEntityEvent(Entity* nSpawn, Coord* nLoc):Event(SPAWN_ENT){
 	spawner = nSpawn;

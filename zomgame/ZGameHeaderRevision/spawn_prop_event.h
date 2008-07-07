@@ -3,8 +3,7 @@
 #ifndef _SPAWN_P_H
 #define _SPAWN_P_H
 
-#include "event.h"
-#include "coord.h"
+#include "all_includes.h"
 
 class SpawnPropEvent : public Event{
 	private:
