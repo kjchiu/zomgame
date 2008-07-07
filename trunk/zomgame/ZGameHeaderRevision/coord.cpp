@@ -1,4 +1,4 @@
-#include "coord.h"
+#include "all_includes.h"
 
 Coord::Coord(){
 	x = 0;

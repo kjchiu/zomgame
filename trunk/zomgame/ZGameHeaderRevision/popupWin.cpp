@@ -1,4 +1,4 @@
-#include "popupWin.h"
+#include "all_includes.h"
 
 PopupWin::PopupWin() {
 	init(0,0, 10, 10);

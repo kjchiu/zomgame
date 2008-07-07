@@ -1,5 +1,4 @@
-#include "spawn_prop_event.h"
-#include "game.h"
+#include "all_includes.h"
 
 SpawnPropEvent::SpawnPropEvent(Prop* nSpawn, Coord* nLoc):Event(SPAWN_PROP){
 	spawner = nSpawn;

@@ -1,4 +1,4 @@
-#include "bed.h"
+#include "all_includes.h"
 
 Bed::Bed(){
 	init(5);

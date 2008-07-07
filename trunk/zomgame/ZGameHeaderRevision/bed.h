@@ -5,7 +5,7 @@
 #ifndef _BED_H
 #define _BED_H
 
-#include "prop.h"
+#include "all_includes.h"
 
 class Bed: public Prop {
 

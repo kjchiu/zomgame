@@ -3,15 +3,7 @@
 #ifndef _EVENT_FAC_H
 #define _EVENT_FAC_H
 
-#include "entity.h"
-#include "mapblock.h"
-#include "direction.h"
-#include "skills.h"
-
-class EventFactory;
-class Event;
-class Skill;
-class Player;
+#include "all_includes.h"
 
 class EventFactory {
 	public:

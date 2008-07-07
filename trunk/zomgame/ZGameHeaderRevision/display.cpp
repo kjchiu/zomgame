@@ -1,6 +1,4 @@
-#include "display.h"
-#include "keycodes.h"
-#include <deque>
+#include "all_includes.h"
 
 using namespace std;
 

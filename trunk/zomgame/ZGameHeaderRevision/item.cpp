@@ -1,4 +1,4 @@
-#include "item.h"
+#include "all_includes.h"
 
 int Item::id = 0;
 

@@ -1,4 +1,4 @@
-#include "door.h"
+#include "all_includes.h"
 
 int Door::interact(Player* p) {
 	if (isPassable()){

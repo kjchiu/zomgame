@@ -1,6 +1,7 @@
 #ifndef _DEADLANDS_H
 #define _DEADLANDS_H
-#include "curses.h"
+
+#include "all_includes.h"
 
 class Deadlands : public Terrain {
 public:

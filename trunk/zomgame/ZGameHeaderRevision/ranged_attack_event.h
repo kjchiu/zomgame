@@ -3,7 +3,7 @@
 #ifndef _RANGED_ATTACH_E_H_
 #define _RANGED_ATTACH_E_H_
 
-#include "event.h"
+#include "all_includes.h"
 
 class RangedAttackEvent : public Event {
 	private:

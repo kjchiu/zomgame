@@ -1,5 +1,4 @@
-#include "interact_event.h"
-#include "game.h"
+#include "all_includes.h"
 
 InteractEvent::InteractEvent(Entity* _actor, Coord* _loc)
 : actor(_actor), loc(_loc), Event(INTERACT) {

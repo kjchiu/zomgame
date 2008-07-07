@@ -3,10 +3,7 @@
 #ifndef MAP
 #define MAP
 
-#include <stdlib.h>
-#include <stdio.h>
-#include "mapBlock.h"
-#include "coord.h"
+#include "all_includes.h"
 
 
 class Map{

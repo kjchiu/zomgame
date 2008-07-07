@@ -1,11 +1,9 @@
 /* Represents a popup window. For ease of use. */
 
-#include <string>
-#include <vector>
-#include <curses.h>
-
 #ifndef _POPUPWIN_H
 #define _POPUPWIN_H
+
+#include "all_includes.h"
 
 using namespace std;
 

@@ -1,5 +1,4 @@
-#include "get_item_event.h"
-#include "game.h"
+#include "all_includes.h"
 
 GetItemEvent::GetItemEvent(Entity* nPicker, Coord* nLoc, int nIndex) : Event(GET_ITEM){
 	picker = nPicker;

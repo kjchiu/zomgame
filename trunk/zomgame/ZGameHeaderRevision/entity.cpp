@@ -1,4 +1,4 @@
-#include "entity.h"
+#include "all_includes.h"
 
 Entity::Entity(){
 	init();

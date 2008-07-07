@@ -3,7 +3,7 @@
 #ifndef _MESSAGE_H
 #define _MESSAGE_H
 
-#include <string>
+#include "all_includes.h"
 
 using namespace std;
 

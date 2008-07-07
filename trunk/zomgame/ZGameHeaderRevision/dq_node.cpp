@@ -1,4 +1,4 @@
-#include "dq_node.h"
+#include "all_includes.h"
 
 DQNode::DQNode(){
 	init(NULL, NULL);

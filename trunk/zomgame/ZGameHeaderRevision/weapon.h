@@ -3,13 +3,10 @@
 #ifndef _WEAPON_H
 #define _WEAPON_H
 
-#include "item.h"
-#include "attribute.h"
-#include <string>
+#include "all_includes.h"
 
 
 using namespace std;
-class Player;
 
 class Weapon : public Item {
 	

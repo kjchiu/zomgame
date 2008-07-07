@@ -3,9 +3,7 @@
 #ifndef _SPAWN_I_H
 #define _SPAWN_I_H
 
-#include "event.h"
-#include "coord.h"
-#include <vector>
+#include "all_includes.h"
 
 class SpawnItemEvent : public Event{
 	private:

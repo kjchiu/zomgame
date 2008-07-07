@@ -3,20 +3,7 @@
 #ifndef _DISPLAY_H_
 #define _DISPLAY_H_
 
-#include "game.h" 
-#include "camera.h"
-#include <curses.h>
-#include "inventory.h"
-#include "message.h"
-#include "globals.h"
-#include "popupWin.h"
-
-#ifndef _GAME_H_
-class Game;
-#endif
-#ifndef _DISPLAY_H_
-class Display;
-#endif
+#include "all_includes.h"
 
 struct DisplayState {
 	enum State {MAPDISP, INVDISP, INVPOP, ATTR};

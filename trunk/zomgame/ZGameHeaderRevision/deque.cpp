@@ -1,4 +1,4 @@
-#include "deque.h"
+#include "all_includes.h"
 
 Deque::Deque(){
 	firstNode = NULL;

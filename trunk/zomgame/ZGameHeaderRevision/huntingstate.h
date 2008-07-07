@@ -1,6 +1,8 @@
 #ifndef _HUNTINGSTATE_H_
 #define _HUNTINGSTATE_H_
-#include "zombie.h"
+
+#include "all_includes.h"
+
 class HuntingState : public BrainState {
 private:
 	HuntingState() : BrainState(NULL) {};

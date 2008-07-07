@@ -3,15 +3,7 @@
 #ifndef _PROP_H
 #define _PROP_H
 
-#include <string>
-#include <vector>
-
-#include "attackable.h"
-#include "attribute.h"
-#include "renderable.h"
-#include "item.h"
-//#include "propfactory.h"
-//#include "player.h"
+#include "all_includes.h"
 
 using namespace std;
 

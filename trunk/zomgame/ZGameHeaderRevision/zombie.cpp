@@ -1,8 +1,4 @@
-#include "zombie.h"
-#include "wanderstate.h"
-#include "huntingstate.h"
-#include <ctime>
-#include "math.h"
+#include "all_includes.h"
 
 
 Zombie::Zombie() : Entity(){

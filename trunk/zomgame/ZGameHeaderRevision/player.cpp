@@ -1,4 +1,4 @@
-#include "player.h"
+#include "all_includes.h"
 
 
 Player::Player() : Entity(){

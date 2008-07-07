@@ -3,9 +3,7 @@
 #ifndef _PROPFACTORY_H
 #define _PROPFACTORY_H
 
-#include "door.h"
-#include "bed.h"
-#include "prop.h"
+#include "all_includes.h"
 
 class PropFactory {
 

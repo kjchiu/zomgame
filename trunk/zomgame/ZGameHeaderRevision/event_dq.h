@@ -1,12 +1,9 @@
 /* This is a double-ended queue. Not templated for sorting purposes. */
 
-#ifndef _DEQUE_H
-#define _DEQUE_H
+#ifndef _EVENT_DEQUE_H
+#define _EVENT_DEQUE_H
 
-#include <hash_map>
-#include <vector>
-#include "dq_node.h"
-
+#include "all_includes.h"
 
 class EventDeque {
 	private:

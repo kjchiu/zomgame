@@ -1,5 +1,4 @@
-#include "game.h"
-#include "event.h"
+#include "all_includes.h"
 
 int Event::id = 0;
 

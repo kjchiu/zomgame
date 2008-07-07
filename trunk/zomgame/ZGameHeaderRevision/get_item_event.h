@@ -3,8 +3,7 @@
 #ifndef _GET_ITEM_H
 #define _GET_ITEM_H
 
-#include "event.h"
-#include "item.h"
+#include "all_includes.h"
 
 class GetItemEvent : public Event {
 	private:

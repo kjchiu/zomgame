@@ -1,6 +1,4 @@
-#include "event_types.h"
-#include "event_factory.h"
-#include "game.h"
+#include "all_includes.h"
 
 
 

@@ -1,5 +1,4 @@
-#include "weapon.h"
-#include "globals.h"
+#include "all_includes.h"
 
 Weapon::Weapon(){
 	setDescription("Your bare hands. Not very damaging.");

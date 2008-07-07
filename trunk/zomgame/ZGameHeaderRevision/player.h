@@ -2,14 +2,7 @@
 #define _PLAYER_H
 /* Represents the player */
 
-#include <vector>
-
-#include "map.h"
-#include "entity.h"
-#include "skills.h"
-#include "globals.h"
-#include "weapon.h"
-#include "item.h"
+#include "all_includes.h"
 
 class Skill;
 struct SkillValue;

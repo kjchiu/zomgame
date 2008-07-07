@@ -1,11 +1,4 @@
-#include <curses.h>
-#include <sstream>
-#include <math.h>
-
-#include "game.h"
-#include "referee.h"
-#include "globals.h"
-#include "keycodes.h"
+#include "all_includes.h"
 
 EventDeque* Game::events = new EventDeque();
 Game* Game::_instance = NULL;

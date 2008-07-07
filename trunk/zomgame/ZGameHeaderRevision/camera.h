@@ -3,11 +3,7 @@
 #ifndef _CAMERA_H
 #define _CAMERA_H
 
-#include <curses.h>
-#include "mapblock.h"
-#include "entity.h"
-#include "map.h"
-#include "coord.h"
+#include "all_includes.h"
 
 class Camera {
 protected:

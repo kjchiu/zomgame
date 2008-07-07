@@ -1,6 +1,8 @@
 #ifndef _GRASS_H
 #define _GRASS_H
-#include <ctime>
+
+#include "all_includes.h"
+
 class Grass : public Terrain {
 public:
 	Grass() {

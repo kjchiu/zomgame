@@ -1,6 +1,8 @@
 #ifndef _WANDERSTATE_H_
 #define _WANDERSTATE_H_
-#include "zombie.h"
+
+#include "all_includes.h"
+
 class WanderState : public BrainState {
 private:
 	WanderState() : BrainState(NULL) {};

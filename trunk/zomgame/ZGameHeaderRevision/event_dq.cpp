@@ -1,4 +1,4 @@
-#include "event_dq.h"
+#include "all_includes.h"
 
 EventDeque::EventDeque(){
 	firstNode = lastNode = NULL;

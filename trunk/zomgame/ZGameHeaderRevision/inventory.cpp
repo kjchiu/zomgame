@@ -1,4 +1,4 @@
-#include "inventory.h"
+#include "all_includes.h"
 
 Inventory::Inventory(){
 	totalWeight = 0;

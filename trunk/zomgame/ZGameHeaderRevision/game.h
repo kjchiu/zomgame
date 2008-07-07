@@ -3,26 +3,16 @@
 
 #define DEBUG 1
 
-
-#include <deque>
-
-#include "event_factory.h"
-#include "propfactory.h"
-#include "messagefactory.h"
-#include "itemFactory.h"
-#include "event_dq.h" 
-#include "display.h"
-#include "entity.h"
-#include "player.h"
-#include "referee.h"
-#include "zombie.h"
-
-#include "weaponFactory.h"
-
-
-class Game;
-class Display;
-class Referee;
+#include "attack_event.h"
+#include "ranged_attack_event.h"
+#include "get_item_event.h"
+#include "move_event.h"
+#include "spawn_entity_event.h"
+#include "spawn_item_event.h"
+#include "spawn_prop_event.h"
+#include "interact_event.h"
+#include "drop_item_event.h"
+#include "skill_event.h"
 
 using namespace std;
 

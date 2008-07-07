@@ -3,9 +3,7 @@
 #ifndef _COORD_H
 #define _COORD_H
 
-#include <string>
-#include "math.h"
-#include "direction.h"
+#include "all_includes.h"
 
 class Coord;
 extern Coord DIRECTION_OFFSETS[];

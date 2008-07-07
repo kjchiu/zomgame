@@ -3,8 +3,7 @@
 #ifndef _RENDERABLE_H
 #define _RENDERABLE_H
 
-#include <string>
-#include "coord.h"
+#include "all_includes.h"
 
 using namespace std;
 

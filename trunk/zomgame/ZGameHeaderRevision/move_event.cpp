@@ -1,5 +1,5 @@
-#include "move_event.h"
-#include "game.h"
+#include "all_includes.h"
+
 MoveEvent::MoveEvent() :
 	Event(MOVE) {
 

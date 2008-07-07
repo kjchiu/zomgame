@@ -1,4 +1,4 @@
-#include "skills.h"
+#include "all_includes.h"
 
 
 int Skill::getId() {

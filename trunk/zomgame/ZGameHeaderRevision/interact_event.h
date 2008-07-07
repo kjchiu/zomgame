@@ -3,8 +3,7 @@
 #ifndef _INTERACT_H_
 #define _INTERACT_H_
 
-#include "event.h"
-#include "item.h"
+#include "all_includes.h"
 
 class InteractEvent : public Event {
 	private:

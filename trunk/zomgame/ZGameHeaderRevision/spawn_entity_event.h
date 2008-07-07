@@ -3,8 +3,7 @@
 #ifndef _SPAWN_E_H
 #define _SPAWN_E_H
 
-#include "event.h"
-#include "coord.h"
+#include "all_includes.h"
 
 class SpawnEntityEvent : public Event{
 	private:

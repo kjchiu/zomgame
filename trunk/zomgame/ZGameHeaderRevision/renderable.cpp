@@ -1,4 +1,4 @@
-#include "renderable.h"
+#include "all_includes.h"
 
 int Renderable::id = 0;
 

@@ -1,7 +1,7 @@
 #ifndef TERRAIN_FACTORY_H
 #define TERRAIN_FACTORY_H
 
-#include "terrain.h"
+#include "all_includes.h"
 
 class TerrainFactory
 {

@@ -1,7 +1,4 @@
-#include "map.h"
-#include "zombie.h"
-#include <ctime> //for debugging. used to generate shit random maps
-#include <fstream>
+#include "all_includes.h"
 
 Map::Map(){
 	height = MAPHEIGHT;
