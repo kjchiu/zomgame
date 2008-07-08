@@ -1,4 +1,4 @@
-/* Dropping an item and placing it in the inventory. */
+/* Dropping an item and placing it on the ground. */
 
 #ifndef _DROP_ITEM_H_
 #define _DROP_ITEM_H_
