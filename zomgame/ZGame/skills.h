@@ -9,10 +9,7 @@
 #include "messagefactory.h"
 //#include "boost/filesystem.hpp"
 
-enum SkillType {PASSIVE, ACTIVE};
-#define TARGET_ITEM 1
-#define TARGET_ENTITY 2
-#define TARGET_POSITION 4
+enum SkillType {PASSIVE, ACTIVE, INHERENT};
 
 class Player; // fucking forward declarations :(
 
@@ -35,33 +32,35 @@ public:
 
 
 struct SkillValue{
-	int skill;
+	int skill;	//corresponds to the skill table
 	int level;
 	int experience;
-	bool tagged;
+	bool tagged;	//tagged skills earn experience quicker, are determined at character creation
 	bool raiseExperience(int amount);
 };
 
 
-//SKILL FUNCTIONS
+//SKILL FUNCTIONS (defined in skilltable.cpp)
 int repair(Player* p, void* target, vector<Message*>* log);
 int eat(Player* p, void* target, vector<Message*>* log);
 int equip(Player* p, void* target, vector<Message*>* log);
 int unequip(Player* p, void* target, vector<Message*>* log);
+int firstaid(Player* p, void* target, vector<Message*>* log);
+
 
 
 /**
 [COMBAT]
-pistol
+handgun - ADDED
 shotgun
 rifle
 machinegun
-explosives		- nades blah
-unarmed			- fists of furyyyy
-bludg.	melee	- baseball bats, pipes, golf clubs
-edged melee 	- swords
-exotic melee	- battle axes, medieval weapons 
-demolitions		- tnt etc. demoing buildings safely
+explosives		- nades blah -> not until we can implement explosives well
+unarmed			- fists of furyyyy - ADDED
+blunt melee 	- baseball bats, pipes, golf clubs - ADDED
+edged melee 	- swords, daggers, pointy things
+exotic melee	- battle axes, medieval weapons?
+demolitions		- tnt etc. demoing buildings safely -> not until explosions are added
 
 [PASSIVE]
 survival		- make fires, tie knots etc.
@@ -76,7 +75,7 @@ stealth			- in urban areas
 woodsman		- hunting/tracking ability
 construction	- ability to construct barricades etc
 first aid		- hot hot murses
-pharmacy		- 
+pharmacy		- if we have buffing meds (extra energy, sleep pills, etc), this ids them.
 
 */
 

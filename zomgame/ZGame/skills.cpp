@@ -24,3 +24,9 @@ bool SkillValue::raiseExperience(int amount){
 	}
 	return false;
 }
+
+
+//1->2 = 100
+//2->3 = 300
+//3->4 = 600
+//etc

@@ -53,15 +53,16 @@ void Map::makeRoomAt(Coord* topLeft, int width, int height){
 	Coord* newCoord = new Coord();
 	for (int x=topLeft->getX(); x<topLeft->getX()+width;x++){
 		for (int y=topLeft->getY(); y<topLeft->getY()+height;y++){
-			if ((x == topLeft->getX() || x == topLeft->getX() + width-1) ||
-				(y == topLeft->getY() || y == topLeft->getY() + height-1)){
-				newCoord->setX(x);
-				newCoord->setY(y);
-				if (isWithinMap(newCoord)){
-					getBlockAt(newCoord)->addProp(PropFactory::createWall());
+			newCoord->setX(x);
+			newCoord->setY(y);
+			if (isWithinMap(newCoord)){
+				getBlockAt(newCoord)->clear();
+				getBlockAt(newCoord)->setTerrain(new IndoorTile());		//put down the floor
+				if ((x == topLeft->getX() || x == topLeft->getX() + width-1) || //put up the walls
+					(y == topLeft->getY() || y == topLeft->getY() + height-1)){	
+						getBlockAt(newCoord)->addProp(PropFactory::createWall());
 				}
-			} 
-			getBlockAt(x, y)->setTerrain(new IndoorTile());
+			}
 		}
 	}
 	getBlockAt(topLeft->getX(), topLeft->getY() + height/2)->removeProp(getBlockAt(topLeft->getX(), topLeft->getY() + height/2)->getTopProp());

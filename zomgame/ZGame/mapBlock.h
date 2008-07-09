@@ -31,6 +31,7 @@ class MapBlock {
 		void addEntity(Entity* entity);
 		void addItem(Item* item);
 		void addProp(Prop* prop);
+		void clear();
 		chtype getChar();
 		short getColor();
 		Item* getItemAt(int index);
