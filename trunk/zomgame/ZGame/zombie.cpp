@@ -94,23 +94,28 @@ void Zombie::resolveObstacle(Game* game, Direction dir) {
 
 void Zombie::respawn(Coord* c) {
 	setLoc(c);
-	getAttribute("Health")->changeCurValueBy(20);
-	curAction = WANDERING;
-	Game::getInstance()->getMap()->getBlockAt(getLoc())->addEntity(this);
+    getAttribute("Health")->changeCurValueBy(20);
+    curAction = WANDERING;
+   // Game::getInstance()->getMap()->getBlockAt(getLoc())->addEntity(this);
+	Game::getInstance()->addEvent(EventFactory::createSpawnEntityEvent(this, c, 0));
+	
 }
 
 std::vector<Item*> Zombie::destroy() {
 	int x, y;
 	x = rand() % Game::getInstance()->getMap()->getWidth();
 	y = rand() % Game::getInstance()->getMap()->getHeight();
-	Coord *c;
-	do {
-		c = new Coord(x,y);
-	} while (Game::getInstance()->getMap()->getBlockAt(c)->hasEntities());
+	Coord *c = new Coord(x,y);
+//	do {
+//		c = new Coord(x,y);
+//	} while (Game::getInstance()->getMap()->getBlockAt(c)->hasEntities());
 	respawn(c);
 
+	//curAction = WANDERING;
+	//Game::getInstance()->addEvent(EventFactory::createSpawnEntityEvent(this, c, 0));
+	
 	// Fear their woody innards.
 	std::vector<Item*> debris;
-	debris.push_back(ItemFactory::createWoodPlank());
+	//debris.push_back(ItemFactory::createWoodPlank());
 	return debris;
 }

@@ -10,10 +10,11 @@ MoveEvent::MoveEvent(Entity *_mover, Coord* _dest) :
 }
 
 Message* MoveEvent::resolve(){
+	if (!Game::getInstance()->getMap()->isWithinMap(destinationLoc)){
+		return NULL;
+	}
 	MapBlock* target = Game::getInstance()->getMap()->getBlockAt(destinationLoc);
 	MapBlock* start = Game::getInstance()->getMap()->getBlockAt(mover->getLoc());
-	if (!Game::getInstance()->getMap()->isWithinMap(destinationLoc))
-		return NULL;
 	if (mover->getType() == Entity::PLAYER) {
 		if (target->isPassable()){			
 			start->removeEntity(start->getTopEntity());

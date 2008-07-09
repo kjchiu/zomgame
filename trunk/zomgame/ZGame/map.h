@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include "mapBlock.h"
 #include "coord.h"
+#include "terrain_factory.h"
 
 
 class Map{

@@ -6,6 +6,7 @@
 #include "referee.h"
 #include "globals.h"
 #include "keycodes.h"
+#include <windows.h>
 
 EventDeque* Game::events = new EventDeque();
 Game* Game::_instance = NULL;
@@ -26,7 +27,8 @@ void Game::init(int tWidth, int tHeight){
 	player = new Player();
 	player->setName("PlayerMan");
 	player->getName().c_str();
-	player->setLoc(new Coord(10,10));
+	player->setLoc(new Coord(12,12));
+	map->getBlockAt(12, 12)->addEntity(player);
 	target = new Coord(player->getLoc());
 	map->getBlockAt(player->getLoc())->addEntity(player);
 
@@ -82,8 +84,12 @@ void Game::init(int tWidth, int tHeight){
 
 	map->getBlockAt(8,9)->addItem(WeaponFactory::createPistol());
 
+	map->makeRoomAt(new Coord(8,8), 10, 10);
 	map->makeRoomAt(new Coord(7,7), 4,4);
 	map->makeRoomAt(new Coord(15,15), 6, 8);
+	map->makeRoomAt(new Coord(30,20), 4, 5);
+	map->makeRoomAt(new Coord(50,60), 10,3);
+	map->makeRoomAt(new Coord(80, 5), 4, 5);
 	map->saveTo("testmap.zom");
 	
 	ref->resolveEvents(0, getEventList());
@@ -334,10 +340,9 @@ void Game::tick(){
 			z->tick(this);
 		}
 	}
-
+	
 	//check events here
 	ref->resolveEvents(getTickcount(), getEventList());
-	
 }
 
 void Game::draw(){
@@ -347,21 +352,22 @@ void Game::draw(){
 void Game::run(){
 	char input;
 	int frameTime = 0;
-	addMessage(MessageFactory::getMessage(skill_list.getSkill(0)->getDescription()));
-#ifdef _GCC
-	addMessage(new Message("yay ming gcc"));
-#endif
+
 	while (frameTime >= 0){
 		frameTime = 0;
 		//tick, draw, until something results in quitting
 
 		this->draw();
 		refresh();
+		
 		input = getch();
+		
 		frameTime = display->processKey(input);
+		
 		if (frameTime <= -1){ //if display does not need to process the key
 			frameTime = this->processKey(input);	//if no windows are open, process in the game
 		}
+		
 		if (frameTime >= 0) {
 			this->tick();
 		}

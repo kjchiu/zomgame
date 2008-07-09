@@ -26,6 +26,13 @@ void MapBlock::addProp(Prop* prop){
 	propList.push_back(prop);
 }
 
+void MapBlock::clear(){
+	entityList.clear();
+	itemList.clear();
+	propList.clear();
+
+}
+
 /* Gets the char that represents this tile of the map */
 chtype MapBlock::getChar() {
 	//order of appearance -> entity, item, prop, terrain

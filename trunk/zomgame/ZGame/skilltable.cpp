@@ -28,15 +28,24 @@ void SkillTable::load(std::string filename) {
 	
 	//PASSIVE
 	s.id = skill_count++;
+	s.name = "Unarmed";
+	s.description = "Ability to fight with your fists. Decreases stamina loss, increases damage.";
+	s.action = NULL;
+	s.type = PASSIVE;
+	insert(s);
+
+	s.id = skill_count++;
 	s.name = "Handgun";
 	s.description = "Proficiency with handguns.\nIncreases accuracy and the ability to maintain and repair them.";
 	s.action = NULL;
+	s.type = PASSIVE;
 	insert(s);
 
 	s.id = skill_count++;
 	s.name = "Blunt";
 	s.description = "Proficiency with heavy, blunt weaponry.\nIncreases skill and time before breaking.";
 	s.action = NULL;
+	s.type = PASSIVE;
 	insert(s);
 
 	//ACTIVE
@@ -44,35 +53,37 @@ void SkillTable::load(std::string filename) {
 	s.name = "Repair";
 	s.description = "Repair an item.";
 	s.action = &repair;
+	s.type = ACTIVE;
 	insert(s);
 
 	s.id = skill_count++;
 	s.name = "Equip";
 	s.description = "Equip a weapon.";
 	s.action = &equip;
+	s.type = ACTIVE;
 	insert(s);
 
 	s.id = skill_count++;
 	s.name = "Unequip";
 	s.description = "Unequip a weapon.";
 	s.action = &unequip;
+	s.type = ACTIVE;
 	insert(s);
 
-	//INHERENT
+	s.id = skill_count++;
+	s.name = "First Aid";
+	s.description = "Ability to treat wounds without injuring oneself. Requires equipment.";
+	s.action = NULL; //ADD FUNCTION
+	s.type = ACTIVE;
+	insert(s);
+
+	//INHERENT -- these skills don't level up, nor are they displayed
 	s.id = skill_count++;
 	s.name = "Consume";
 	s.description = "Eat food and drink water to keep starvation from sapping your stamina.";
 	s.action = &eat;
+	s.type = INHERENT;
 	insert(s);
-
-
-
-	//not sure about this, requires two targets (item and mapblock)
-	s.id = skill_count++;
-	s.name = "Drop";
-	s.description = "Drop the item onto the ground.";
-//	s.action = &drop;
-//	insert(s);
 
 }
 
@@ -118,4 +129,11 @@ int unequip(Player* p, void* target, vector<Message*>* log) {
 	std::string* msg = new std::string("You unequipped " + weapon->getListName());
 	log->push_back(new Message(msg));
 	return 0;
+}
+
+int firstaid(Player* p, void* target, vector<Message*>* log) {
+	//target is the medical equipment being used, bandage/kit/whatever. 
+	//the more effective the tool, the higher the rate of failure. Get used to bandages!
+	
+	return 100; //note: this skill takes a long time to use, longer than 10 seconds. 10 minutes, maybe.
 }
