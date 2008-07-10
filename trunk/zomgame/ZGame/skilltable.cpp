@@ -73,7 +73,7 @@ void SkillTable::load(std::string filename) {
 	s.id = skill_count++;
 	s.name = "First Aid";
 	s.description = "Ability to treat wounds without injuring oneself. Requires equipment.";
-	s.action = NULL; //ADD FUNCTION
+	s.action = &firstaid;
 	s.type = ACTIVE;
 	insert(s);
 
@@ -133,7 +133,22 @@ int unequip(Player* p, void* target, vector<Message*>* log) {
 
 int firstaid(Player* p, void* target, vector<Message*>* log) {
 	//target is the medical equipment being used, bandage/kit/whatever. 
+	MedicalItem* medItem = static_cast<MedicalItem*>(target);
+	int ability = p->getSkillValue(skill_list.getSkillID("First Aid"));
 	//the more effective the tool, the higher the rate of failure. Get used to bandages!
+	int chanceOfSuccess = 50 + (ability * 3) - (medItem->getHealPot() * 4);
+	if ((rand() % 100) > chanceOfSuccess){
+		log->push_back(new Message(new string("You healed some of your injuries.")));
+		//insert healing here
+	} else {
+		if ((rand() % 15)+medItem->getHealPot() > 10){
+			log->push_back(new Message(new string("You've injured yourself further!")));
+			//insert damage here
+		}
+		log->push_back(new Message(new string("You failed to do any good.")));
+	}
+
+	p->getInventory()->removeItem(medItem);
 	
 	return 100; //note: this skill takes a long time to use, longer than 10 seconds. 10 minutes, maybe.
 }

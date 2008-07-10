@@ -36,3 +36,9 @@ Item* ItemFactory::createWoodPlank() {
 	item->setDisplayChar('%');
 	return item;
 }
+
+MedicalItem* ItemFactory::createMedicalItem(string name, int nHealPot){
+	MedicalItem* medItem = new MedicalItem(name, nHealPot);
+	medItem->addSkill(skill_list.getSkillID("First Aid"));
+	return medItem;
+}

@@ -49,7 +49,16 @@ void Game::init(int tWidth, int tHeight){
 	directionOffsets[6] = new Coord(-1,0);
 	directionOffsets[7] = new Coord(-1,-1);
 
+	//add some rooms on the map
+	map->makeRoomAt(new Coord(8,8), 10, 10);
+	map->makeRoomAt(new Coord(7,7), 4,4);
+	map->makeRoomAt(new Coord(15,15), 6, 8);
+	map->makeRoomAt(new Coord(30,20), 4, 5);
+	map->makeRoomAt(new Coord(50,60), 10,3);
+	map->makeRoomAt(new Coord(80, 5), 4, 5);
+	map->saveTo("testmap.zom");
 
+	//add the zombies
 	Zombie* zombones = new Zombie();
 	zombones->setLoc(new Coord(2,6));
 	map->getBlockAt(zombones->getLoc())->addEntity(zombones);
@@ -61,15 +70,19 @@ void Game::init(int tWidth, int tHeight){
 		zombies.push_back(zombones);
 	}
 
+	player->addAttribute(new Attribute("Strength", 10));
+
+
+	getMap()->getBlockAt(3, 3)->addItem(ItemFactory::createMedicalItem("Bandages", 2));
+
 	Item* foodItem = new Item();
 	foodItem->setName("Chocolate Bar");
 	foodItem->setType(Item::FOOD);
 	foodItem->addSkill(skill_list.getSkillID("Consume"));
 	foodItem->setDescription("A good-looking chocolate bar wrapped in foil.");
 	player->getInventory()->addItem(foodItem);
-
-	player->addAttribute(new Attribute("Strength", 10));
-
+	
+	
 	Weapon* katana = new Weapon("Katana", 1000);
 	katana->setDescription("Damn, it's a ninja weapon!");
 	map->getBlockAt(7,5)->addItem(katana);
@@ -84,13 +97,6 @@ void Game::init(int tWidth, int tHeight){
 
 	map->getBlockAt(8,9)->addItem(WeaponFactory::createPistol());
 
-	map->makeRoomAt(new Coord(8,8), 10, 10);
-	map->makeRoomAt(new Coord(7,7), 4,4);
-	map->makeRoomAt(new Coord(15,15), 6, 8);
-	map->makeRoomAt(new Coord(30,20), 4, 5);
-	map->makeRoomAt(new Coord(50,60), 10,3);
-	map->makeRoomAt(new Coord(80, 5), 4, 5);
-	map->saveTo("testmap.zom");
 	
 	ref->resolveEvents(0, getEventList());
 }

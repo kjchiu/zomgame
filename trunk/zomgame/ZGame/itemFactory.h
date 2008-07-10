@@ -3,8 +3,9 @@
 #ifndef ITEMFACTORY_H
 #define ITEMFACTORY_H
 
-#include "item.h"
 #include "weapon.h"
+#include "medical_item.h"
+#include "globals.h"
 
 class ItemFactory {
 
@@ -14,6 +15,7 @@ class ItemFactory {
 		static Weapon* createWeapon(string name, Weapon::WeaponType wType, int damage);
 		static Weapon* createWeapon(string name, Weapon::WeaponType wType, int damage, string description);
 		static Item* createWoodPlank();
+		static MedicalItem* createMedicalItem(string nName, int nHealPot); 
 
 };
 
