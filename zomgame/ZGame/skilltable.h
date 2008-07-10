@@ -10,6 +10,7 @@
 
 #include "message.h"
 #include "messagefactory.h"
+#include "itemfactory.h"
 
 
 class Skill;
