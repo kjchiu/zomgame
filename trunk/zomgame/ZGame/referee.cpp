@@ -7,6 +7,7 @@ Referee::Referee(Game* game){
 
 
 int Referee::resolveEvents(int currentTick, EventDeque* eventDeque){
+	int numEvents = 0;
 	DQNode* resolvedEvent;
 	DQNode* currentEvent = eventDeque->getFirstNode();
 	while (currentEvent != NULL && currentEvent->getEventTick() <= currentTick){
@@ -18,6 +19,7 @@ int Referee::resolveEvents(int currentTick, EventDeque* eventDeque){
 		currentEvent = currentEvent->getNextNode();
 		eventDeque->removeNode(resolvedEvent);
 		delete resolvedEvent;
+		numEvents++;
 	}
-	return 5;
+	return numEvents;
 }

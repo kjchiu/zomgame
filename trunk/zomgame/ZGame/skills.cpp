@@ -13,6 +13,10 @@ std::string Skill::getDescription() {
 	return description;
 }
 
+SkillType Skill::getType(){
+	return type;
+}
+
 /* Experience to next level = (level * 100) + ((level - 1) * 100) */
 bool SkillValue::raiseExperience(int amount){
 	if (level < 100){

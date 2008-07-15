@@ -75,6 +75,7 @@ class Display {
 		void drawInventoryList(vector<Item*> items, int yLoc, int selection, bool highlight);
 		void drawItemDetails(Item* item, int height, int width);
 		void drawPopup(Item* item);	//draw the skills an item can utilize 
+		bool gameIsActive();
 		bool invIsToggled();
 		bool popupIsToggled();
 		int processKey(int input);
