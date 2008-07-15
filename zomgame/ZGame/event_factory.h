@@ -20,6 +20,8 @@ class EventFactory {
 		static Event* createAttackEvent(Entity* attacker, Coord* targetLoc, int tick);
 		static Event* createRangedAttackEvent(Player* attacker, Coord* targetLoc, int tick);
 	
+		static Event* createDamageEntityEvent(Entity* entity, int damage, int tick);
+
 		static Event* createGetItemEvent(Entity* picker, Coord* loc, int index, int tick);
 		static Event* createDropItemEvent(Entity* actor, int index, int tick);
 
