@@ -52,14 +52,14 @@ int firstaid(Player* p, void* target, vector<Message*>* log);
 /**
 [COMBAT]
 handgun - ADDED
-shotgun
-rifle
-machinegun
+shotgun - ADDED
+rifle - ADDED
+machinegun - ADDED
 explosives		- nades blah -> not until we can implement explosives well
 unarmed			- fists of furyyyy - ADDED
 blunt melee 	- baseball bats, pipes, golf clubs - ADDED
 edged melee 	- swords, daggers, pointy things
-exotic melee	- battle axes, medieval weapons?
+exotic melee	- battle axes, medieval weapons? -> eh, later
 demolitions		- tnt etc. demoing buildings safely -> not until explosions are added
 
 [PASSIVE]

@@ -42,8 +42,36 @@ void SkillTable::load(std::string filename) {
 	insert(s);
 
 	s.id = skill_count++;
-	s.name = "Blunt";
+	s.name = "Shotgun";
+	s.description = "Proficiency with multi-pellet weaponry.\nIncreases skill and time before breaking.";
+	s.action = NULL;
+	s.type = PASSIVE;
+	insert(s);
+	
+	s.id = skill_count++;
+	s.name = "Machine Gun";
+	s.description = "Proficiency with rapid fire guns.\nIncreases skill and time before breaking.";
+	s.action = NULL;
+	s.type = PASSIVE;
+	insert(s);
+	
+	s.id = skill_count++;
+	s.name = "Rifle";
+	s.description = "Proficiency with powerful, single-fire guns.\nIncreases skill and time before breaking.";
+	s.action = NULL;
+	s.type = PASSIVE;
+	insert(s);
+
+	s.id = skill_count++;
+	s.name = "Blunt Melee";
 	s.description = "Proficiency with heavy, blunt weaponry.\nIncreases skill and time before breaking.";
+	s.action = NULL;
+	s.type = PASSIVE;
+	insert(s);
+
+	s.id = skill_count++;
+	s.name = "Edged Melee";
+	s.description = "Proficiency with sharp and edged melee weaponry.\nIncreases skill and time before breaking.";
 	s.action = NULL;
 	s.type = PASSIVE;
 	insert(s);

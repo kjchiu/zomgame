@@ -302,6 +302,9 @@ int Game::processKey(int key){
 		case 'p':
 			display->togglePopup();
 			break;
+		case 'm':
+			return 1;
+			break;
 		default: break;
 		}
 	}
@@ -317,6 +320,10 @@ void Game::quitGame(){
 }
 
 void Game::tick(){
+	//check events here
+	int eventsOccured = ref->resolveEvents(getTickcount(), getEventList());
+	
+
 	for (unsigned int i=0; i<zombies.size(); i++){
 		Zombie* z = zombies.at(i);
 		if (z->getAttribute("Health")->getCurValue()) {
@@ -342,8 +349,7 @@ void Game::tick(){
 		}
 	}
 	
-	//check events here
-	ref->resolveEvents(getTickcount(), getEventList());
+	
 }
 
 void Game::draw(){
@@ -353,26 +359,24 @@ void Game::draw(){
 void Game::run(){
 	char input;
 	int frameTime = 0;
+	
 
-	this->draw();
-	while (frameTime >= 0){
-		frameTime = 0;
-		//tick, draw, until something results in quitting
-		
-		this->draw();
-		
-		input = getch();
-		frameTime = display->processKey(input);
-		
-		if (frameTime <= -1){ //if display does not need to process the key
-			frameTime = this->processKey(input);	//if no windows are open, process in the game
-		}
-
-		//if (frameTime >= 0) {
-		this->tick();
-		//}
-		tickCount += frameTime;
-		
+	while (frameTime >= 0){	
+			this->draw();
+			
+			input = getch();
+			
+			if (display->gameIsActive()){	//if the game is active, get input from the game, not the display
+				frameTime = this->processKey(input);
+			} else {
+				frameTime = display->processKey(input);
+			}
+			
+			if (frameTime != 0){
+				this->tick();
+			}
+			
+			tickCount+=frameTime;	
 	}
 }
 

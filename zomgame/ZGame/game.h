@@ -45,6 +45,7 @@ class Game {
 		Coord* target;
 		vector<Zombie*> zombies;
 		unsigned int tickCount;
+		bool eventsResolved;
 
 	public:
 		Coord* directionOffsets[8];

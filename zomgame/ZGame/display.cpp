@@ -93,6 +93,7 @@ void Display::draw() {
 void Display::draw(Map* map) {
 	//VISIBLE WORLD -- Kyle did you just make a lolcat reference? Oh my.
 	box(playWin, 0,0);
+	wclear(playWin);
 	
 	int height, width;
 	getmaxyx(playWin,height,width);
@@ -269,7 +270,9 @@ void Display::drawCharacterInfo(){
 
 	mvwprintw(playWin, 1, width-20, "SKILLS");
 	for (unsigned int i = 0; i < p->getSkills()->size(); i++){
-		mvwprintw(playWin, i+2, width-20, "%d: %s - %d", i, skill_list.getSkill(i)->getName().c_str(), p->getSkillValue(i));
+		if (skill_list.getSkill(i)->getType() != INHERENT){
+			mvwprintw(playWin, i+2, width-20, "%d: %s - %d", i, skill_list.getSkill(i)->getName().c_str(), p->getSkillValue(i));
+		}
 	}
 
 
@@ -323,6 +326,11 @@ void Display::drawItemDetails(Item* item, int height, int width){
 
 void Display::drawPopup(Item* item){
 	popupWin->draw();
+}
+
+/* Says whether or not the game should be ticking */
+bool Display::gameIsActive(){
+	return dState->mapIsToggled();
 }
 
 Entity* Display::getCenter() {
