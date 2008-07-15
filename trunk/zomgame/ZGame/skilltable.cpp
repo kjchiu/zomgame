@@ -93,9 +93,15 @@ void SkillTable::insert(Skill skill) {
 
 
 int repair(Player* p, void* target, vector<Message*>* log) {
-	Item* item = static_cast<Item*>(target);
-	item->setBulk(item->getBulk() - 1);
-	std::string* msg = new std::string(item->getName() + " has been repaired.");
+	Weapon* weapon = static_cast<Weapon*>(target);
+	//item->setBulk(item->getBulk() - 1);
+	int ability = p->getSkillValue(skill_list.getSkillID("Repair"));
+	
+	p->getSkill(skill_list.getSkillID("Repair"))->raiseExperience(50);
+	
+	weapon->getDurability()->changeCurValueBy(ability*2 + 5);
+	
+	std::string* msg = new std::string(weapon->getName() + " has been repaired.");
 	log->push_back(new Message(msg));
 	return 0;
 }
@@ -139,15 +145,13 @@ int firstaid(Player* p, void* target, vector<Message*>* log) {
 	int chanceOfSuccess = 50 + (ability * 3) - (medItem->getHealPot() * 4);
 	if ((rand() % 100) > chanceOfSuccess){
 		log->push_back(new Message(new string("You healed some of your injuries.")));
+		p->getSkill(skill_list.getSkillID("First Aid"))->raiseExperience(5 * medItem->getHealPot());
 		//insert healing here
 	} else {
-		if ((rand() % 15)+medItem->getHealPot() > 10){
-			log->push_back(new Message(new string("You've injured yourself further!")));
-			//insert damage here
-		}
+		p->getSkill(skill_list.getSkillID("First Aid"))->raiseExperience(10 * medItem->getHealPot());
 		log->push_back(new Message(new string("You failed to do any good.")));
 	}
-
+	
 	p->getInventory()->removeItem(medItem);
 	
 	return 100; //note: this skill takes a long time to use, longer than 10 seconds. 10 minutes, maybe.

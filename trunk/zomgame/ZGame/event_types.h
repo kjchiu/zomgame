@@ -5,6 +5,7 @@
 
 #include "attack_event.h"
 #include "ranged_attack_event.h"
+#include "damage_entity_event.h"
 #include "get_item_event.h"
 #include "move_event.h"
 #include "spawn_entity_event.h"

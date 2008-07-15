@@ -30,6 +30,7 @@ class Player : public Entity {
 		Weapon* getEqRngWeapon();
 		void setLoc(Coord* nLocation);
 		vector<SkillValue>* getSkills();
+		SkillValue* getSkill(int skill);
 		int getSkillValue(int skill);
 		void unequip(Weapon* weapon);
 		void respawn(Coord* loc);

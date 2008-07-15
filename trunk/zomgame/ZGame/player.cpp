@@ -49,6 +49,15 @@ vector<SkillValue>* Player::getSkills() {
 	return skills;
 }
 
+SkillValue* Player::getSkill(int skill){
+	for (unsigned int i = 0; i<skills->size(); i++){
+		if (skills->at(i).skill == skill){
+			return &(skills->at(i));
+		}
+	}
+	return NULL;
+}
+
 int Player::getSkillValue(int skill){
 	for (unsigned int i = 0; i<skills->size(); i++){
 		if (skills->at(i).skill == skill){

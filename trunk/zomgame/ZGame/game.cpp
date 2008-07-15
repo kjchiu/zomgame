@@ -200,10 +200,8 @@ int Game::processKey(int key){
 		default:
 			return 0;
 		}
-		//time = ref->attackLocation(getPlayer(), &((*directionOffsets[dir]) + (*player->getLoc())), message);
 		addEvent(EventFactory::createAttackEvent(getPlayer(), dir, 0));
 		return 10;
-		//return time;
 	}
 	else {
 		//this is not only more efficient, but it looks a lot better
@@ -222,10 +220,7 @@ int Game::processKey(int key){
 		case 'f':
 			//check for line of sight first, then
 			addEvent(EventFactory::createRangedAttackEvent(player, getTarget(), 0));
-			//time = ref->attackRngLocation(player, getTarget(), message);
-			//addMessage(message);
-			time = 10;
-			return time;
+			return 10;
 		case 'u':
 			display->toggleAttributes();
 		case 'q':
@@ -359,25 +354,25 @@ void Game::run(){
 	char input;
 	int frameTime = 0;
 
+	this->draw();
 	while (frameTime >= 0){
 		frameTime = 0;
 		//tick, draw, until something results in quitting
-
+		
 		this->draw();
-		refresh();
 		
 		input = getch();
-		
 		frameTime = display->processKey(input);
 		
 		if (frameTime <= -1){ //if display does not need to process the key
 			frameTime = this->processKey(input);	//if no windows are open, process in the game
 		}
-		
-		if (frameTime >= 0) {
-			this->tick();
-		}
+
+		//if (frameTime >= 0) {
+		this->tick();
+		//}
 		tickCount += frameTime;
+		
 	}
 }
 

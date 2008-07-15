@@ -18,6 +18,7 @@ void Weapon::init(string nName, int damage){
 	setWType(Weapon::MELEE);
 	durability = new Attribute("Durability", 100);
 	this->addSkill(skill_list.getSkillID("Equip"));
+	this->addSkill(skill_list.getSkillID("Repair"));
 }
 
 int Weapon::getDamage(){
