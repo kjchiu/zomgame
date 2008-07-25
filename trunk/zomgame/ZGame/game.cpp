@@ -88,6 +88,7 @@ void Game::init(int tWidth, int tHeight){
 	map->getBlockAt(7,5)->addItem(katana);
 
 	Door* door = PropFactory::createDoor(1000);
+	map->getBlockAt(9,10)->removeProp(map->getBlockAt(9,10)->getTopProp());
 	map->getBlockAt(9,10)->addProp(door);
 
 	Prop* chair = new Prop(true);
