@@ -5,20 +5,25 @@
 
 #include "attackable.h"
 #include "attribute.h"
+#include "attribute_factory.h"
 #include "renderable.h"
 #include "inventory.h"
 #include "weapon.h"
+#include "effect.h"
 
 using namespace std;
+
 
 
 class Entity : public Renderable, public Attackable {
 public:
 	enum EntityType{PLAYER, ZOMBIE};
+	
 	protected:
 		Coord* location;
 		Inventory* inventory;
 		vector<Attribute*>* attributes;
+		vector<Effect*>* effects;
 		Weapon* equippedWeapon;
 		int speed;
 		int siteRadius;
@@ -30,14 +35,24 @@ public:
 		Entity();
 		Entity(string name);
 		void init();
+		void addEffect(Effect* effect);
+		vector<Effect*>* getEffects();
+
+		
+
 		virtual void addAttribute(Attribute* att);
-		virtual void equip(Weapon* weapon);
+		Attribute* getAttribute(Attributes type);
 		vector<Attribute*>* getAttributes();
 		int getAttributeValue(string attName);
+		int getAttributeValue(Attributes type);
 		Attribute* getAttribute(string attName);
+
+		virtual void equip(Weapon* weapon);
 		Weapon* getEquippedWeapon();
+
 		int getType();
 		void setType(EntityType nType);
+
 		virtual Inventory* getInventory();
 		virtual Coord* getLoc();
 		virtual int getValueOf(string attName); //returns the curValue only
@@ -47,7 +62,10 @@ public:
 		virtual int getSiteRadius() { return siteRadius; }
 		virtual void respawn(Coord* loc) { }
 
+		
+		
 		virtual Attribute* getHealth();
+		void tickEffects(int tick);
 		virtual vector<Item*> destroy();
 };
 

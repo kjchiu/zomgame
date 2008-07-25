@@ -12,18 +12,33 @@ Attribute::Attribute(string nName, int nValue){
 	init(nName, nValue, nValue);
 }
 
+Attribute::Attribute(string nName, Attributes type, int nCurValue, int nMaxValue){ 
+	init(nName, type, nCurValue, nMaxValue);
+}
+
+
 Attribute::Attribute(string nName, int nCurValue, int nMaxValue){ 
 	init(nName, nCurValue, nMaxValue);
 }
 
 void Attribute::init(string nName, int nCurValue, int nMaxValue){
+	init(nName, getType(), nCurValue, nMaxValue);
+}
+
+void Attribute::init(string nName, Attributes nType, int nCurValue, int nMaxValue) {
 	setName(nName);
 	curValue = nCurValue;
 	maxValue = nMaxValue;
+	type = nType;
 }
+
 
 string Attribute::getName(){
 	return name;
+}
+
+Attributes Attribute::getType() {
+	return type;
 }
 
 int Attribute::getCurValue(){

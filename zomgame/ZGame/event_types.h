@@ -14,6 +14,7 @@
 #include "interact_event.h"
 #include "drop_item_event.h"
 #include "skill_event.h"
+#include "event_add_effect.h"
 
 
 #endif

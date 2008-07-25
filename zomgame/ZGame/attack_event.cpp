@@ -44,8 +44,8 @@ Message* AttackEvent::resolve(){
 	//work on damage calculations and output messages
 	if (attacker->getEquippedWeapon()->getName() != "fists"){
 		attacker->getEquippedWeapon()->getDurability()->changeCurValueBy(-(rand()%3)-1);
-	}
-	maxDmg = attacker->getAttribute("Strength")->getCurValue() + attacker->getEquippedWeapon()->getDamage();
+	//maxDmg = attacker->getAttribute("Strength")->getCurValue() + attacker->getEquippedWeapon()->getDamage();
+	maxDmg = attacker->getAttributeValue(STRENGTH) + attacker->getEquippedWeapon()->getDamage();
 	dmg = rand() % maxDmg; 
 
 	if (defender_block->hasEntities()) {

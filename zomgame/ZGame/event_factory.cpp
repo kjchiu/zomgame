@@ -93,3 +93,9 @@ Event* EventFactory::createSkillEvent(Entity *actor, Skill *skill, void* target,
 	e->setTick(Game::getInstance()->getTickcount() + tick);
 	return e;
 }
+
+Event* EventFactory::createAddEffectEvent(Entity* target, Effect* effect, int tick) {
+	EventAddEffect *e = new EventAddEffect(target, effect);
+	e->setTick(Game::getInstance()->getTickcount() + tick);
+	return e;
+}

@@ -10,6 +10,7 @@
 #include "globals.h"
 #include "weapon.h"
 #include "item.h"
+#include "effect.h"
 
 class Skill;
 struct SkillValue;
@@ -19,13 +20,14 @@ class Item;
 class Player : public Entity {
 	protected:
 		Coord* location;
-		vector<SkillValue>* skills;
+		vector<SkillValue>* skills;		
 		Weapon* eqRngWeapon;
 		
 	public:
 		Player();
 		void equip(Weapon* weapon);
 		void exert(int exertion); //lowers thirst, hunger, and stamina
+
 		Coord* getLoc();
 		Weapon* getEqRngWeapon();
 		void setLoc(Coord* nLocation);
@@ -35,6 +37,7 @@ class Player : public Entity {
 		void unequip(Weapon* weapon);
 		void respawn(Coord* loc);
 		void draw(Map *map);
+	
 
 
 };

@@ -76,7 +76,11 @@ void Zombie::tick(Game* game) { //eat_brains()
 		if (static_cast<unsigned int>(moveQueue.front().first) > game->getTickcount()) {
 			break;
 		} else {
-			game->addEvent(EventFactory::createMoveEvent(this, moveQueue.front().second, 0));
+			//if (game->getMap()->getBlockAt(&(*getLoc() + *game->directionOffsets[(int)moveQueue.front().second]))->isPassable()) {
+				game->addEvent(EventFactory::createMoveEvent(this, moveQueue.front().second, 0));
+			//} else {
+			//	resolveObstacle(game, moveQueue.front().second);
+			//}
 			moveQueue.pop_front();
 		}
 	}

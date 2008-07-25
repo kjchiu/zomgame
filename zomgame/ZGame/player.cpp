@@ -7,9 +7,12 @@ Player::Player() : Entity(){
 	name = "NameHere";
 	location = new Coord();
 	displayChar = '@';
-	addAttribute(new Attribute("Hunger", 1000));
-	addAttribute(new Attribute("Thirst", 1000));
-	addAttribute(new Attribute("Stamina", 1000));
+	//addAttribute(new Attribute("Hunger", 1000));
+	//addAttribute(new Attribute("Thirst", 1000));
+	//addAttribute(new Attribute("Stamina", 1000));
+	addAttribute(AttributeFactory::getHealth(1000));
+	addAttribute(AttributeFactory::getStamina());
+	addAttribute(AttributeFactory::getStrength());
 	skills = new vector<SkillValue>();
 	SkillValue sValue;
 	int i = 0;
@@ -78,3 +81,5 @@ void Player::unequip(Weapon* weapon){
 void Player::respawn(Coord *loc) {
 	
 }
+
+

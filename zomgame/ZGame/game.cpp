@@ -7,6 +7,7 @@
 #include "globals.h"
 #include "keycodes.h"
 #include <windows.h>
+#include "effect_types.h"
 
 EventDeque* Game::events = new EventDeque();
 Game* Game::_instance = NULL;
@@ -70,7 +71,6 @@ void Game::init(int tWidth, int tHeight){
 		zombies.push_back(zombones);
 	}
 
-	player->addAttribute(new Attribute("Strength", 10));
 
 	getMap()->getBlockAt(3, 3)->addItem(ItemFactory::createMedicalItem("Bandages", 2));
 
@@ -212,6 +212,8 @@ int Game::processKey(int key){
 		case WIN_KEY_DEL:
 			quitGame();
 			return -1;
+		case '/':
+			addEvent(EventFactory::createAddEffectEvent(player, new EffectWtf(this, 1000), 0));
 		case 'g':
 			if(!map->getBlockAt(player->getLoc())->getItems().empty()){
 				display->toggleInventory(false);

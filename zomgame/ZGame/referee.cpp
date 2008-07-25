@@ -23,3 +23,10 @@ int Referee::resolveEvents(int currentTick, EventDeque* eventDeque){
 	}
 	return numEvents;
 }
+
+int Referee::resolveEffects(std::vector<Effect*> *effects) {
+	for (unsigned int i  = 0; i < effects->size(); i++) {
+		effects->at(i)->tick(game->getTickcount());
+	}
+	return effects->size();
+}

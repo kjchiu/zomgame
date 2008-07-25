@@ -6,18 +6,25 @@
 #include <string>
 using namespace std;
 
+
+enum Attributes{STRENGTH, HEALTH, STAMINA, X};
+
 class Attribute {
 
 	private: 
 		string name;
 		int curValue, maxValue;
+		Attributes type;
 	public:
 		Attribute();
 		Attribute(string nName);
 		Attribute(string nName, int nValue);
 		Attribute(string nName, int nCurValue, int nMaxValue);
+		Attribute(string nName, Attributes nType, int nCurValue, int nMaxValue);
+		void init(string nName, Attributes nType, int nCurValue, int nMaxValue);
 		void init(string nName, int nCurValue, int nMaxValue);
 		string getName();
+		Attributes getType();
 		int getCurValue();
 		int getMaxValue();
 		int getPercentage();
