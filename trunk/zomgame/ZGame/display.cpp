@@ -363,7 +363,7 @@ int Display::processKey(int input){
 	} else if (dState->attrIsToggled()){
 		return processKeyAttributes(input);
 	}
-	return -1;
+	return 0;
 }
 
 int Display::processKeyAttributes(int input){
