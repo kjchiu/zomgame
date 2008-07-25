@@ -15,7 +15,7 @@ void Weapon::init(string nName, int damage){
 	setDamage(damage);
 	setDisplayChar('/');
 	setType(Item::WEAPON);
-	setWType(Weapon::MELEE);
+	setWType(Weapon::UNARMED);
 	durability = new Attribute("Durability", 100);
 	this->addSkill(skill_list.getSkillID("Equip"));
 	this->addSkill(skill_list.getSkillID("Repair"));
@@ -34,8 +34,24 @@ int Weapon::getWType(){
 }
 
 string Weapon::getWTypeString(){
-	//return "Weapon"; //will return a string represenation of the weapon's class
-	return isMelee() ? "Melee" : "Ranged";
+	switch (getWType()){
+		case UNARMED:
+			return "Unarmed";
+		case BLUNT:
+			return "Blunt Melee";
+		case EDGED:
+			return "Edged Melee";
+		case HANDGUN:
+			return "Handgun";
+		case RIFLE:
+			return "Rifle";
+		case SHOTGUN:
+			return "Shotgun";
+		case MACHINEGUN:
+			return "Machine Gun";
+		default:
+			return "Unarmed";
+	}
 }
 
 int Weapon::getRange() {
@@ -43,7 +59,7 @@ int Weapon::getRange() {
 }
 
 bool Weapon::isMelee(){
-	if (wType == Weapon::MELEE){
+	if (wType == UNARMED || wType == BLUNT || wType == EDGED){
 		return true;
 	}
 	return false;

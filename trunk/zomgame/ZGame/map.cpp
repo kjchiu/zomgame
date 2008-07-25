@@ -49,6 +49,21 @@ MapBlock* Map::getMap() {
 	return *map;
 }
 
+void Map::makeRoadAt(Coord* topLeft, int width, int height){
+	Coord* newCoord = new Coord();
+	for (int x=topLeft->getX(); x<topLeft->getX()+width;x++){
+		for (int y=topLeft->getY(); y<topLeft->getY()+height;y++){
+			newCoord->setX(x);
+			newCoord->setY(y);
+			if (isWithinMap(newCoord)){
+				if (rand() % 3 > 0){
+					getBlockAt(newCoord)->setTerrain(TerrainFactory::makeTerrain(ROAD));	
+				}
+			}
+		}
+	}
+}
+
 void Map::makeRoomAt(Coord* topLeft, int width, int height){
 	Coord* newCoord = new Coord();
 	for (int x=topLeft->getX(); x<topLeft->getX()+width;x++){

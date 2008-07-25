@@ -72,7 +72,6 @@ void Game::init(int tWidth, int tHeight){
 
 	player->addAttribute(new Attribute("Strength", 10));
 
-
 	getMap()->getBlockAt(3, 3)->addItem(ItemFactory::createMedicalItem("Bandages", 2));
 
 	Item* foodItem = new Item();
@@ -85,6 +84,7 @@ void Game::init(int tWidth, int tHeight){
 	
 	Weapon* katana = new Weapon("Katana", 1000);
 	katana->setDescription("Damn, it's a ninja weapon!");
+	katana->setWType(Weapon::EDGED);
 	map->getBlockAt(7,5)->addItem(katana);
 
 	Door* door = PropFactory::createDoor(1000);
@@ -321,10 +321,6 @@ void Game::quitGame(){
 }
 
 void Game::tick(){
-	//check events here
-	int eventsOccured = ref->resolveEvents(getTickcount(), getEventList());
-	
-
 	for (unsigned int i=0; i<zombies.size(); i++){
 		Zombie* z = zombies.at(i);
 		if (z->getAttribute("Health")->getCurValue()) {
@@ -349,8 +345,8 @@ void Game::tick(){
 			z->tick(this);
 		}
 	}
-	
-	
+	//check events here
+	int eventsOccured = ref->resolveEvents(getTickcount(), getEventList());
 }
 
 void Game::draw(){

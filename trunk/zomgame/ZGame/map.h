@@ -28,6 +28,7 @@ class Map{
 		int getHeight();
 		int getWidth();
 		void makeRoomAt(Coord* topLeft, int width, int height); //makes a room. I'm bored.
+		void makeRoadAt(Coord* topLeft, int width, int height);
 		void setBlockAt(MapBlock *mBlock, int x, int y);
 		bool isWithinMap(Coord* checkCoord);
 		void loadFrom(const char* filename);

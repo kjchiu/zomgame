@@ -18,36 +18,48 @@ Message* AttackEvent::resolve(){
 	Map* map = Game::getInstance()->getMap();
 	
 	Attackable* defender;
-	char loc[10];
+	
 	int maxDmg, dmg;
 	MapBlock *attacker_block, *defender_block;
 	attacker_block = Game::getInstance()->getMap()->getBlockAt(attacker->getLoc());
 	defender_block = Game::getInstance()->getMap()->getBlockAt(targetLoc);
-	sprintf_s(&loc[0], 10, "(%d,%d)", attacker->getLoc()->getX(), attacker->getLoc()->getY());
+	//char loc[10];
+	//sprintf_s(&loc[0], 10, "(%d,%d)", attacker->getLoc()->getX(), attacker->getLoc()->getY());
 	
 	Message* returnMessage = new Message();
 	string* messageStr = new string();
 	returnMessage->setMsg(messageStr);
 	
-	*messageStr += attacker->getName() + std::string(loc) + " attacks ";
+	*messageStr += attacker->getName() + " attacks ";
+	
 	//check probability to hit based on player skill first
 	if (rand() % 100 < 20){ //durr magic number 20
-		*messageStr += "and misses.";
+		*messageStr = attacker->getName() + " swings but misses.";  
+		if (attacker->isPlayer()){
+			static_cast<Player*>(attacker)->getSkill(skill_list.getSkillID(attacker->getEquippedWeapon()->getWTypeString()))->raiseExperience(rand() % 2 + 1);
+		}
 		return returnMessage;
 	} 
 	//TODO: subtract stamina
 	//work on damage calculations and output messages
-	if(attacker->getEquippedWeapon()->getName() != "fists")
+	if (attacker->getEquippedWeapon()->getName() != "fists"){
 		attacker->getEquippedWeapon()->getDurability()->changeCurValueBy(-(rand()%3)-1);
+	}
 	maxDmg = attacker->getAttribute("Strength")->getCurValue() + attacker->getEquippedWeapon()->getDamage();
 	dmg = rand() % maxDmg; 
 
 	if (defender_block->hasEntities()) {
 		defender = defender_block->getTopEntity();
 		*messageStr += defender_block->getTopEntity()->getName();
+		if (attacker->isPlayer()){
+			static_cast<Player*>(attacker)->getSkill(skill_list.getSkillID(attacker->getEquippedWeapon()->getWTypeString()))->raiseExperience(rand() % 3 + 2);
+		}
 	} else if (map->getBlockAt(targetLoc)->hasProps()) {
 		defender = defender_block->getTopProp();
 		*messageStr += defender_block->getTopProp()->getName();
+		if (attacker->isPlayer()){
+			static_cast<Player*>(attacker)->getSkill(skill_list.getSkillID(attacker->getEquippedWeapon()->getWTypeString()))->raiseExperience(rand() % 1 + 1);
+		}
 	} else {
 		defender = NULL;
 	}
@@ -58,11 +70,10 @@ Message* AttackEvent::resolve(){
 
 	defender->getHealth()->changeCurValueBy(-dmg);
 	//points display is gay. percentile-based verbal damage output yes.
-	if (dmg < maxDmg/5) { *messageStr += " with a weak strike."; }
-	if (dmg >= maxDmg/5 && dmg < maxDmg/2) { *messageStr += " with a solid hit. "; }
-	if (dmg >= maxDmg/2) { *messageStr += " with a powerful blow!";}
+	if (dmg < maxDmg/5) { *messageStr += ", but the attack barely connects."; }
+	if (dmg >= maxDmg/5 && dmg < maxDmg/2) { *messageStr += ", connecting with a solid hit."; }
+	if (dmg >= maxDmg/2) { *messageStr += " and makes a powerful blow!";}
 	defender->getHealth()->changeCurValueBy(-dmg);
-
 
 	// break the weapon if it runs out of durability
 	if (attacker->getEquippedWeapon()->getDurability()->getCurValue() <= 0){
