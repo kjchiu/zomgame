@@ -1,4 +1,5 @@
 #include "entity.h"
+#include "weaponfactory.h"
 
 Entity::Entity(){
 	init();
@@ -62,7 +63,7 @@ Attribute* Entity::getHealth() {
 }
 Weapon* Entity::getEquippedWeapon(){
 	if (equippedWeapon == NULL){
-		return new Weapon(); //returns bare fists
+		return WeaponFactory::createFists(); //returns bare fists
 	}
 	return equippedWeapon;
 }

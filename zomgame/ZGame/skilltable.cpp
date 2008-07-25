@@ -140,7 +140,7 @@ int eat(Player* p, void* target, vector<Message*>* log) {
 	if (item->getWeight() <= 0) {
 		p->getInventory()->removeItem(item);
 	}
-	std::string* msg = new std::string("Ate a " + item->getName());
+	std::string* msg = new std::string("Ate " + item->getListName());
 	log->push_back(new Message(msg));
 	return 0;
 }
@@ -174,7 +174,8 @@ int firstaid(Player* p, void* target, vector<Message*>* log) {
 	if ((rand() % 100) > chanceOfSuccess){
 		log->push_back(new Message(new string("You healed some of your injuries.")));
 		p->getSkill(skill_list.getSkillID("First Aid"))->raiseExperience(5 * medItem->getHealPot());
-		//insert healing here
+		p->getHealth()->changeCurValueBy(medItem->getHealPot() * 2 * ability / 10);
+		//tentative formula
 	} else {
 		p->getSkill(skill_list.getSkillID("First Aid"))->raiseExperience(10 * medItem->getHealPot());
 		log->push_back(new Message(new string("You failed to do any good.")));

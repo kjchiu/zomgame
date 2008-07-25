@@ -14,7 +14,7 @@ class Player;
 class Weapon : public Item {
 	
 	public:
-		enum WeaponType {MELEE, RANGED};
+		enum WeaponType {UNARMED, BLUNT, EDGED, HANDGUN, SHOTGUN, RIFLE, MACHINEGUN};
 
 	private:
 		WeaponType wType; //relates to what skill is associated with the weapon

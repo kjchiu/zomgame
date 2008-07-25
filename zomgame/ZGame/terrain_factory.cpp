@@ -21,6 +21,9 @@ Terrain* TerrainFactory::makeTerrain(TerrainType type)
 	case INDOOR_TILE:
 		terrain = new IndoorTile;
 		break;
+	case ROAD:
+		terrain = new Road;
+		break;
 	default:
 		terrain = new Terrain;
 		break;

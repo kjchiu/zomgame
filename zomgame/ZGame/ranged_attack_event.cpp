@@ -39,9 +39,10 @@ Message* RangedAttackEvent::resolve() {
 	if (defender) {	
 		if (player->getEqRngWeapon()) {
 			// damage the defender
-			defender->getHealth()->changeCurValueBy(0 - player->getEqRngWeapon()->getDamage());
+			int dmg = player->getEqRngWeapon()->getDamage();
+			defender->getHealth()->changeCurValueBy(-dmg);
 			// check if it's dead
-			if (!defender->getHealth()) {
+			if (defender->getHealth()->getCurValue() <= 0) {
 				// remove entity from map
 				if (block->hasEntities()) {			
 					block->removeEntity(block->getTopEntity());
@@ -51,20 +52,25 @@ Message* RangedAttackEvent::resolve() {
 					block->removeProp(block->getTopProp());
 				}
 				// add debris to map
-				Game::getInstance()->addEvent(EventFactory::createSpawnItemEvent(defender->destroy(), targetLoc, 0));
-				sprintf_s(&buf[0], 128, "You killed %s.", static_cast<Entity*>(defender)->getName().c_str());
+				Game::getInstance()->addEvent(EventFactory::createSpawnItemEvent(defender->destroy(), &ray->at(i), 0));
+				sprintf_s(&buf[0], 128, "You kill the %s.", static_cast<Entity*>(defender)->getName().c_str());
+				player->getSkill(skill_list.getSkillID(player->getEqRngWeapon()->getWTypeString()))->raiseExperience(rand() % 2 + 1);
+		
 			} else {	
-				sprintf_s(&buf[0], 128, "You shot a %s with your %s. It has %d%% health left.", 
-					static_cast<Entity*>(defender)->getName().c_str(), player->getEqRngWeapon()->getName().c_str(), defender->getHealth()->getPercentage());			
+				sprintf_s(&buf[0], 128, "You shot a %s with your %s. It has %d health left.", 
+					static_cast<Entity*>(defender)->getName().c_str(), player->getEqRngWeapon()->getName().c_str(), defender->getHealth()->getCurValue());			
+				player->getSkill(skill_list.getSkillID(player->getEqRngWeapon()->getWTypeString()))->raiseExperience(rand() % 1);
 			}
 		} else {
 			sprintf_s(&buf[0], 128, "You have nothing to shoot with.");
 		}
 	} else {
 		if (player->getEqRngWeapon()) {
-			sprintf_s(&buf[0], 128, "You attack the darkness?");		
+			sprintf_s(&buf[0], 128, "Your shot hits the ground.");	
+			player->getSkill(skill_list.getSkillID(player->getEqRngWeapon()->getWTypeString()))->raiseExperience(rand() % 1 + 100);
+		
 		} else {
-			sprintf_s(&buf[0], 128, "You point at the darkness with your finger and say bang?");
+			sprintf_s(&buf[0], 128, "You have no ranged weapon equipped.");
 		}
 	}
 	msg->setMsg(&buf[0]);

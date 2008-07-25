@@ -14,7 +14,8 @@ enum TerrainType
 	DEADLANDS,
 	WHEAT,
 	WOOD_WALL,
-	INDOOR_TILE
+	INDOOR_TILE,
+	ROAD
 };
 
 class Terrain : public Renderable {
