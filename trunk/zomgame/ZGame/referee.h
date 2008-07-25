@@ -22,6 +22,7 @@ class Referee {
 	public:
 		Referee(Game*);
 		int resolveEvents(int currentTick, EventDeque* eventDeque);
+		int resolveEffects(vector<Effect*>* effects);
 };
 
 #endif

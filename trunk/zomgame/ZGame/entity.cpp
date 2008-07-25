@@ -14,6 +14,7 @@ void Entity::init(){
 	color = 2;
 	inventory = new Inventory();
 	attributes = new vector<Attribute*>();
+	effects = new vector<Effect*>();
 	addAttribute(new Attribute("Health", 1000));
 	equip(NULL);
 }
@@ -36,17 +37,34 @@ void Entity::equip(Weapon* weapon){
 	equippedWeapon = weapon;
 }
 
+vector<Effect*>* Entity::getEffects() {
+	return effects;
+}
+
 vector<Attribute*>* Entity::getAttributes(){
 	return attributes;
 }
 
 int Entity::getAttributeValue(string attName){
-	for (unsigned int i=0; i<attributes->size(); i++){
-		if (attributes->at(i)->getName() == attName){
-			return attributes->at(i)->getCurValue();
-		}
+	Attribute* attribute = getAttribute(attName);
+	int value = attribute->getCurValue();
+	for (int i = 0; i < effects->size(); i++) {
+		value = effects->at(i)->modify(attribute->getType(), value);
 	}
-	return -1;
+	return value;
+}
+
+int Entity::getAttributeValue(Attributes type) {
+	Attribute* attribute = getAttribute(type);
+	if (attribute) {
+		int value = attribute->getCurValue();
+		for (int i = 0; i < effects->size(); i++) {
+			value = effects->at(i)->modify(attribute->getType(), value);
+		}
+		return value;
+	} else {
+		return 0;
+	}
 }
 
 Attribute* Entity::getAttribute(string attName){
@@ -56,6 +74,15 @@ Attribute* Entity::getAttribute(string attName){
 		}
 	}
 	return new Attribute();
+}
+
+Attribute* Entity::getAttribute(Attributes type) {
+	for (unsigned int i = 0; i < attributes->size(); i++) {
+		if (attributes->at(i)->getType() == type) {
+			return attributes->at(i);
+		}
+	}
+	return NULL;
 }
 
 Attribute* Entity::getHealth() {
@@ -107,3 +134,14 @@ void Entity::setType(EntityType nType){
 std::vector<Item*> Entity::destroy() {
 	return std::vector<Item*>();
 }
+
+void Entity::addEffect(Effect *effect) {
+	effects->push_back(effect);
+}
+
+void Entity::tickEffects(int tick) {
+	for (unsigned int i = 0; i < effects->size(); i++)  {
+		effects->at(i)->tick(tick);
+	}
+}
+

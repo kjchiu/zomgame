@@ -35,6 +35,8 @@ class EventFactory {
 		static Event* createInteractEvent(Entity* actor, Coord* loc, int tick);
 		static Event* createSkillEvent(Entity* actor, Skill* skill, void* target, int tick);
 
+		static Event* createAddEffectEvent(Entity* target, Effect* effect, int tick);
+
 
 };
 

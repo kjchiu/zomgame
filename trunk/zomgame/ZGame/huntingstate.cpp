@@ -22,7 +22,7 @@ void HuntingState::tick(Game* game) {
 		slope = (dx && dy) ? abs(delta.getX() / delta.getY()) : 0;
 	}
 
-int offset;
+	int offset;
 	if (( slope > 0.7) && (slope < 1.3)) {
 		int offset = (dx - EAST) ? 1 : -1;
 		if (offset == -1 && dy == NORTH) {
