@@ -36,18 +36,19 @@ Message* AttackEvent::resolve(){
 	if (rand() % 100 < 20){ //durr magic number 20
 		*messageStr = attacker->getName() + " swings but misses.";  
 		if (attacker->isPlayer()){
-			static_cast<Player*>(attacker)->getSkill(skill_list.getSkillID(attacker->getEquippedWeapon()->getWTypeString()))->raiseExperience(rand() % 2 + 1);
+			static_cast<Player*>(attacker)->getSkill(skill_list.getSkillID(attacker->getEquippedWeapon()->getWTypeString()))->raiseExperience(rand() % 5 + 5);
 		}
 		return returnMessage;
 	} 
+	if (attacker->isPlayer()){
+		static_cast<Player*>(attacker)->getSkill(skill_list.getSkillID(attacker->getEquippedWeapon()->getWTypeString()))->raiseExperience(rand() % 10 + 5);
+	}
 	//TODO: subtract stamina
 	//work on damage calculations and output messages
 	if (attacker->getEquippedWeapon()->getName() != "fists"){
 		attacker->getEquippedWeapon()->getDurability()->changeCurValueBy(-(rand()%3)-1);
-	//maxDmg = attacker->getAttribute("Strength")->getCurValue() + attacker->getEquippedWeapon()->getDamage();
-	maxDmg = attacker->getAttributeValue(STRENGTH) + attacker->getEquippedWeapon()->getDamage();
-	dmg = rand() % maxDmg; 
-
+	}
+	
 	if (defender_block->hasEntities()) {
 		defender = defender_block->getTopEntity();
 		*messageStr += defender_block->getTopEntity()->getName();
@@ -68,11 +69,14 @@ Message* AttackEvent::resolve(){
 		return NULL;
 	} 
 
+
+	maxDmg = attacker->getAttributeValue(STRENGTH) + attacker->getEquippedWeapon()->getDamage();
+	dmg = rand() % maxDmg; 
 	defender->getHealth()->changeCurValueBy(-dmg);
 	//points display is gay. percentile-based verbal damage output yes.
-	if (dmg < maxDmg/5) { *messageStr += ", but the attack barely connects."; }
-	if (dmg >= maxDmg/5 && dmg < maxDmg/2) { *messageStr += ", connecting with a solid hit."; }
-	if (dmg >= maxDmg/2) { *messageStr += " and makes a powerful blow!";}
+	if (dmg < maxDmg * 0.30) { *messageStr += ", but the attack barely connects."; }
+	if (dmg >= maxDmg * 0.30 && dmg < maxDmg * 0.85) { *messageStr += ", connecting with a solid hit."; }
+	if (dmg >= maxDmg * 0.85) { *messageStr += " and makes a powerful blow!";}
 	defender->getHealth()->changeCurValueBy(-dmg);
 
 	// break the weapon if it runs out of durability
@@ -93,6 +97,5 @@ Message* AttackEvent::resolve(){
 		}
 			Game::getInstance()->addEvent(EventFactory::createSpawnItemEvent(defender->destroy(), targetLoc, 0));
 	}
-	
 	return returnMessage;
 }

@@ -4,6 +4,7 @@
 
 #include <string>
 #include "renderable.h"
+#include "color_defines.h"
 
 using namespace std;
 

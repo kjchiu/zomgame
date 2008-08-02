@@ -5,6 +5,7 @@
 #include "player.h"
 #include "coord.h"
 #include "event.h"
+#include "color_defines.h"
 
 class SkillTable;
 

@@ -13,6 +13,8 @@ Player::Player() : Entity(){
 	addAttribute(AttributeFactory::getHealth(1000));
 	addAttribute(AttributeFactory::getStamina());
 	addAttribute(AttributeFactory::getStrength());
+	addAttribute(AttributeFactory::getHunger());
+	addAttribute(AttributeFactory::getThirst());
 	skills = new vector<SkillValue>();
 	SkillValue sValue;
 	int i = 0;

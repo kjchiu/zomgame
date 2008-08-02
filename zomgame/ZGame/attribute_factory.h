@@ -11,6 +11,8 @@ public:
 	static Attribute* getHealth();
 	static Attribute* getHealth(int health);
 	static Attribute* getStamina();
+	static Attribute* getThirst();
+	static Attribute* getHunger();
 };
 
 #endif
