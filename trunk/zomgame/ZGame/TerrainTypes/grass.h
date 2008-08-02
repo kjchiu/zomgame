@@ -24,7 +24,7 @@ public:
 	}
 	virtual ~Grass() {}
 	virtual char getChar() { return ';'; }
-	virtual short getColor() { return 1; } // 
+	virtual short getColor() { return GREEN_BLACK; } // 
 	virtual string getName() { return "grass"; }
 	TerrainType getType() {return GRASS;}
 

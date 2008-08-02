@@ -31,16 +31,14 @@ void Display::init() {
 	start_color();
 
 	// TODO: we really need to move colour palette stuff somewhere else
-#define DEFAULT_COLOR 0
 	if (can_change_color())
 		init_color(15, 0, 1000, 1000);
-	init_pair(0, COLOR_WHITE, COLOR_BLACK);
-	init_pair(1, COLOR_GREEN, COLOR_BLACK);
-	init_pair(2, COLOR_RED, COLOR_BLACK);
-	init_pair(3, COLOR_CYAN, COLOR_BLACK);
-#define YELLOW_BLACK 4
-	init_pair(4, COLOR_YELLOW, COLOR_BLACK);  
-	init_pair(5, COLOR_MAGENTA, COLOR_BLACK);
+	init_pair(WHITE_BLACK, COLOR_WHITE, COLOR_BLACK);
+	init_pair(GREEN_BLACK, COLOR_GREEN, COLOR_BLACK);
+	init_pair(RED_BLACK, COLOR_RED, COLOR_BLACK);
+	init_pair(CYAN_BLACK, COLOR_CYAN, COLOR_BLACK);
+	init_pair(YELLOW_BLACK, COLOR_YELLOW, COLOR_BLACK);  
+	init_pair(MAGENTA_BLACK, COLOR_MAGENTA, COLOR_BLACK);
 	init_pair(6, 15, COLOR_BLACK);
 #define TARGET_COLOR COLOR_RED
 #define TARGET_PAIR 6
@@ -265,7 +263,11 @@ void Display::drawCharacterInfo(){
 	Player* p = game->getPlayer();
 	//character name, equipped weapons, skills
 	mvwprintw(playWin, 2,2, "Name: %s", p->getName().c_str());
-
+	mvwprintw(playWin, 4,2, "ATTRIBUTES");
+	vector<Attribute*>* attributeList = p->getAttributes();
+	for (unsigned int j = 0; j < attributeList->size(); j++){
+		mvwprintw(playWin, j+5,2, "%s: %d/%d", attributeList->at(j)->getName().c_str(), attributeList->at(j)->getCurValue(), attributeList->at(j)->getMaxValue());
+	}
 
 
 	mvwprintw(playWin, 1, width-20, "SKILLS");

@@ -7,7 +7,7 @@
 using namespace std;
 
 
-enum Attributes{STRENGTH, HEALTH, STAMINA, X};
+enum Attributes{STRENGTH, HEALTH, STAMINA, THIRST, HUNGER, X};
 
 class Attribute {
 

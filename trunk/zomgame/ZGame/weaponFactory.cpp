@@ -10,7 +10,7 @@ Weapon* WeaponFactory::createPistol() {
 }
 
 Weapon* WeaponFactory::createFists() {
-	Weapon* fists = new Weapon("fists", 10);
+	Weapon* fists = new Weapon("fists", 1);
 	fists->setRange(0);
 	fists->setWType(Weapon::UNARMED);
 	return fists;
