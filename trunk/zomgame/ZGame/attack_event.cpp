@@ -34,8 +34,9 @@ Message* AttackEvent::resolve(){
 	
 	//check probability to hit based on player skill first
 	if (rand() % 100 < 20){ //durr magic number 20
-		*messageStr = attacker->getName() + " swings but misses.";  
+		*messageStr = "The zombie grabs at you but misses.";
 		if (attacker->isPlayer()){
+			*messageStr = attacker->getName() + " swings but misses.";  
 			static_cast<Player*>(attacker)->getSkill(skill_list.getSkillID(attacker->getEquippedWeapon()->getWTypeString()))->raiseExperience(rand() % 5 + 5);
 		}
 		return returnMessage;
@@ -69,8 +70,8 @@ Message* AttackEvent::resolve(){
 		return NULL;
 	} 
 
-
-	maxDmg = attacker->getAttributeValue(STRENGTH) + attacker->getEquippedWeapon()->getDamage();
+	maxDmg = 10; //zombie damage
+	if (attacker->isPlayer()){maxDmg = attacker->getAttributeValue(STRENGTH) + attacker->getEquippedWeapon()->getDamage();}
 	dmg = rand() % maxDmg; 
 	defender->getHealth()->changeCurValueBy(-dmg);
 	//points display is gay. percentile-based verbal damage output yes.

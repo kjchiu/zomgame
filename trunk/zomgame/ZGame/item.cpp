@@ -82,5 +82,8 @@ void Item::setWeight(int nWeight){
 }
 
 bool Item::operator==(const Item& otherItem) const {
+	if (&otherItem == NULL){
+		return false;
+	}
 	return (getID() == otherItem.getID());
 }

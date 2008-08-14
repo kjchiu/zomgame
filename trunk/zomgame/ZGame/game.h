@@ -16,6 +16,7 @@
 #include "player.h"
 #include "referee.h"
 #include "zombie.h"
+#include "scrollable_list.h"
 
 #include "weaponFactory.h"
 
@@ -44,6 +45,7 @@ class Game {
 		Player* player;
 		Coord* target;
 		vector<Zombie*> zombies;
+		vector<Item*>* rightInventory;
 		unsigned int tickCount;
 		bool eventsResolved;
 
@@ -60,6 +62,7 @@ class Game {
 		Referee* getReferee() {return this->ref;}
 		void addMessage(Message* msg);
 		deque<Message> getMessages();
+		vector<Item*>* getRightInvList();
 
 		char* getView();
 		Player* getPlayer();

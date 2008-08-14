@@ -99,6 +99,16 @@ Inventory* Entity::getInventory(){
 	return inventory;
 }
 
+vector<string*>* Entity::getInventoryStrings(){
+	vector<string*>* strings = new vector<string*>();
+	for (int i=0; i < inventory->getSize(); i++){
+		string* name = new string(inventory->getItemAt(i)->getName());
+		strings->push_back(name);
+	}
+
+	return strings;
+}
+
 Coord* Entity::getLoc(){
 	return location;
 }

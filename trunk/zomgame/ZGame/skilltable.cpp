@@ -170,11 +170,11 @@ int firstaid(Player* p, void* target, vector<Message*>* log) {
 	MedicalItem* medItem = static_cast<MedicalItem*>(target);
 	int ability = p->getSkillValue(skill_list.getSkillID("First Aid"));
 	//the more effective the tool, the higher the rate of failure. Get used to bandages!
-	int chanceOfSuccess = 50 + (ability * 3) - (medItem->getHealPot() * 4);
-	if ((rand() % 100) > chanceOfSuccess){
+	int chanceOfSuccess = 60 + (ability * 3) - (medItem->getHealPot() * 4);
+	if ((rand() % 100) < chanceOfSuccess){
 		log->push_back(new Message(new string("You healed some of your injuries.")));
 		p->getSkill(skill_list.getSkillID("First Aid"))->raiseExperience(5 * medItem->getHealPot());
-		p->getHealth()->changeCurValueBy(medItem->getHealPot() * 2 * ability / 10);
+		p->getHealth()->changeCurValueBy(medItem->getHealPot() * 2 * ability / 3);
 		//tentative formula
 	} else {
 		p->getSkill(skill_list.getSkillID("First Aid"))->raiseExperience(10 * medItem->getHealPot());

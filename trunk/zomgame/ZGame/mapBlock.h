@@ -36,6 +36,7 @@ class MapBlock {
 		short getColor();
 		Item* getItemAt(int index);
 		vector<Item*> getItems();
+		vector<string*>* getItemStrings();
 		Entity* getTopEntity();
 		Prop* getTopProp();
 		bool hasEntities();

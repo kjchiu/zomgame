@@ -10,6 +10,8 @@
 #include "message.h"
 #include "globals.h"
 #include "popupWin.h"
+#include "scrollable_list.h"
+
 
 #ifndef _GAME_H_
 class Game;
@@ -52,10 +54,14 @@ class Display {
 		int inventorySelection, minIndex, maxIndex;
 		int groundSelection, minGIndex, maxGIndex;
 		int popupSelection, minPopupIndex, maxPopupIndex;
+		ScrollableList* leftInv;
+		ScrollableList* rightInv;
 		bool attToggle;
 		bool popupToggle;
 		DisplayState* dState;
 		vector<int>* skills;
+		
+		void drawInventoryList(ScrollableList* inv, int xPos, bool highlight);
 
 	public:
 		Display(Game* game);
@@ -67,14 +73,14 @@ class Display {
 
 		void cleanSelections();
 		void draw();
-		void draw(Inventory* inventory);
+		void draw(vector<string*>* inventoryStrings);
 		void draw(Map* map);	
 		void draw(deque<Message> msgs);
 		void draw(Player* player, MapBlock* block);
 		void drawCharacterInfo();
-		void drawInventoryList(vector<Item*> items, int yLoc, int selection, bool highlight);
 		void drawItemDetails(Item* item, int height, int width);
 		void drawPopup(Item* item);	//draw the skills an item can utilize 
+		vector<string*>* getItemStrings(vector<Item*>* itemList);
 		bool gameIsActive();
 		bool invIsToggled();
 		bool popupIsToggled();
