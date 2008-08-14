@@ -17,14 +17,18 @@ void Display::init() {
 	invWin = newwin(11,80,35,0); //displays the inventory
 	popupWin = new PopupWin(10, 30, 20, 20);
 
-	inventorySelection = -1;
 	showItemDetail = false;
 	groundSelection = -1;
 	
 	dState = new DisplayState();
 	dState->init();
-
+	
 	popupSelection = 0;
+	
+
+	leftInv = new ScrollableList();
+	rightInv = new ScrollableList();
+	
 
 	camera = new Camera();
 	camera->setViewableArea(33, 53); //height - 2, width - 2;
@@ -82,7 +86,7 @@ void Display::draw() {
 
 	this->draw(game->getMessages());
 	if (invIsToggled()){
-		this->draw(game->getPlayer()->getInventory());
+		this->draw(game->getPlayer()->getInventoryStrings());
 	}
 
 	draw(game->getPlayer(), game->getMap()->getBlockAt(game->getTarget()));
@@ -164,31 +168,34 @@ void Display::draw(deque<Message> msgs) {
 	
 }
 
-void Display::draw(Inventory* inventory){
+void Display::draw(vector<string*>* inventoryStrings){
 	wclear(invWin);
+	leftInv->setList(inventoryStrings);
 	int height, width;
 	getmaxyx(invWin, height, width);
-	vector<Item*> groundInv = game->getMap()->getBlockAt(game->getPlayer()->getLoc())->getItems();
-	
-	if (groundInv.empty()){
+	//vector<Item*>* groundInv = &(game->getMap()->getBlockAt(game->getPlayer()->getLoc())->getItems());
+	vector<string*>* groundInvStrings = this->getItemStrings(game->getRightInvList());
+	//I need to set rightInv elsewhere, for shizzle.
+	rightInv->setList(groundInvStrings);
+
+	if (groundInvStrings->empty()){
 		dState->invSide = true;
 	} 
-	if (inventory->getSize() == 0){
+	if (inventoryStrings->size() == 0){
 		dState->invSide = false;
 	}
-	if (showItemDetail && (inventory->getSize() > 0 || groundInv.size() > 0 )){ //if the user wants to see the details of an item
+	if (showItemDetail && (inventoryStrings->size() > 0 || groundInvStrings->size() > 0 )){ //if the user wants to see the details of an item
 		if (dState->invIsHighlighted() && dState->invSide) { //check the inventory selection
-			drawItemDetails(inventory->getItemAt(inventorySelection), height, width);	
+			drawItemDetails(game->getPlayer()->getInventory()->getItemAt(leftInv->getSelectedIndex()), height, width);	
 		} else { //check the ground selection
-			drawItemDetails(groundInv.at(groundSelection), height, width);
+			drawItemDetails(game->getMap()->getBlockAt(game->getPlayer()->getLoc())->getItemAt(rightInv->getSelectedIndex()), height, width);
 		} 	
 	} else {		//otherwise, draw the full inventory
 		for (int i=1; i<height-1; i++){	//draw the center column
 			mvwprintw(invWin, i, width/2, "|");
 		}
-		drawInventoryList(inventory->getItems(), 3, inventorySelection, dState->invIsHighlighted());
-		//now draw the ground items
-		drawInventoryList(groundInv, width/2 + 4, groundSelection, !dState->invIsHighlighted());
+		drawInventoryList(leftInv, 3, dState->invIsHighlighted());
+		drawInventoryList(rightInv, width/2 + 4, !dState->invIsHighlighted());
 	}
 
 	//draw the skills popup if necessary
@@ -203,7 +210,7 @@ void Display::draw(Inventory* inventory){
 }
 
 void Display::draw(Player* player, MapBlock* block){
-	wclear(menuWin); //first clear the window
+	//wclear(menuWin); //first clear the window
 
 	string condition = "Healthy";
 	//player = game->getPlayer();
@@ -269,45 +276,44 @@ void Display::drawCharacterInfo(){
 		mvwprintw(playWin, j+5,2, "%s: %d/%d", attributeList->at(j)->getName().c_str(), attributeList->at(j)->getCurValue(), attributeList->at(j)->getMaxValue());
 	}
 
-
 	mvwprintw(playWin, 1, width-20, "SKILLS");
 	for (unsigned int i = 0; i < p->getSkills()->size(); i++){
 		if (skill_list.getSkill(i)->getType() != INHERENT){
 			mvwprintw(playWin, i+2, width-20, "%d: %s - %d", i, skill_list.getSkill(i)->getName().c_str(), p->getSkillValue(i));
 		}
 	}
-
-
 	
 	box(playWin, 0,0);
 	mvwprintw(playWin, 0, 3, "CHARACTER INFO");
 	wrefresh(playWin);
 }
 
-void Display::drawInventoryList(vector<Item*> items, int xLoc, int selection, bool highlight){
-	int height, width;
-	getmaxyx(invWin, height, width);
-
-	int yLoc = 1;
-	for (int i = minIndex; i < static_cast<int>(items.size()) && i <= maxIndex; i++){
-		string itemName = "  ";
-		Item* item = items.at(i);
-		if (item == game->getPlayer()->getEquippedWeapon() || item == game->getPlayer()->getEqRngWeapon()){
-			itemName = "E ";
-		}
-		if (i == selection && highlight){
-			//set current working color to be yellow on black
-			wattron(invWin, COLOR_PAIR(YELLOW_BLACK));
-			itemName += "-";
-			itemName += item->getName().c_str();
-			itemName += "-";
-		} else {
-			itemName += " " + item->getName();
-		}
-		mvwprintw(invWin,yLoc,xLoc, "%s  ", itemName.c_str());
-		yLoc++;
+void Display::drawInventoryList(ScrollableList* inv, int xPos, bool highlight){
+	int height, width, offset;
+	string* itemName;
+	Item* item;
 	
-		// revert back to previous color
+	getmaxyx(invWin, height, width);
+	offset = inv->getDisplayOffset(height-2, 0);
+
+	for (int i=0; i<9;i++){
+		itemName = inv->getStringForPosition(i, 9);
+		item = game->getPlayer()->getInventory()->getItemAt(i+offset);
+		if (i + offset == inv->getSelectedIndex() && highlight) {  //if the item is highlighted
+			wattron(invWin, COLOR_PAIR(YELLOW_BLACK));
+			*itemName = "-" + *itemName + "-";
+		} else { 
+			*itemName = " " + *itemName; 
+		}
+		if (item != NULL && xPos < width/2) {				//if this is on the left side
+			if (item == game->getPlayer()->getEquippedWeapon() || //and the weapon is equipped
+				item == game->getPlayer()->getEqRngWeapon()){
+				*itemName = "E " + *itemName;
+			} else {
+				*itemName = "  " + *itemName;
+			}
+		}
+		mvwprintw(invWin,i+1,xPos, "%s", itemName->c_str());
 		wattroff(invWin, COLOR_PAIR(YELLOW_BLACK));
 	}
 }
@@ -337,6 +343,16 @@ bool Display::gameIsActive(){
 
 Entity* Display::getCenter() {
 	return center;
+}
+
+vector<string*>* Display::getItemStrings(vector<Item*>* itemList){
+	vector<string*>* stringList = new vector<string*>();
+
+	for (unsigned int i = 0; i < itemList->size(); i++){
+			stringList->push_back(new string(itemList->at(i)->getName()));
+	}
+	
+	return stringList;
 }
 
 bool Display::invIsToggled(){
@@ -378,34 +394,32 @@ int Display::processKeyAttributes(int input){
 int Display::processKeyInventory(int input){
 	wclear(invWin);
 	if (input == 'i'){
-		inventorySelection = 0;
+		leftInv->resetIndex();
+		rightInv->resetIndex();
 		showItemDetail = false;
 		this->toggleInventory(true);
 		return 5;
 	} else if (input == WIN_KEY_DOWN) { //down
-		if (!showItemDetail) {
-			if (dState->invIsHighlighted()){ inventorySelection += 1; }
-			else {groundSelection += 1; }
-			cleanSelections();
-		} 
+		if (dState->invIsHighlighted()){ leftInv->incIndex(); }
+			else {rightInv->incIndex();}
 	} else if (input == WIN_KEY_UP) { //up
-		if (!showItemDetail) {
-			if (dState->invIsHighlighted()){ inventorySelection -= 1; }
-			else {groundSelection -= 1; }
-			cleanSelections();
-		}
-	} else if (input == WIN_KEY_LEFT) { //left
+		if (dState->invIsHighlighted()){ leftInv->decIndex(); }
+			else {rightInv->decIndex();}	} 
+	else if (input == WIN_KEY_LEFT) { //left
 		dState->switchInvSelect();
 	} else if (input == WIN_KEY_RIGHT) { //right
 		dState->switchInvSelect();
 	} else if (input == 'g'){
 		if (!dState->invIsHighlighted()){
-			game->addEvent(EventFactory::createGetItemEvent(game->getPlayer(), game->getPlayer()->getLoc(), groundSelection, 0));
+			game->addEvent(EventFactory::createGetItemEvent(game->getPlayer(), game->getPlayer()->getLoc(), rightInv->getSelectedIndex(), 0));
+			rightInv->decIndex();
 			return 5;
 		} //pick up the item
 	} else if (input == WIN_KEY_ENTER) { //enter key
 		Item* item = NULL;
-		item = game->getPlayer()->getInventory()->getItemAt(inventorySelection);
+		if (dState->invIsHighlighted()){
+			item = game->getPlayer()->getInventory()->getItemAt(leftInv->getSelectedIndex());
+		}
 		if (item) {
 			this->setUpSkillWindow(item);
 			togglePopup();
@@ -424,21 +438,14 @@ int Display::processKeyUseItem(int input){
 	} else if (input == WIN_KEY_UP) { 
 		popupWin->decrementSelection();
 	} else if (input == WIN_KEY_ENTER) {
-		//dState->togglePopup();
 		togglePopup();
 		showItemDetail = !showItemDetail;
-		Item* item = game->getPlayer()->getInventory()->getItemAt(inventorySelection);
-		//inventorySelection = 0;
+		Item* item = game->getPlayer()->getInventory()->getItemAt(leftInv->getSelectedIndex());
 		if (popupWin->getListItemAt(popupWin->getSelectedIndex()) == "Drop"){
-			//game->getReferee()->dropItem(game->getPlayer(), inventorySelection, new Message());
-			game->addEvent(EventFactory::createDropItemEvent(game->getPlayer(), inventorySelection, 0));
+			game->addEvent(EventFactory::createDropItemEvent(game->getPlayer(), leftInv->getSelectedIndex(), 0));
 			return 5;
 		}
 		//use the selected skill
-		
-		/*return game->getReferee()->resolve(game->getPlayer(), 
-								item, 
-								skill_list.getSkill(item->getSkills()->at(popupWin->getSelectedIndex()))->action);*/
 		game->addEvent(EventFactory::createSkillEvent(game->getPlayer(), skill_list.getSkill(item->getSkills()->at(popupWin->getSelectedIndex())), item, 0));
 		return 5;
 	}
@@ -472,7 +479,8 @@ void Display::toggleInventory(bool selectedSide){
 		if (!selectedSide){ dState->switchInvSelect(); }
 		minIndex = 0, maxIndex = 8; 
 		minGIndex = 0, maxGIndex = 8;
-		inventorySelection = groundSelection = 0;
+		leftInv->resetIndex(); 
+		rightInv->resetIndex();
 		wresize(msgWin, 4, 80);
 		mvwin(msgWin, 46,0);
 	} else {

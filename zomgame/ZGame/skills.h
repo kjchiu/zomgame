@@ -58,7 +58,7 @@ machinegun - ADDED
 explosives		- nades blah -> not until we can implement explosives well
 unarmed			- fists of furyyyy - ADDED
 blunt melee 	- baseball bats, pipes, golf clubs - ADDED
-edged melee 	- swords, daggers, pointy things
+edged melee 	- swords, daggers, pointy things - ADDED
 exotic melee	- battle axes, medieval weapons? -> eh, later
 demolitions		- tnt etc. demoing buildings safely -> not until explosions are added
 
@@ -74,7 +74,7 @@ cooking			- ability to prep food, poisin is bad mmkay
 stealth			- in urban areas
 woodsman		- hunting/tracking ability
 construction	- ability to construct barricades etc
-first aid		- hot hot murses
+first aid		- hot hot murses - ADDED
 pharmacy		- if we have buffing meds (extra energy, sleep pills, etc), this ids them.
 
 */

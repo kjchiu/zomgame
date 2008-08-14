@@ -67,6 +67,16 @@ vector<Item*> MapBlock::getItems() {
 	return itemList;
 }
 
+vector<string*>* MapBlock::getItemStrings(){
+	vector<string*>* strings = new vector<string*>();
+	for (int i=0; i < itemList.size(); i++){
+		string* name = new string(itemList.at(i)->getName());
+		strings->push_back(name);
+	}
+
+	return strings;
+}
+
 /* Simply get the entity that's on the top of the vector/stack. */
 Entity* MapBlock::getTopEntity(){
 	if (entityList.size())

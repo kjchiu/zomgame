@@ -54,6 +54,7 @@ public:
 		void setType(EntityType nType);
 
 		virtual Inventory* getInventory();
+		virtual vector<string*>* getInventoryStrings();
 		virtual Coord* getLoc();
 		virtual int getValueOf(string attName); //returns the curValue only
 		bool isPlayer();

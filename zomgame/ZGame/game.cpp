@@ -26,6 +26,7 @@ void Game::init(int tWidth, int tHeight){
 	skill_list.load(std::string("."));
 	map = new Map();
 	player = new Player();
+	rightInventory = new vector<Item*>();
 	player->setName("PlayerMan");
 	player->getName().c_str();
 	player->setLoc(new Coord(12,12));
@@ -73,6 +74,11 @@ void Game::init(int tWidth, int tHeight){
 
 
 	getMap()->getBlockAt(3, 3)->addItem(ItemFactory::createMedicalItem("Bandages", 2));
+	getMap()->getBlockAt(3, 3)->addItem(ItemFactory::createMedicalItem("Bandages", 2));
+	getMap()->getBlockAt(3, 3)->addItem(ItemFactory::createMedicalItem("Bandages", 2));
+	getMap()->getBlockAt(3, 3)->addItem(ItemFactory::createMedicalItem("Bandages", 2));
+	getMap()->getBlockAt(3, 3)->addItem(ItemFactory::createMedicalItem("Bandages", 2));
+	getMap()->getBlockAt(3, 3)->addItem(ItemFactory::createMedicalItem("Bandages", 2));
 
 	Item* foodItem = new Item();
 	foodItem->setName("Chocolate Bar");
@@ -80,7 +86,6 @@ void Game::init(int tWidth, int tHeight){
 	foodItem->addSkill(skill_list.getSkillID("Consume"));
 	foodItem->setDescription("A good-looking chocolate bar wrapped in foil.");
 	player->getInventory()->addItem(foodItem);
-	
 	
 	Weapon* katana = new Weapon("Katana", 1000);
 	katana->setDescription("Damn, it's a ninja weapon!");
@@ -124,6 +129,10 @@ deque<Message> Game::getMessages(){
 
 Player* Game::getPlayer(){
 	return player;
+}
+
+vector<Item*>* Game::getRightInvList(){
+	return rightInventory;
 }
 
 Coord* Game::getTarget() {
@@ -217,6 +226,9 @@ int Game::processKey(int key){
 		case 'g':
 			if(!map->getBlockAt(player->getLoc())->getItems().empty()){
 				display->toggleInventory(false);
+				MapBlock* block = map->getBlockAt(player->getLoc());
+				rightInventory = &(block->getItems());
+				//FUCK WORK WORK WORK WHY
 				return 5;
 			}
 			break;
