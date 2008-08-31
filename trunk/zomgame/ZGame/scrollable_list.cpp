@@ -14,16 +14,16 @@ ScrollableList::ScrollableList(vector<string*>* nStringList){
 }
 		
 string* ScrollableList::getStringForPosition(int position, int displayHeight){
-	if (displayHeight > stringList->size()){
-		if (position >= stringList->size()){
+	if (displayHeight > stringList->size()) {
+		if (position >= stringList->size()) {
 			return new string(" ");
 		}
 		return stringList->at(position);
 	}
-	if (selectedIndex <= displayHeight/2){
+	if (selectedIndex <= displayHeight/2) {
 		return stringList->at(position);
 	}
-	if (selectedIndex >= stringList->size() - displayHeight/2){
+	if (selectedIndex >= stringList->size() - displayHeight/2) {
 		return stringList->at(stringList->size() - displayHeight + position);
 	}
 
@@ -32,12 +32,12 @@ string* ScrollableList::getStringForPosition(int position, int displayHeight){
 	return stringList->at(result);
 }
 
-bool ScrollableList::isSelected(){
+bool ScrollableList::isSelected() {
 	return selected;
 }
 
 void ScrollableList::incIndex(){
-	if (selectedIndex < stringList->size()-1){
+	if (selectedIndex < stringList->size()-1) {
 		selectedIndex++;
 	}
 }

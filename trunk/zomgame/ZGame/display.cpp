@@ -63,7 +63,7 @@ void Display::cleanSelections(){
 	}
 	
 	//same for the groundSelection
-	int groundSize = static_cast<int>(game->getMap()->getBlockAt(game->getPlayer()->getLoc())->getItems().size());
+	int groundSize = static_cast<int>(game->getMap()->getBlockAt(game->getPlayer()->getLoc())->getItems()->size());
 	if (groundSelection < 0){ groundSelection += groundSize; }
 	if (groundSize == 0){ groundSelection = 0; }
 		else {groundSelection %= groundSize; }
@@ -245,9 +245,9 @@ void Display::draw(Player* player, MapBlock* block){
 		mvwprintw(menuWin, halfway+4, 2, "Prop: %s", block->getTopProp()->getName().c_str());
 		mvwprintw(menuWin, halfway+5, 3,  "Durability: %d", block->getTopProp()->getHealth()->getCurValue());
 	}
-	if (block->getItems().size() > 0){
+	if (block->getItems()->size() > 0){
 		mvwprintw(menuWin, halfway+7, 2, "Items");
-		for (unsigned int i = 0; i < block->getItems().size(); i++){
+		for (unsigned int i = 0; i < block->getItems()->size(); i++){
 			mvwprintw(menuWin, i+halfway+8, 3, "%s", block->getItemAt(i)->getListName().c_str());
 		}
 	}

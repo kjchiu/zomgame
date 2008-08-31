@@ -27,7 +27,6 @@ class ScrollableList {
 		int getSelectedIndex();
 		void setSelected(bool nSelected);
 		void setList(vector<string*>* nStringList);
-
 };
 
 #endif
