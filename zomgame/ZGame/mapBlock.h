@@ -35,7 +35,7 @@ class MapBlock {
 		chtype getChar();
 		short getColor();
 		Item* getItemAt(int index);
-		vector<Item*> getItems();
+		vector<Item*>* getItems();
 		vector<string*>* getItemStrings();
 		Entity* getTopEntity();
 		Prop* getTopProp();

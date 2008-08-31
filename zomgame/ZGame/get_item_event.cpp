@@ -11,7 +11,7 @@ Message* GetItemEvent::resolve() {
 	string* msgString = new string();
 	Message* message = new Message(msgString);
 
-	if (Game::getInstance()->getMap()->getBlockAt(loc)->getItems().size() == 0){
+	if (Game::getInstance()->getMap()->getBlockAt(loc)->getItems()->size() == 0){
 		*msgString = "There is nothing to pick up";
 		return message;
 	}

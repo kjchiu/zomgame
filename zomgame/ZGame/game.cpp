@@ -224,10 +224,10 @@ int Game::processKey(int key){
 		case '/':
 			addEvent(EventFactory::createAddEffectEvent(player, new EffectWtf(this, 1000), 0));
 		case 'g':
-			if(!map->getBlockAt(player->getLoc())->getItems().empty()){
+			if(!map->getBlockAt(player->getLoc())->getItems()->empty()){
 				display->toggleInventory(false);
 				MapBlock* block = map->getBlockAt(player->getLoc());
-				rightInventory = &(block->getItems());
+				rightInventory = block->getItems();
 				//FUCK WORK WORK WORK WHY
 				return 5;
 			}
