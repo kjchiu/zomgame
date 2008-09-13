@@ -1,5 +1,15 @@
 #include "propFactory.h"
 
+ContainerProp* PropFactory::createContainer(){
+	return createContainer(new vector<Item*>());
+}
+
+ContainerProp* PropFactory::createContainer(vector<Item*>* items){
+	ContainerProp* container = new ContainerProp();
+	container->setItems(items);
+	return container;
+}
+
 Door* PropFactory::createDoor(){
 	return createDoor(100);
 }

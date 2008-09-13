@@ -73,12 +73,12 @@ void Game::init(int tWidth, int tHeight){
 	}
 
 
-	getMap()->getBlockAt(3, 3)->addItem(ItemFactory::createMedicalItem("Bandages", 2));
-	getMap()->getBlockAt(3, 3)->addItem(ItemFactory::createMedicalItem("Bandages", 2));
-	getMap()->getBlockAt(3, 3)->addItem(ItemFactory::createMedicalItem("Bandages", 2));
-	getMap()->getBlockAt(3, 3)->addItem(ItemFactory::createMedicalItem("Bandages", 2));
-	getMap()->getBlockAt(3, 3)->addItem(ItemFactory::createMedicalItem("Bandages", 2));
-	getMap()->getBlockAt(3, 3)->addItem(ItemFactory::createMedicalItem("Bandages", 2));
+	getMap()->getBlockAt(3, 3)->addItem(ItemFactory::createMedicalItem("Roll of bandages", 2));
+	getMap()->getBlockAt(3, 3)->addItem(ItemFactory::createMedicalItem("Roll of bandages", 2));
+	getMap()->getBlockAt(3, 3)->addItem(ItemFactory::createMedicalItem("Roll of bandages", 2));
+	getMap()->getBlockAt(3, 3)->addItem(ItemFactory::createMedicalItem("Roll of bandages", 2));
+	getMap()->getBlockAt(3, 3)->addItem(ItemFactory::createMedicalItem("Roll of bandages", 2));
+	getMap()->getBlockAt(3, 3)->addItem(ItemFactory::createMedicalItem("Roll of bandages", 2));
 
 	Item* foodItem = new Item();
 	foodItem->setName("Chocolate Bar");
@@ -86,7 +86,14 @@ void Game::init(int tWidth, int tHeight){
 	foodItem->addSkill(skill_list.getSkillID("Consume"));
 	foodItem->setDescription("A good-looking chocolate bar wrapped in foil.");
 	player->getInventory()->addItem(foodItem);
-	
+
+	vector<Item*>* contItems = new vector<Item*>();
+	contItems->push_back(ItemFactory::createWoodPlank());
+	contItems->push_back(ItemFactory::createWoodPlank());
+	contItems->push_back(ItemFactory::createWoodPlank());
+	ContainerProp* container = PropFactory::createContainer(contItems);
+	map->getBlockAt(7,6)->addProp(container);
+
 	Weapon* katana = new Weapon("Katana", 1000);
 	katana->setDescription("Damn, it's a ninja weapon!");
 	katana->setWType(Weapon::EDGED);
@@ -135,6 +142,10 @@ vector<Item*>* Game::getRightInvList(){
 	return rightInventory;
 }
 
+void Game::setRightInvList(vector<Item*>* nRightInvList){
+	rightInventory = nRightInvList;
+}
+
 Coord* Game::getTarget() {
 	return target;
 }
@@ -167,6 +178,11 @@ bool Game::isPassable(Coord* nextLoc){
 		return true;
 	}
 	return false;
+}
+
+void Game::openInventory(vector<Item*>* rightInvList, bool selectedSide){
+	rightInventory = rightInvList;
+	display->toggleInventory(selectedSide);
 }
 
 
@@ -225,10 +241,7 @@ int Game::processKey(int key){
 			addEvent(EventFactory::createAddEffectEvent(player, new EffectWtf(this, 1000), 0));
 		case 'g':
 			if(!map->getBlockAt(player->getLoc())->getItems()->empty()){
-				display->toggleInventory(false);
-				MapBlock* block = map->getBlockAt(player->getLoc());
-				rightInventory = block->getItems();
-				//FUCK WORK WORK WORK WHY
+				openInventory(map->getBlockAt(player->getLoc())->getItems(), false);
 				return 5;
 			}
 			break;
@@ -299,8 +312,7 @@ int Game::processKey(int key){
 		case '.':
 			return 10;
 		case 'i':
-			addMessage(new Message("Inventory toggled"));
-			display->toggleInventory(true);
+			openInventory(map->getBlockAt(player->getLoc())->getItems(), true);
 			return 5;
 		case 'o':
 			moveTarget(NORTH);
@@ -324,9 +336,6 @@ int Game::processKey(int key){
 		}
 	}
 
-	// i hope this is redundant -.-
-	// so do I. things haven't broken yet though.
-	//display->draw();
 	return 0;
 }
 

@@ -63,6 +63,8 @@ class Game {
 		void addMessage(Message* msg);
 		deque<Message> getMessages();
 		vector<Item*>* getRightInvList();
+		void setRightInvList(vector<Item*>* nRightInvList);
+		void openInventory(vector<Item*>* rightInvList, bool selectedSide);
 
 		char* getView();
 		Player* getPlayer();
