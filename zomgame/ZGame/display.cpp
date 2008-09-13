@@ -210,7 +210,7 @@ void Display::draw(vector<string*>* inventoryStrings){
 }
 
 void Display::draw(Player* player, MapBlock* block){
-	//wclear(menuWin); //first clear the window
+	wclear(menuWin); //first clear the window
 
 	string condition = "Healthy";
 	//player = game->getPlayer();
@@ -279,7 +279,7 @@ void Display::drawCharacterInfo(){
 	mvwprintw(playWin, 1, width-20, "SKILLS");
 	for (unsigned int i = 0; i < p->getSkills()->size(); i++){
 		if (skill_list.getSkill(i)->getType() != INHERENT){
-			mvwprintw(playWin, i+2, width-20, "%d: %s - %d", i, skill_list.getSkill(i)->getName().c_str(), p->getSkillValue(i));
+			mvwprintw(playWin, i+2, width-20, "%-12s - %d", skill_list.getSkill(i)->getName().c_str(), p->getSkillValue(i));
 		}
 	}
 	

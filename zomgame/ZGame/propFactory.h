@@ -5,6 +5,7 @@
 
 #include "door.h"
 #include "bed.h"
+#include "container_prop.h"
 #include "prop.h"
 
 class PropFactory {
@@ -16,6 +17,8 @@ class PropFactory {
 		static Door* createDoor(int durability);
 		static Prop* createWall();
 		static Prop* createWall(int durability);
+		static ContainerProp* createContainer(vector<Item*>* items);
+		static ContainerProp* createContainer();
 
 };
 
