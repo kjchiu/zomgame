@@ -1,0 +1,7 @@
+_Display Char:_ =
+
+_Description:_ A place to rest your eyes
+
+**Gameplay**
+
+The player can recover stamina by resting in place, but he can recover it much quicker by finding a bed to rest on. This, of course, comes at the cost of security. While resting, there is a chance that the player will wake up when a zombie is nearby, and if attacked will wake up immediately.
